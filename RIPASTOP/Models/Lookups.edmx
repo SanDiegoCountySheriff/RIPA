@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="JSON_SIA_TESTModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Cities">
+          <Key>
+            <PropertyRef Name="City" />
+          </Key>
+          <Property Name="State" Type="varchar" MaxLength="2" />
+          <Property Name="City" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="City_Inactive_Date" Type="varchar" MaxLength="10" />
+          <Property Name="City_AddTime" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="CJISOffenseCodes">
+          <Key>
+            <PropertyRef Name="Offense Code" />
+          </Key>
+          <Property Name="Offense Validation CD" Type="varchar" MaxLength="1" />
+          <Property Name="Offense Code" Type="int" Nullable="false" />
+          <Property Name="Offense Txn Type CD" Type="varchar" MaxLength="1" />
+          <Property Name="Offense Statute" Type="varchar" MaxLength="15" />
+          <Property Name="Offense Type of Statute CD" Type="varchar" MaxLength="2" />
+          <Property Name="Statute Literal 25" Type="varchar" MaxLength="50" />
+          <Property Name="Offense Default Type of Charge" Type="varchar" MaxLength="1" />
+          <Property Name="Offense Type of Charge" Type="varchar" MaxLength="1" />
+          <Property Name="Offense Literal Identifier CD" Type="varchar" MaxLength="5" />
+          <Property Name="Offense Degree" Type="varchar" MaxLength="1" />
+          <Property Name="BCS Hierarchy CD" Type="varchar" MaxLength="10" />
+          <Property Name="Offense Enacted" Type="varchar" MaxLength="10" />
+          <Property Name="Offense Repealed" Type="varchar" MaxLength="10" />
+          <Property Name="ALPS Cognizant CD" Type="varchar" MaxLength="1" />
+          <Property Name="Add_Date Time" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="schools">
+          <Key>
+            <PropertyRef Name="CDS_Code" />
+          </Key>
+          <Property Name="CDS_Code" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="50" />
+          <Property Name="County" Type="varchar" MaxLength="50" />
+          <Property Name="District" Type="varchar" MaxLength="50" />
+          <Property Name="schoolname" Type="varchar" MaxLength="50" />
+          <Property Name="sc_MailCity" Type="varchar" MaxLength="50" />
+          <Property Name="sc_DOCType" Type="varchar" MaxLength="50" />
+          <Property Name="Schooltype" Type="varchar" MaxLength="50" />
+          <Property Name="sc_Latitude" Type="varchar" MaxLength="50" />
+          <Property Name="sc_Longitude" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityContainer Name="JSON_SIA_TESTModelStoreContainer">
+          <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CJISOffenseCodes" EntityType="Self.CJISOffenseCodes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="schools" EntityType="Self.schools" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="JSON_SIA_TESTModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true" >
+          <EntitySet Name="CJISOffenseCodes" EntityType="JSON_SIA_TESTModel.CJISOffenseCodes" />
+          <EntitySet Name="Cities" EntityType="JSON_SIA_TESTModel.Cities" />
+          <EntitySet Name="schools" EntityType="JSON_SIA_TESTModel.schools" />
+        </EntityContainer>
+        <EntityType Name="CJISOffenseCodes">
+          <Key>
+            <PropertyRef Name="Offense_Code" />
+          </Key>
+          <Property Name="Offense_Validation_CD" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Offense_Code" Type="Int32" Nullable="false" />
+          <Property Name="Offense_Txn_Type_CD" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Offense_Statute" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Offense_Type_of_Statute_CD" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="Statute_Literal_25" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Offense_Default_Type_of_Charge" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Offense_Type_of_Charge" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Offense_Literal_Identifier_CD" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Offense_Degree" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="BCS_Hierarchy_CD" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Offense_Enacted" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Offense_Repealed" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ALPS_Cognizant_CD" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Add_Date_Time" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Cities">
+          <Key>
+            <PropertyRef Name="City" />
+          </Key>
+          <Property Name="State" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="City_Inactive_Date" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="City_AddTime" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="schools">
+          <Key>
+            <PropertyRef Name="CDS_Code" />
+          </Key>
+          <Property Name="CDS_Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="County" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="District" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="schoolname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sc_MailCity" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sc_DOCType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Schooltype" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sc_Latitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sc_Longitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="JSON_SIA_TESTModelStoreContainer" CdmEntityContainer="Entities" >
+          <EntitySetMapping Name="CJISOffenseCodes">
+            <EntityTypeMapping TypeName="JSON_SIA_TESTModel.CJISOffenseCodes">
+              <MappingFragment StoreEntitySet="CJISOffenseCodes">
+                <ScalarProperty Name="Add_Date_Time" ColumnName="Add_Date Time" />
+                <ScalarProperty Name="ALPS_Cognizant_CD" ColumnName="ALPS Cognizant CD" />
+                <ScalarProperty Name="Offense_Repealed" ColumnName="Offense Repealed" />
+                <ScalarProperty Name="Offense_Enacted" ColumnName="Offense Enacted" />
+                <ScalarProperty Name="BCS_Hierarchy_CD" ColumnName="BCS Hierarchy CD" />
+                <ScalarProperty Name="Offense_Degree" ColumnName="Offense Degree" />
+                <ScalarProperty Name="Offense_Literal_Identifier_CD" ColumnName="Offense Literal Identifier CD" />
+                <ScalarProperty Name="Offense_Type_of_Charge" ColumnName="Offense Type of Charge" />
+                <ScalarProperty Name="Offense_Default_Type_of_Charge" ColumnName="Offense Default Type of Charge" />
+                <ScalarProperty Name="Statute_Literal_25" ColumnName="Statute Literal 25" />
+                <ScalarProperty Name="Offense_Type_of_Statute_CD" ColumnName="Offense Type of Statute CD" />
+                <ScalarProperty Name="Offense_Statute" ColumnName="Offense Statute" />
+                <ScalarProperty Name="Offense_Txn_Type_CD" ColumnName="Offense Txn Type CD" />
+                <ScalarProperty Name="Offense_Code" ColumnName="Offense Code" />
+                <ScalarProperty Name="Offense_Validation_CD" ColumnName="Offense Validation CD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cities">
+            <EntityTypeMapping TypeName="JSON_SIA_TESTModel.Cities">
+              <MappingFragment StoreEntitySet="Cities">
+                <ScalarProperty Name="City_AddTime" ColumnName="City_AddTime" />
+                <ScalarProperty Name="City_Inactive_Date" ColumnName="City_Inactive_Date" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="schools">
+            <EntityTypeMapping TypeName="JSON_SIA_TESTModel.schools">
+              <MappingFragment StoreEntitySet="schools">
+                <ScalarProperty Name="sc_Longitude" ColumnName="sc_Longitude" />
+                <ScalarProperty Name="sc_Latitude" ColumnName="sc_Latitude" />
+                <ScalarProperty Name="Schooltype" ColumnName="Schooltype" />
+                <ScalarProperty Name="sc_DOCType" ColumnName="sc_DOCType" />
+                <ScalarProperty Name="sc_MailCity" ColumnName="sc_MailCity" />
+                <ScalarProperty Name="schoolname" ColumnName="schoolname" />
+                <ScalarProperty Name="District" ColumnName="District" />
+                <ScalarProperty Name="County" ColumnName="County" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CDS_Code" ColumnName="CDS_Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="false" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
