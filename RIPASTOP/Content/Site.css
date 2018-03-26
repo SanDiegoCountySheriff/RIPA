@@ -1,0 +1,345 @@
+﻿html, body {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Verdana, Geneva, sans-serif;
+    color: #000;
+    /*background-color: #03a9f4;*/
+    background-color: #C0FFEE;
+ 
+
+}
+.body-content {
+    position:relative;
+    top:65px;
+}
+
+/*nav bar*/
+
+.navbar {
+    position:absolute;
+    display:block;
+    width: 100%;   
+    background-color: #333;
+    height:50px;
+}
+.navbar ul {
+    padding-left:50px;
+    overflow: auto;
+    list-style-type: none;   
+}
+.navbar li {
+    margin-left:15px;
+    height: auto;
+    float: left;
+    /*padding: 0 5px;*/
+}
+
+.navbar li a {
+    text-decoration: none;
+    color: #fff;
+}
+.navbar li a:visited {
+    color: #C0FFEE;
+}
+.navbar li img{
+    height: 50px;
+    position: absolute;
+    top:0;
+    left:0;
+    margin-right: 10px;
+
+}
+
+/*nav bar end*/
+
+.list-section {
+    margin: 0 auto !important;
+    margin-bottom: 25px;
+    padding: 25px;
+    background-color: #fff;
+    /* border-radius: 5px;*/
+    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
+    min-width: 200px;
+    max-width: 640px;    
+}
+
+/* list pattern */
+.list-view {
+    /*margin-top: 10px;
+    margin-bottom: 10px;*/ 
+}
+
+.list-wrapper {
+   
+}
+
+.list-item {
+    margin-top: 15px;
+    /*margin-left: 25px;*/
+    width: auto;
+    display: flex;
+}
+
+.list-item-select {
+    margin-top: 15px;
+    /*margin-left: 25px;*/
+    /*width: auto;*/
+    display: flex;
+}
+
+
+.list-item-nested {
+    margin-top: 15px;
+    margin-left: 25px;
+    width: 88% !important;
+    display: flex;
+}
+
+.list-meta {
+    display: flex;
+    flex-direction: column;
+    margin-left: 25px;
+}
+
+.invalid {
+    color: red;
+}
+
+input[type=checkbox], input[type=radio] {
+    flex-grow: 0; /* do not grow   - initial value: 0 */
+    flex-shrink: 0; /* do not shrink - initial value: 1 */
+    flex-basis: 15px;
+}
+
+/* text field pattern */
+.text-field-view {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+input[type=text], input[type=datetime-local], input[type=number], input[type=date], input[type=time], select {
+    /*display:block;
+        padding: 6px 12px;
+        color: #555;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: medium;*/
+    display: block;
+    box-sizing: content-box;
+    padding: 10px 0 10px 5px;
+    /*border: 0 solid #b7b7b7;*/
+    border-bottom-width: 1px;
+    font-size: 16px;
+    color: rgba(0,142,198,1);
+    text-overflow: clip;
+    width: 98%;
+    background: #EEE;
+    border-radius: 3px;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.2) inset;
+}
+
+.input-error {
+    background-color: #f2dede !important;
+    /*border-color: #a94442;*/
+}
+
+
+label {
+    margin-left: 5px;
+}
+
+.info {
+    margin: 20px;
+}
+
+.styled {
+    margin: 0 0;
+    font-size: .75em;
+    text-align:center;
+}
+
+    .styled progress {
+        /* Reset the default appearance */
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        width: 100%;
+        /* Firefox */
+        border: none;
+        background: #EEE;
+        border-radius: 3px;
+        box-shadow: 0 2px 3px rgba(0,0,0,0.2) inset;
+        margin-bottom: 10px;
+    }
+
+        .styled progress::-webkit-progress-bar {
+            background: #EEE;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.2) inset;
+            border-radius: 3px;
+        }
+
+        .styled progress::-webkit-progress-value {
+            background-color: #03a9f4;
+            border-radius: 3px;
+        }
+
+        .styled progress::-moz-progress-bar {
+            background-color: #03a9f4;
+            border-radius: 3px;
+        }
+
+.button-container {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.button{
+    padding: 12px;
+    background-color: #03a9f4;
+    border: none;
+    border-radius: 3px;
+    text-align: center;
+    color: #fff;
+    cursor: pointer;
+    margin-top: 10px;
+    text-decoration: none !important;
+}
+
+.button-left {
+    float: left;
+    padding: 12px;
+    background-color: #eee;
+    border: none;
+    border-radius: 3px;
+    display: block;
+    color: #000;
+    cursor: pointer;
+    margin: 25px 0 25px 0;
+    text-decoration: none !important;
+   
+}
+
+.button-right{
+    float: right;
+    padding: 12px;
+    background-color: #03a9f4;
+    border: none;
+    border-radius: 3px;
+    display: block;
+    color: #fff;
+    cursor: pointer;
+    margin: 25px 0 25px 0;
+    text-decoration: none !important;
+}
+
+.hidden{ display: none; }
+
+.error-alert {
+    color: #a94442;
+}
+.error-summary {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+.error-flip-margin {
+    margin-top: 20px !important;
+    margin-bottom: 0 !important;
+}
+
+.required {
+    /*vertical-align: super;*/
+    font-size: .6em;
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    padding: 3px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    /*margin-top: 4px;*/
+    margin-left: 4px;
+}
+.regref {
+    background-color: #dcebf2;
+    color: #0284bf;
+}
+
+#dom-info {
+    position: absolute;
+    top: -1000px;
+}
+
+/* Styles for React Tags*/
+
+.ReactTags__tags {
+    margin-top: 15px !important;
+    margin-left: 25px !important;
+}
+div.ReactTags__selected {
+    width: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+span.ReactTags__tag {
+    border: 1px solid #ddd;
+    background: #eee;
+    font-size: 12px;
+    padding: 5px;
+    margin: 3px 0;
+    border-radius: 2px;
+    display: flex;
+}
+span.ReactTags__tag span {    
+    display: flex;
+    order: 1;
+}
+a.ReactTags__remove {
+    color: #aaa;
+    cursor: pointer;
+    margin: 0 5px;
+    display: flex;
+    order: 0;
+    
+}
+.ReactTags__tagInput {
+    margin-top:5px;
+}
+/* Styles for suggestions */
+div.ReactTags__suggestions {
+    /*position: absolute;*/
+    width: auto;
+}
+
+    div.ReactTags__suggestions ul {
+        list-style-type: none;
+        box-shadow: .05em .01em .5em rgba(0,0,0,.2);
+        background: white;
+        -webkit-padding-start: 0px !important;
+        -moz-padding-start: 0px !important;
+        -ms-padding-start: 0px !important;
+    }
+
+    div.ReactTags__suggestions li {
+        border-bottom: 1px solid #ddd;
+        padding: 5px 10px;
+        margin: 0;
+    }
+
+        div.ReactTags__suggestions li mark {
+            text-decoration: underline;
+            background: none;
+            font-weight: 600;
+        }
+
+    div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
+        background: #b7cfe0;
+        cursor: pointer;
+    }
