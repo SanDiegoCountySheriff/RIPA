@@ -29,8 +29,8 @@ The application is built using MSFT ASP.NET MVC/WEBAPI with Entity Foundation an
 
 ## How To Get Started
 
-1. **Database Setup** - On the package manager console in VS, add a new migration `add-migration myMigration` and update the database `update-database`, which you will need to point to in the web.config file. Alternatively, if you don't want to mess with migrations, you can implement the SQL script in the SQL folder.
+**Database Setup** - On the package manager console in VS, add a new migration `add-migration myMigration` and update the database `update-database`, which you will need to point to in the web.config file. Alternatively, if you don't want to mess with migrations, you can implement the SQL script in the SQL folder.
 
 The SQL folder also has a script for the lookup tables, along with sample data. It is recommended that you set up a repeatable process to update the lookup tables from California DoJ directly.
 
-2. **IIS Setup** - Set up a new web application, turn on Windows Authentication and set up your port 443/https bindings, a dev cert will suffice, unless you are setting up production. Make sure the application pool identity has read/write access to the database you set up in step 1.
+**IIS Setup** - Set up a new web application, turn on Windows Authentication and set up your port 443/https bindings, a dev cert will suffice, unless you are setting up production. Make sure the application pool identity has read/write access to the database you set up in step 1.
