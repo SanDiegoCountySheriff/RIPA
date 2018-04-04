@@ -6,8 +6,8 @@ class Form extends React.Component {
             stop: {
                 ori: '',
                 agency: '',
-                officerID: '', 
-                ExpYears: '', 
+                officerID: '',
+                ExpYears: '',
                 officerAssignment: { key: '', type: '', otherType: '' },
                 date: '',
                 time: '',
@@ -19,30 +19,30 @@ class Form extends React.Component {
                     streetName: '',
                     highwayExit: '',
                     city: {
-                         codes: []
+                        codes: []
                     },
                     school: false,
                     schoolName: {
-                         codes: []
+                        codes: []
                     }
-                }, 
+                },
                 stopDuration: '',
                 stopInResponseToCFS: false,
                 Person_Stopped: {
                     PID: '',
                     Is_Stud: false, // Y/N
                     //Perc: {
-                        perceivedRace: [],
-                        perceivedLimitedEnglish: false,
-                        perceivedOrKnownDisability: [],
-                        perceivedAge: '',
-                        perceivedGender: '',
-                        genderNonconforming: false,
-                        Gend: '',
-                        gendNC: '',
-                        perceivedLgbt: '',
+                    perceivedRace: [],
+                    perceivedLimitedEnglish: false,
+                    perceivedOrKnownDisability: [],
+                    perceivedAge: '',
+                    perceivedGender: '',
+                    genderNonconforming: false,
+                    Gend: '',
+                    gendNC: '',
+                    perceivedLgbt: '',
                     //}
-                        reasonForStop: '',
+                    reasonForStop: '',
                     reasonForStopExplanation: '',
                     actionsTakenDuringStop: [],
                     contrabandOrEvidenceDiscovered: [],
@@ -55,7 +55,7 @@ class Form extends React.Component {
                 ListPerson_Stopped: [],
             },
             latitude: null,
-            longitude: null, 
+            longitude: null,
             beat: null,
             debug: false,
             toggleJson: false,
@@ -152,19 +152,19 @@ class Form extends React.Component {
                 errorFlag: false, datetime: '', time: '', duration: '', locationType: '', address: '', school: '',
                 gender: '', lgbt: '', race: '', age: '', disability: '', stopType: '', presence: '', reason: '',
                 radioDispatch: '', plannedOperation: '',
-                trafficViolation: '', reasonableSuspicion: '', eduDiscipline: '', reasonBrief: '', action: '', 
+                trafficViolation: '', reasonableSuspicion: '', eduDiscipline: '', reasonBrief: '', action: '',
                 searchBasis: '', searchBrief: '', seizureBasis: '', resultOfStop: '',
-                seizureProperty: '', result: '', contraband: '',  warning: '', custody: '', years: '', assignment: ''
+                seizureProperty: '', result: '', contraband: '', warning: '', custody: '', years: '', assignment: ''
             },
             codes: {
             },
-            codeDummy:[]            
+            codeDummy: []
         };
         this.radioSelection = this.radioSelection.bind(this);
         this.checkBoxSelection = this.checkBoxSelection.bind(this);
         this.radioNestedCheckBoxSelection = this.radioNestedCheckBoxSelection.bind(this);
         this.radioNestedRadioSelection = this.radioNestedRadioSelection.bind(this);
-        this.updateBoolCheckBox = this.updateBoolCheckBox.bind(this);   
+        this.updateBoolCheckBox = this.updateBoolCheckBox.bind(this);
         this.updateLocation = this.updateLocation.bind(this);
         this.useLastLocation = this.useLastLocation.bind(this);
         this.updateDateTime = this.updateDateTime.bind(this);
@@ -183,13 +183,13 @@ class Form extends React.Component {
         this.toggleJson = this.toggleJson.bind(this);
         // tags (offense codes)
         this.handleCodeDelete = this.handleCodeDelete.bind(this);
-        this.handleCodeAdd = this.handleCodeAdd.bind(this);        
+        this.handleCodeAdd = this.handleCodeAdd.bind(this);
         this.handleFilterSuggestions = this.handleFilterSuggestions.bind(this);
         this.setStopInProgress = this.setStopInProgress.bind(this);
         this.cancelStopInProgress = this.cancelStopInProgress.bind(this);
         this.clearStore = this.clearStore.bind(this);
     }
-    
+
     radioSelection(e, node, itemkey) {
         var val = e.target.value;
         var name = e.target.name;
@@ -205,14 +205,14 @@ class Form extends React.Component {
         }
         else if (node === "reasonForStop") {
             if (newPerson[node].reason != val) {
-                newPerson[node] = { key: itemkey, reason: val, details: [{ reason: '', key: ''}], codes: [] }
+                newPerson[node] = { key: itemkey, reason: val, details: [{ reason: '', key: '' }], codes: [] }
             }
         }
         else if (node === "perceivedGender") {
             if (name === "Transgender man/boy" || name === "Transgender woman/girl") {
-                newPerson.perceivedLgbt = 'Yes';                
+                newPerson.perceivedLgbt = 'Yes';
             } else {
-                newPerson.perceivedLgbt = '';   
+                newPerson.perceivedLgbt = '';
             }
             newPerson[node] = val
             newPerson.Gend = itemkey
@@ -224,7 +224,7 @@ class Form extends React.Component {
             newStop[node] = val
         }
         newStop.Person_Stopped = newPerson;
-        this.setState({ stop: newStop }); 
+        this.setState({ stop: newStop });
     }
     checkBoxSelection(e, node, node2, node2b, itemkey) {
         var val = e.target.value;
@@ -247,13 +247,13 @@ class Form extends React.Component {
                     //[node2b]: [],
                     key: itemkey
                 })
-            } else if (node === 'resultOfStop') { 
+            } else if (node === 'resultOfStop') {
                 if (val == 'No Action') {
                     arr = []
                 }
-                arr.push({ [node2]: val, codes: [], key: itemkey});
+                arr.push({ [node2]: val, codes: [], key: itemkey });
             } else if (node2b) { //default nested
-                arr.push({ [node2]: val, [node2b]: [], key: itemkey});
+                arr.push({ [node2]: val, [node2b]: [], key: itemkey });
                 //arr.push({ [node2]: val });
             } else { //default
                 if (val == 'None') {
@@ -264,7 +264,7 @@ class Form extends React.Component {
             newPerson[node] = arr;
             this.setState({ Person_Stopped: newPerson });
         } else {
-            if (val === 'Search of property was conducted' || 
+            if (val === 'Search of property was conducted' ||
                 val === 'Search of person was conducted') {
                 newPerson.basisForSearch = [];
                 newPerson.contrabandOrEvidenceDiscovered = [];
@@ -275,7 +275,7 @@ class Form extends React.Component {
             }
             arr.splice(i, 1);
             newPerson[node] = arr;
-           this.setState({ Person_Stopped: newPerson })
+            this.setState({ Person_Stopped: newPerson })
         }
     }
     radioNestedCheckBoxSelection(e, node, node2, node2b, itemkey) {
@@ -292,9 +292,9 @@ class Form extends React.Component {
                         arr = []
                     }
                 }
-                arr.push({ [node2]: val, key: itemkey  })
+                arr.push({ [node2]: val, key: itemkey })
             } else {
-                arr.push({ [node2]: val, key: itemkey  });
+                arr.push({ [node2]: val, key: itemkey });
             }
             newStop[node][node2b] = arr;
             this.setState({ Person_Stopped: newStop });
@@ -333,7 +333,7 @@ class Form extends React.Component {
         if (val === 'Property Search Consent Given') {
             val = e.target.checked ? true : false;
             var i = arr.map(function (x) { return x.action; }).indexOf('Asked for consent to search property');
-            arr[i].propertySearchConsentGiven = val;            
+            arr[i].propertySearchConsentGiven = val;
             arr[i].key = val ? '19,Y' : '19,N';
             newStop.actionsTakenDuringStop = arr;
         }
@@ -346,10 +346,10 @@ class Form extends React.Component {
         }
         this.setState({ Person_Stopped: newStop });
     }
-    
+
     updateLocation(e) {
         var newStop = this.state.stop;
-        
+
         var newLocation = this.state.stop.location;
         if (e.address) {// update location from reverse geocoder
             newLocation.blockNumber = this.floorInteger(e.address.Street.substr(0, e.address.Street.indexOf(' ')));
@@ -380,19 +380,22 @@ class Form extends React.Component {
             val && (name === 'streetName' || name === 'blockNumber') ? e.target.className = 'list-item' : null;
             newLocation[name] = val;
         }
-        newStop.location = newLocation;       
+        newStop.location = newLocation;
         //var location = this.state.stop.location;
-        if (!store.enabled) {
-            alert('Local storage is not supported by your browser. Please disable "Private Mode", or upgrade to a modern browser.')
-            return
-        }
-        store.set('LastLocation', newLocation);
+        //if (!store.enabled) {
+        //if (localStorage.storageAvailable()) {
+        //    alert('Local storage is not supported by your browser. Please disable "Private Mode", or upgrade to a modern browser.')
+        //    return
+        //}
+        //store.set('LastLocation', newLocation);
+        localStorage.setItem('LastLocation', JSON.stringify(newLocation));
         this.setState({ stop: newStop });
         //alert(JSON.stringify(store.get('LastLocation')));
     }
     useLastLocation(e) {
         var newStop = this.state.stop;
-        var newLocation = store.get('LastLocation');    
+        //var newLocation = store.get('LastLocation');    
+        var newLocation = JSON.parse(localStorage.getItem('LastLocation'));
         if (newLocation) {
             newStop.location = newLocation;
             this.setState({ stop: newStop });
@@ -415,7 +418,7 @@ class Form extends React.Component {
         newStop[name] = val;
         this.setState({ Person_Stopped: newStop });
     }
-    updateBoolCheckBox(e, node, node2){
+    updateBoolCheckBox(e, node, node2) {
         var val = e.target.checked ? true : false;
         var newStop = this.state.stop;
         if (node2) {
@@ -423,16 +426,16 @@ class Form extends React.Component {
             if (node2 == 'genderNonconforming' && val == true) {
                 newStop[node].gendNC = 5;
             }
-            if (node2 == 'genderNonconforming' && val == false){
+            if (node2 == 'genderNonconforming' && val == false) {
                 newStop[node].gendNC = '';
             }
         } else {
             newStop[node] = val;
         }
-        
+
         this.setState({ stop: newStop });
     }
-    
+
     updateDateTime(e) {
         var val = e.target.value;
         var name = e.target.name;
@@ -454,8 +457,8 @@ class Form extends React.Component {
                     e.target.className += ' input-error'
                 } else { e.target.className = 'list-item' }
                 break;
-            }
-        
+        }
+
         var newStop = this.state.stop;
         newStop[name] = val;
         this.setState({ stop: newStop });
@@ -465,23 +468,23 @@ class Form extends React.Component {
     floorInteger(n) {
         var len = n.length - 1;
         var order = Math.pow(10, len);
-        var block = Math.floor(n / order); 
+        var block = Math.floor(n / order);
         return block * order;
     }
 
-    geoSuccess(position) {        
-                
+    geoSuccess(position) {
+
         this.geoReverseGeocode(position.coords.longitude, position.coords.latitude);
 
         this.setState({ latitude: position.coords.latitude, longitude: position.coords.longitude });
         //alert("Position recorded.");
-    } 
+    }
     geoFindMe(e) {
         if (!navigator.geolocation) {
             console.log("Geolocation is not supported by your browser");
             alert("Geolocation is not supported by your browser");
             return;
-        }      
+        }
         function error(e) {
             console.log("PositionError: " + e.code + " - " + e.message);
             alert("PositionError: " + e.code + " - " + e.message);
@@ -493,9 +496,9 @@ class Form extends React.Component {
         //});       
     }
     geoReverseGeocode(x, y) {
-        var thiss = this;        
+        var thiss = this;
         //fetch('https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?distance=1000&f=pjson&location=' + x + ',' + y + '&outSR=4326')
-        fetch('https://mySvc/arcgis/rest/services/Locators/REDI_COMPOSITE_FI/GeocodeServer/reverseGeocode?distance=1000&f=pjson&location=' + x + ',' + y + '&outSR=4326')
+        fetch('https://www.sdlaw.us/arcgis/rest/services/Locators/REDI_COMPOSITE_FI/GeocodeServer/reverseGeocode?distance=1000&f=pjson&location=' + x + ',' + y + '&outSR=4326')
             .then(function (response) {
                 return response.json()
                     .then(function (json) {
@@ -506,10 +509,10 @@ class Form extends React.Component {
                         console.log('There has been a problem with your fetch operation: ' + error.message);
                         throw error;
                     });
-        });
+            });
     }
 
-    addPerson(e) {    
+    addPerson(e) {
         if (confirm("Add additional person?")) {
             var newStop = this.state.stop;
             //var person = this.state.stop.Person_Stopped;
@@ -547,7 +550,7 @@ class Form extends React.Component {
             ].endTimeStamp;
             instrumentation.temporalTrace.stepTrace.push(
                 { formPartFilter: '5', startTimeStamp: lastend, endTimeStamp: moment().format('YYYY-MM-DD HH:mm:ss') }
-            ); 
+            );
 
             count++;
             this.setState({ stop: newStop, formPartFilter: '2', progress: 31, instrumentation: instrumentation, personCount: count });
@@ -557,7 +560,7 @@ class Form extends React.Component {
     }
     pullForwardPerson(e) {
         if (this.state.stop.ListPerson_Stopped.length > 0) {
-            
+
             var lastPerson = this.state.stop.ListPerson_Stopped[0];
             var newStop = this.state.stop;
             var newPerson = this.state.stop.Person_Stopped;
@@ -577,12 +580,12 @@ class Form extends React.Component {
         }
         e.preventDefault();
     }
-   
-    handleSubmit(e) { 
+
+    handleSubmit(e) {
         //this.geoFindMe(e);
         var thiss = this;
         this.validateFormSection();
-        
+
         if (!this.state.validationErrorMsg.errorFlag) {
 
             // show loader button
@@ -597,7 +600,7 @@ class Form extends React.Component {
                     console.log("offline");
                 } else {
                     //alert('You are online.')
-                    console.log("online");                    
+                    console.log("online");
                 }
             }).then(function (response) {
                 console.log("ok");
@@ -608,7 +611,7 @@ class Form extends React.Component {
                 ].endTimeStamp;
                 instrumentation.temporalTrace.stepTrace.push(
                     { formPartFilter: '5', startTimeStamp: lastend, endTimeStamp: moment().format('YYYY-MM-DD HH:mm:ss') }
-                ); 
+                );
 
                 fetch('/stops/create', {
                     method: 'post',
@@ -640,13 +643,13 @@ class Form extends React.Component {
                     instrumentation.temporalTrace.stepTrace = [];
                     //store.remove('stopInProgress');
                     thiss.setState({ formPartFilter: '6', progress: progress, instrumentation: instrumentation });
-                    }).catch(function (error) {
-                        thiss.setState({loader: false})
+                }).catch(function (error) {
+                    thiss.setState({ loader: false })
                     alert('There has been a problem with your fetch operation: ' + error.message);
                     throw error;
 
                 });
-               
+
             }).catch(function (error) {
                 thiss.state.loader = false;
                 console.log(error);
@@ -654,7 +657,7 @@ class Form extends React.Component {
         }
         e.preventDefault();
     }
-  
+
     handleFormSectionFilter(e, templatename, includeLocation) {
         if (this.state.formPartFilter > e.target.name) {
             console.log('going backwards');
@@ -668,7 +671,7 @@ class Form extends React.Component {
             var progress = this.state.progress;
             var step = this.state.formPartFilter
             if (dir === '<< Back') {
-               if (step == 5 && progress == 100) {
+                if (step == 5 && progress == 100) {
                     progress -= 23;
                 }
                 else {
@@ -688,7 +691,7 @@ class Form extends React.Component {
             }
             if (val == 4 && dir == '<< Back') { //step back from review
                 var newStop = this.state.stop;
-                var ix = this.state.stop.ListPerson_Stopped.length -1;
+                var ix = this.state.stop.ListPerson_Stopped.length - 1;
                 var person = this.state.stop.ListPerson_Stopped[ix];
 
                 newStop.ListPerson_Stopped.pop();
@@ -696,14 +699,14 @@ class Form extends React.Component {
                 this.setState({ stop: newStop });
             }
 
-            var instrumentation = this.state.instrumentation;     
+            var instrumentation = this.state.instrumentation;
             if (instrumentation.temporalTrace.stepTrace.length > 0) {
                 var lastend = instrumentation.temporalTrace.stepTrace[
                     instrumentation.temporalTrace.stepTrace.length - 1
                 ].endTimeStamp;
                 instrumentation.temporalTrace.stepTrace.push(
                     { formPartFilter: step, startTimeStamp: lastend, endTimeStamp: moment().format('YYYY-MM-DD HH:mm:ss') }
-                );                
+                );
             } else {
                 var lastend = instrumentation.temporalTrace.startTimeStamp;
                 instrumentation.temporalTrace.stepTrace.push(
@@ -712,14 +715,16 @@ class Form extends React.Component {
             }
             var template = this.state.stop;
             if (templatename) {
-                if (store.get('LastLocation') && includeLocation) {
-                    template.location = store.get('LastLocation');
+                //if (store.get('LastLocation') && includeLocation) {
+                if (localStorage.getItem('LastLocation') && includeLocation) {
+                    //template.location = store.get('LastLocation');
+                    template.location = JSON.parse(localStorage.getItem('LastLocation'));
                 }
                 template.Person_Stopped = this.state.templates[templatename].Person_Stopped;
                 instrumentation.template = templatename;
-            }            
+            }
             this.setState({ formPartFilter: val, stop: template, progress: progress, instrumentation: instrumentation });
-            
+
             scroll(0, 0);
         }
         //this.setStopInProgress();
@@ -748,7 +753,7 @@ class Form extends React.Component {
         var msg = this.state.validationErrorMsg;
         if (!this.validateDate(this.state.stop.date)) {
             msg.datetime = '*Please enter a valid date'
-            msg.errorFlag = true;            
+            msg.errorFlag = true;
         } else { msg.datetime = '' }
         if (!this.validateTime(this.state.stop.time)) {
             msg.time = '*Please enter a valid time'
@@ -765,7 +770,7 @@ class Form extends React.Component {
                     msg.errorFlag = true;
                 } else { msg.time = ''; msg.errorFlag = false; }
             }
-        } 
+        }
     }
     validateFormSection() {
         var step = this.state.formPartFilter;
@@ -801,27 +806,27 @@ class Form extends React.Component {
                     this.state.stop.location.intersection = ''
                 }
 
-                if(this.state.stop.location.school && this.state.stop.location.schoolName.codes.length < 1){
+                if (this.state.stop.location.school && this.state.stop.location.schoolName.codes.length < 1) {
                     msg.school = '*Please enter a school name'
                     msg.errorFlag = true;
-                } else { msg.school = '';}
+                } else { msg.school = ''; }
 
                 if (this.state.stop.location.city.codes.length < 1) {
                     msg.city = '*Please enter a City'
-                    msg.errorFlag = true; 
+                    msg.errorFlag = true;
                 } else { msg.city = ''; }
 
                 if (!this.state.stop.ExpYears) {
                     msg.years = 'Please make a selection for Officer Years Of Experience'
                     msg.errorFlag = true;
-                } else { msg.years = '' } 
+                } else { msg.years = '' }
                 if (this.state.stop.officerAssignment.key == 0) {
                     msg.assignment = 'Please make a selection for Officer Assignment'
                     msg.errorFlag = true;
                 } else if (!this.state.stop.officerAssignment.otherType && this.state.stop.officerAssignment.key == 10) {
                     msg.assignment = 'Please enter a description for other assignment type'
                     msg.errorFlag = true;
-                } else { msg.assignment = '' } 
+                } else { msg.assignment = '' }
 
                 this.validateDate(this.state.stop.date) &&
                     this.validateTime(this.state.stop.time) &&
@@ -871,10 +876,10 @@ class Form extends React.Component {
                         if (this.state.stop.Person_Stopped.reasonForStop.details.length < 1 || !this.state.stop.Person_Stopped.reasonForStop.details[0].reason) {
                             msg.trafficViolation = '*Please make a selection for Traffic Violation'
                             msg.errorFlag = true;
-                        } else if (this.state.stop.Person_Stopped.reasonForStop.codes.length < 1 ) {
+                        } else if (this.state.stop.Person_Stopped.reasonForStop.codes.length < 1) {
                             msg.trafficViolation = '*Please add a Vehicle Code section'
                             msg.errorFlag = true;
-                        } else { msg.eduDiscipline = '', msg.reasonableSuspicion = '', msg.trafficViolation = '' }  
+                        } else { msg.eduDiscipline = '', msg.reasonableSuspicion = '', msg.trafficViolation = '' }
                     }
                     if (this.state.stop.Person_Stopped.reasonForStop.reason == "Reasonable Suspicion") {
                         if (this.state.stop.Person_Stopped.reasonForStop.details.length < 1 || !this.state.stop.Person_Stopped.reasonForStop.details[0].reason) {
@@ -883,7 +888,7 @@ class Form extends React.Component {
                         } else if (this.state.stop.Person_Stopped.reasonForStop.codes.length < 1) {
                             msg.reasonableSuspicion = '*Please add a Penal Code section'
                             msg.errorFlag = true;
-                        } else { msg.eduDiscipline = '', msg.reasonableSuspicion = '', msg.trafficViolation = '' }  
+                        } else { msg.eduDiscipline = '', msg.reasonableSuspicion = '', msg.trafficViolation = '' }
                     }
                     if (this.state.stop.Person_Stopped.reasonForStop.key == 8) { //education code
                         if (this.state.stop.Person_Stopped.reasonForStop.details.length < 1 || !this.state.stop.Person_Stopped.reasonForStop.details[0].reason) {
@@ -892,13 +897,13 @@ class Form extends React.Component {
                         } else if (this.state.stop.Person_Stopped.reasonForStop.details[0].key == 1 && this.state.stop.Person_Stopped.reasonForStop.codes.length < 1) {
                             msg.eduDiscipline = '*Please add a 48900 Sub Code section'
                             msg.errorFlag = true;
-                        } else {msg.eduDiscipline = '', msg.reasonableSuspicion = '', msg.trafficViolation = ''} 
+                        } else { msg.eduDiscipline = '', msg.reasonableSuspicion = '', msg.trafficViolation = '' }
                     }
                 }
                 if (this.state.stop.Person_Stopped.reasonForStopExplanation.length < 5 || this.state.stop.Person_Stopped.reasonForStopExplanation.length > 250) {
                     msg.reasonBrief = '*Please provide a brief explanation regarding the reason for the stop (at least 5 and less than 250 characters)'
                     msg.errorFlag = true;
-                } else { msg.reasonBrief = '' } 
+                } else { msg.reasonBrief = '' }
 
                 this.state.stop.Person_Stopped.reasonForStop.reason &&
                     this.state.stop.Person_Stopped.reasonForStopExplanation &&
@@ -914,13 +919,13 @@ class Form extends React.Component {
                     msg.errorFlag = true;
                 } else {
                     msg.action = '';
-                    if (this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf('Search of person was conducted') > -1 || this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf('Search of property was conducted') > -1) { 
-                        if (this.state.stop.Person_Stopped.basisForSearch.length < 1) { 
+                    if (this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf('Search of person was conducted') > -1 || this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf('Search of property was conducted') > -1) {
+                        if (this.state.stop.Person_Stopped.basisForSearch.length < 1) {
                             msg.searchBasis = '*Please make a selection for Basis for search'
                             msg.errorFlag = true;
                         } else { msg.searchBasis = '' }
-                    } 
-                    
+                    }
+
                     if (this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf('Property was seized') > -1) {
                         if (this.state.stop.Person_Stopped.basisForPropertySeizure.length < 1) {
                             msg.seizureBasis = '*Please make a selection for Basis for property seizure'
@@ -936,7 +941,7 @@ class Form extends React.Component {
                 if (this.state.stop.Person_Stopped.basisForSearchBrief.length < 5 || this.state.stop.Person_Stopped.basisForSearchBrief.length > 250) {
                     msg.searchBrief = '*Please provide a brief explanation regarding the reason for the stop (at least 5 and less than 250 characters)'
                     msg.errorFlag = true;
-                } else { msg.searchBrief = '' } 
+                } else { msg.searchBrief = '' }
 
                 if (this.state.stop.Person_Stopped.resultOfStop.length < 1) {
                     msg.result = '*Please make a selection for Result of Stop'
@@ -946,14 +951,14 @@ class Form extends React.Component {
                 }
 
                 if (this.state.stop.Person_Stopped.resultOfStop.length > 0) {
-                   if (this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(2) > -1) {
+                    if (this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(2) > -1) {
                         if (this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(2)].codes.length < 1) {
                             msg.result = '*Please add Vehicle/Penal Code section'
                             msg.errorFlag = true;
                         } else { msg.result = ''; }
                     }
                 }
-                
+
                 if (this.state.stop.Person_Stopped.resultOfStop.length > 0) {
                     if (this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(3) > -1) {
                         if (this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(3)].codes.length < 1) {
@@ -987,25 +992,25 @@ class Form extends React.Component {
                 }
 
                 this.state.stop.Person_Stopped.actionsTakenDuringStop.length > 0 &&
-                    this.state.stop.Person_Stopped.resultOfStop.length > 0 && 
+                    this.state.stop.Person_Stopped.resultOfStop.length > 0 &&
                     this.state.stop.Person_Stopped.contrabandOrEvidenceDiscovered.length > 0 &&
-                    
+
                     !msg.searchBasis &&
                     !msg.seizureBasis &&
                     !msg.seizureProperty &&
                     !msg.searchBrief
-                    !msg.result 
+                !msg.result
                     ? msg.errorFlag = false : null;
                 break;
             case '5':
-                
+
                 break;
         }
         this.setState({ validationErrorMsg: msg });
-        
+
     }
     componentWillMount() {
-        
+
         //Defer load?
         //this.fetchCodes('/api/', 'CJISOffenseCodes','&type=PC&sectype=HS', 'PC'); //combine HS & PC
         //this.fetchCodes('/api/', 'CJISOffenseCodes', '&type=VC&sectype=', 'VC');
@@ -1014,36 +1019,38 @@ class Form extends React.Component {
 
         //load on mount
         this.fetchCodes('/api/', 'Cities', '', 'Cities')
-        
+
         //load education subdivisions
         var codenode = this.state.codes;
         codenode['EC'] = EC_Subdivision;
         this.setState({ codes: codenode });
 
         //store.set('test', this.state.codes.VC);       
-        
+
     }
     fetchCodes(uri, name, type, label) {
         var codenode = this.state.codes;
-        if (store.get(label)) {
-            codenode[label] = store.get(label);
+        //if (store.get(label)) {
+        if (localStorage.getItem(label)) {
+            //codenode[label] = store.get(label);
+            codenode[label] = JSON.parse(localStorage.getItem(label));
             this.setState({ codes: codenode });
         } else {
             var thiss = this;
             var fetchedCodes = fetch(uri + name + '?fragment=' + type, {
                 credentials: 'same-origin'
             })
-            .then(function (response) {
-                return response.json()
-                    .then(function (json) {
-                        console.log(json.map(function (x) { return x }))
-                        if(label != 'Cities'){
-                            thiss.handleCodes(json.map(function (x) { return x.Description + ' ' + x.Code }), label);
-                        } else {
-                            thiss.handleCodes(json.map(function (x) { return x.Code }), label);
-                        }
-                        return json;
-                    });
+                .then(function (response) {
+                    return response.json()
+                        .then(function (json) {
+                            //console.log(json.map(function (x) { return x }))
+                            if (label != 'Cities') {
+                                thiss.handleCodes(json.map(function (x) { return x.Description + ' ' + x.Code }), label);
+                            } else {
+                                thiss.handleCodes(json.map(function (x) { return x.Code }), label);
+                            }
+                            return json;
+                        });
                 })
                 .catch(function (error) {
                     console.log('There has been a problem with your fetch operation: ' + error.message);
@@ -1056,22 +1063,36 @@ class Form extends React.Component {
         }
     }
     clearStore() {
-        store.clearAll();
+        //store.clearAll();
+        //Storage.clear();
+        localStorage.clear();
     }
     handleCodes(json, label) {
         var codenode = this.state.codes;
         codenode[label] = json;
         this.setState({ codes: codenode });
         //alert(JSON.stringify(json));
-        if (!store.enabled) {
-            alert('Local storage is not supported by your browser. Please disable "Private Mode", or upgrade to a modern browser.')
-            return
-        }        
-        store.set(label, this.state.codes[label]);
+        //if (!store.enabled) {
+        //if (!localStorage.storageAvailable()) {
+        //    alert('Local storage is not supported by your browser. Please disable "Private Mode", or upgrade to a modern browser.')
+        //    return
+        //}        
+        //store.set(label, this.state.codes[label]);
+        localStorage.setItem(label, JSON.stringify(this.state.codes[label]));
     }
     setStopInProgress() {
-        store.remove('stopInProgress');
-        store.set('stopInProgress', {
+        localStorage.removeItem('stopInProgress');
+        //store.remove('stopInProgress');
+        //store.set('stopInProgress', {
+        //    stop: this.state.stop,
+        //    instrumentation: this.state.instrumentation,
+        //    formPartFilter: this.state.formPartFilter,
+        //    progress: this.state.progress,
+        //    latitude: this.state.latitude,
+        //    longitude: this.state.longitude,
+        //    beat: this.state.beat
+        //})
+        localStorage.setItem('stopInProgress', JSON.stringify({
             stop: this.state.stop,
             instrumentation: this.state.instrumentation,
             formPartFilter: this.state.formPartFilter,
@@ -1079,13 +1100,15 @@ class Form extends React.Component {
             latitude: this.state.latitude,
             longitude: this.state.longitude,
             beat: this.state.beat
-        })
-        console.log(store.get('stopInProgress'));
-       // e.preventDefault();
+        }));
+        // console.log(store.get('stopInProgress'));
+        // console.log(localStorage.getItem('stopInProgress'));
+        // e.preventDefault();
     }
     cancelStopInProgress(e) {
         if (confirm('Are you sure you want to cancel this Stop?')) {
-            store.remove('stopInProgress');
+            ///store.remove('stopInProgress');
+            localStorage.removeItem('stopInProgress')
         }
     };
     // update stop progress cache with every update
@@ -1093,7 +1116,8 @@ class Form extends React.Component {
         if (this.state.formPartFilter < '6' && this.state.formPartFilter > '0') {
             this.setStopInProgress();
         } else {
-            store.remove('stopInProgress');
+            //store.remove('stopInProgress');
+            localStorage.removeItem('stopInProgress')
         }
     };
 
@@ -1109,15 +1133,25 @@ class Form extends React.Component {
         var beat = this.state.beat;
 
         // check if active cache exists, if so, mount the cache
-        if (store.get('stopInProgress')) {
-            stop = store.get('stopInProgress').stop;
-            instrumentation = store.get('stopInProgress').instrumentation;
+        //if (store.get('stopInProgress')) {
+        //    stop = store.get('stopInProgress').stop;
+        //    instrumentation = store.get('stopInProgress').instrumentation;
+        //    instrumentation.cacheFlag = true;
+        //    formPartFilter = store.get('stopInProgress').formPartFilter;
+        //    progress = store.get('stopInProgress').progress;
+        //    latitude = store.get('stopInProgress').latitude;
+        //    longitude = store.get('stopInProgress').longitude;
+        //    beat = store.get('stopInProgress').beat;
+        if (localStorage.getItem('stopInProgress')) {
+            var stopInProgress = JSON.parse(localStorage.getItem('stopInProgress'));
+            stop = stopInProgress.stop;
+            instrumentation = stopInProgress.instrumentation;
             instrumentation.cacheFlag = true;
-            formPartFilter = store.get('stopInProgress').formPartFilter;
-            progress = store.get('stopInProgress').progress;
-            latitude = store.get('stopInProgress').latitude;
-            longitude = store.get('stopInProgress').longitude;
-            beat = store.get('stopInProgress').beat;
+            formPartFilter = stopInProgress.formPartFilter;
+            progress = stopInProgress.progress;
+            latitude = stopInProgress.latitude;
+            longitude = stopInProgress.longitude;
+            beat = stopInProgress.beat;
         } else {
             stop.date = moment().format('YYYY-MM-DD');
             stop.time = moment().format('HH:mm:ss');
@@ -1139,7 +1173,7 @@ class Form extends React.Component {
             longitude: longitude,
             beat: beat,
             debug: document.getElementById('debug').innerHTML
-        });        
+        });
     }
 
     toggleJson(e, node) {
@@ -1149,7 +1183,7 @@ class Form extends React.Component {
         } else {
             var toggle = this.state.toggleJson ? false : true;
             this.setState({ toggleJson: toggle });
-        }        
+        }
     }
 
     handleCodeDelete(e, node, node2, node3, node3v) {
@@ -1159,32 +1193,34 @@ class Form extends React.Component {
         //    var arr = this.state.stop.Person_Stopped[node2].slice();
         //}
 
-         if (node == 'schoolName' || node == 'city'){
-             var arr = this.state.stop.location[node][node2].slice();
-             arr.splice(e, 1);
-        } else if (node == 'reasonForStop'){
-             var arr = this.state.stop.Person_Stopped[node][node2];
-             arr.splice(e, 1);
+        if (node == 'schoolName' || node == 'city') {
+            var arr = this.state.stop.location[node][node2].slice();
+            arr.splice(e, 1);
+        } else if (node == 'reasonForStop') {
+            var arr = this.state.stop.Person_Stopped[node][node2];
+            arr.splice(e, 1);
         } else {
             var arr = this.state.stop.Person_Stopped[node].slice();
-             var i = arr.map(function (x) { return x[node3]; }).indexOf(node3v);
+            var i = arr.map(function (x) { return x[node3]; }).indexOf(node3v);
             arr[i]['codes'].splice(e, 1);
         }
-        
+
         //get nested node (i.e. details)
         //var i = arr.map(function (x) { return x[node3]; }).indexOf(node3v);
-        
-       
+
+
         if (node == 'schoolName' || node == 'city') {
             var newStop = this.state.stop.location;
             newStop[node][node2] = arr;
-            
+
             this.setState({ location: newStop });
-            if (!store.enabled) {
-                alert('Local storage is not supported by your browser. Please disable "Private Mode", or upgrade to a modern browser.')
-                return
-            }
-            store.set('LastLocation', newStop);
+            //if (!store.enabled) {
+            //if (localStorage.storageAvailable()) {
+            //    alert('Local storage is not supported by your browser. Please disable "Private Mode", or upgrade to a modern browser.')
+            //    return
+            //}
+            //store.set('LastLocation', newStop);
+            localStorage.setItem('LastLocation', JSON.stringify(newStop));
         } else if (node == 'reasonForStop') {
             var newStop = this.state.stop.Person_Stopped;
             newStop[node][node2] = arr;
@@ -1201,11 +1237,11 @@ class Form extends React.Component {
     handleCodeAdd(tag, node, type, node2, node3, node3v) {
 
         //get current node (i.e. reasonForStop)
-        if (node == 'schoolName' || node == 'city'){
+        if (node == 'schoolName' || node == 'city') {
             var arr = this.state.stop.location[node];
             var ii = arr['codes'].map(function (x) { return x['text']; }).indexOf(tag);
 
-        } else if (node == 'reasonForStop'){
+        } else if (node == 'reasonForStop') {
             var arr = this.state.stop.Person_Stopped[node];
             var ii = arr['codes'].map(function (x) { return x['text']; }).indexOf(tag);
 
@@ -1214,27 +1250,27 @@ class Form extends React.Component {
             var i = arr.map(function (x) { return x[node3]; }).indexOf(node3v);
             var ii = arr[i]['codes'].map(function (x) { return x['text']; }).indexOf(tag); // for dupes    
         }
-        
+
         //does the lookup value exist in the codes list?
         var codes = this.state.codes[type];
         var t = codes.map(function (x) { return x; }).indexOf(tag);
 
         // Does input match any of the existing codes
         if (t >= 0 && ii == -1) {
-            if (node == 'reasonForStop' || node == 'schoolName' ) {
-                if (arr['codes'].length < 1) { 
+            if (node == 'reasonForStop' || node == 'schoolName') {
+                if (arr['codes'].length < 1) {
                     arr['codes'].push({
                         code: tag.split(' ').pop(),
                         //text: tag.substr(0, tag.lastIndexOf(' '))
                         text: tag
-                        });
+                    });
                 }
-            } else if ( node == 'city') {
-                if (arr['codes'].length < 1) { 
+            } else if (node == 'city') {
+                if (arr['codes'].length < 1) {
                     arr['codes'].push({
                         code: tag,
                         text: tag
-                        });
+                    });
                 }
             } else {
                 if (arr[i]['codes'].length < 5) {
@@ -1253,8 +1289,10 @@ class Form extends React.Component {
                     alert('Local storage is not supported by your browser. Please disable "Private Mode", or upgrade to a modern browser.')
                     return
                 }
-                store.set('LastLocation', newStop);
-                
+                //store.set('LastLocation', newStop);
+                var lastlocation = JSON.stringify(newStop);
+                localStorage.setItem('LastLocation', lastlocation);
+
             } else if (node == 'reasonForStop') {
                 var newStop = this.state.stop.Person_Stopped;
                 newStop[node] = arr;
@@ -1279,14 +1317,14 @@ class Form extends React.Component {
             <form >
                 {this.state.formPartFilter === "0" &&
                     <div className="list-section">
-                    <h3>RIPA STOP APP</h3>  
-                    <h4>Initiate a new Stop:</h4>
-                    <div className="button-menu-container">
-                        <a href="" className="button-left" title="Start" name="1" onClick={(e) => this.handleFormSectionFilter(e, 'motor', true)} >Motor/Traffic Template</a>
-                        <a href="" className="button-left" title="Start" name="1" onClick={(e) => this.handleFormSectionFilter(e, 'probation', true)} >Probation Contact Template</a>
-                        <a href="" className="button-right" title="Start" name="1" onClick={(e) => this.handleFormSectionFilter(e)} >Default Template</a>
-                    </div>
-                        <h4>About this App:</h4>  
+                        <h3>RIPA STOP APP</h3>
+                        <h4>Initiate a new Stop:</h4>
+                        <div className="button-menu-container">
+                            <a href="" className="button-left" title="Start" name="1" onClick={(e) => this.handleFormSectionFilter(e, 'motor', true)} >Motor/Traffic Template</a>
+                            <a href="" className="button-left" title="Start" name="1" onClick={(e) => this.handleFormSectionFilter(e, 'probation', true)} >Probation Contact Template</a>
+                            <a href="" className="button-right" title="Start" name="1" onClick={(e) => this.handleFormSectionFilter(e)} >Default Template</a>
+                        </div>
+                        <h4>About this App:</h4>
                         <p>
                             The Racial and Identity Profiling Act of 2015 (AB 953) requires state and local law enforcement agencies, to collect data regarding stops of individuals, including perceived demographic information on the person stopped, and to report this data to the California Attorney General's (AG) Office.
                         </p>
@@ -1294,8 +1332,8 @@ class Form extends React.Component {
                             The AG’s Office has adopted <a href="/regulation" target='_blank'>these regulations</a> on November 7, 2017. For more information please see the <a href='https://oag.ca.gov/ab953/regulations' target='_blank'> AG's Website</a>.
                         </p>
                         <div className="button-container">
-                        <a href="" className="button-left button-cancel" title="" name="" onClick={this.clearStore} >Refresh Cache</a>
-                        
+                            <a href="" className="button-left button-cancel" title="" name="" onClick={this.clearStore} >Refresh Cache</a>
+
                         </div>
                     </div>
                 }
@@ -1324,18 +1362,18 @@ class Form extends React.Component {
                                 }
                             </div>
                         }
-                        
+
                         <h3>Date Of Stop</h3>
                         <span className='required'>required</span><a className="required regref" target="_blank" href="/regulation#999-226-a-2">§999.226(a)(2)</a>
                         {this.state.validationErrorMsg.datetime && <div className="error-alert"> {this.state.validationErrorMsg.datetime}</div>}
-                        <TextInput type="date" max={this.state.instrumentation.temporalTrace.startDate} stateValue={this.state.stop.date} className="list-item"  label="Date" name="date" onChange={this.updateDateTime} required />
+                        <TextInput type="date" max={this.state.instrumentation.temporalTrace.startDate} stateValue={this.state.stop.date} className="list-item" label="Date" name="date" onChange={this.updateDateTime} required />
                         {this.state.validationErrorMsg.time && <div className="error-alert"> {this.state.validationErrorMsg.time}</div>}
                         <TextInput type="time" max={this.state.instrumentation.temporalTrace.startTime} stateValue={this.state.stop.time} className="list-item" label="Time" name="time" onChange={this.updateDateTime} />
-                        
-                       
+
+
                         {this.state.validationErrorMsg.duration && <div className="error-alert"> {this.state.validationErrorMsg.duration}</div>}
                         <TextInput type="number" min='0' stateValue={this.state.stop.stopDuration} className="list-item" label="Duration of Stop (in Minutes)" name="stopDuration" pattern="\d*" onChange={this.updateDateTime} />
-                       
+
 
                         {/*<h3>Stop in response to Call for Service </h3>
                         <a className="required regref" target="_blank" href="/regulation#999-226-a-11">§999.226(a)(11)</a>*/}
@@ -1344,21 +1382,21 @@ class Form extends React.Component {
                         <h3>Location</h3>
                         <span className='required'>required</span><a className="required regref" target="_blank" href="/regulation#999-226-a-3">§999.226(a)(3)</a>
                         {this.state.validationErrorMsg.school && <div className="error-alert"> {this.state.validationErrorMsg.school}</div>}
-                        
+
                         <CheckBox2 key="school" className="list-item" checked={this.state.stop.location.school} value="K-12 Public School" name="School" onClick={(e) => this.updateBoolCheckBox(e, 'location', 'school')} />
                         {this.state.stop.location.school &&
-                        <div>
-                            {/*<TextInput type="text" stateValue={this.state.stop.location.schoolName} name="schoolName" className="list-item-nested" label="School Name:" onChange={this.updateLocation} /> */}
-                        
-                            <Tags tags={this.state.stop.location.schoolName.codes}
-                                suggestions={this.state.codes.Schools}
-                                placeholder='Add School'
-                                handleDelete={(e) => this.handleCodeDelete(e, 'schoolName', 'codes')}
-                                handleAddition={(e) => this.handleCodeAdd(e, 'schoolName', 'Schools')}
-                                handleFilterSuggestions={this.handleFilterSuggestions}
-                            />
-                            <label className="list-item-nested"> Select 1 School (required)</label>
-                        </div>
+                            <div>
+                                {/*<TextInput type="text" stateValue={this.state.stop.location.schoolName} name="schoolName" className="list-item-nested" label="School Name:" onChange={this.updateLocation} /> */}
+
+                                <Tags tags={this.state.stop.location.schoolName.codes}
+                                    suggestions={this.state.codes.Schools}
+                                    placeholder='Add School'
+                                    handleDelete={(e) => this.handleCodeDelete(e, 'schoolName', 'codes')}
+                                    handleAddition={(e) => this.handleCodeAdd(e, 'schoolName', 'Schools')}
+                                    handleFilterSuggestions={this.handleFilterSuggestions}
+                                />
+                                <label className="list-item-nested"> Select 1 School (required)</label>
+                            </div>
 
                         }
                         <div className='button-container'>
@@ -1374,7 +1412,7 @@ class Form extends React.Component {
                         <CheckBox2 key="Location Options" className="list-item" checked={this.state.stop.location.toggleLocationOptions} value="More Location Options" name="Location Options" onClick={(e) => this.updateBoolCheckBox(e, 'location', 'toggleLocationOptions')} />
                         {this.state.stop.location.toggleLocationOptions &&
                             <div>
-                                
+
                                 <p><strong> - or - </strong></p>
                                 <TextInput type="text" stateValue={this.state.stop.location.highwayExit} name="highwayExit" className="list-item" label="Highway and closest exit:" onChange={this.updateLocation} />
                                 <p><strong> - or - </strong></p>
@@ -1392,32 +1430,32 @@ class Form extends React.Component {
                         <div className="text-field-view" >
                             <label className="list-item" >City:</label>
                             <Tags tags={this.state.stop.location.city.codes} className='list-item'
-                            suggestions={this.state.codes.Cities}
-                            autofocus={false}
-                            allowDeleteFromEmptyInput={false}
-                            placeholder='Add City'
-                            classNames={{ tags: 'ReactTags__tags_unnested'}}
+                                suggestions={this.state.codes.Cities}
+                                autofocus={false}
+                                allowDeleteFromEmptyInput={false}
+                                placeholder='Add City'
+                                classNames={{ tags: 'ReactTags__tags_unnested' }}
                                 handleDelete={(e) => this.handleCodeDelete(e, 'city', 'codes')}
                                 handleAddition={(e) => this.handleCodeAdd(e, 'city', 'Cities')} />
                         </div>
                         {this.state.validationErrorMsg.errorFlag && <div className="error-summary error-flip-margin ">Oops, you may have missed something! Please review your selections above.</div>}
                         <div className="button-container">
-                        <a href="" className="button-left button-cancel" title="Cancel" name="" onClick={(e) => this.cancelStopInProgress(e)} > Cancel </a> 
-                        <a href="" className="button-right" title="Next >>" name="2" onClick={(e) => this.handleFormSectionFilter(e)} > Next </a>
+                            <a href="" className="button-left button-cancel" title="Cancel" name="" onClick={(e) => this.cancelStopInProgress(e)} > Cancel </a>
+                            <a href="" className="button-right" title="Next >>" name="2" onClick={(e) => this.handleFormSectionFilter(e)} > Next </a>
                         </div>
                         <p className="styled">
                             <progress value={this.state.progress} max="100"></progress>
-                            Step {this.state.formPartFilter} of 5 
+                            Step {this.state.formPartFilter} of 5
                         </p>
                     </div>
                 }
                 {this.state.formPartFilter === "2" &&
                     <div className="list-section">
                         <p className="styled">
-                        <progress value={this.state.progress} max="100"></progress>
-                        Step {this.state.formPartFilter} of 5 (Person {this.state.personCount})
+                            <progress value={this.state.progress} max="100"></progress>
+                            Step {this.state.formPartFilter} of 5 (Person {this.state.personCount})
                         </p>
-                        
+
                         <h3>Student</h3>
                         <span className='required'>required</span><a className="required regref" target="_blank" href="/regulation#999-224-a-16">§999.224(a)(16)</a>
                         <CheckBox2 key="Student" className="list-item" checked={this.state.stop.Person_Stopped.Is_Stud} value="K-12 Public School Student" name="Student" onClick={(e) => this.updateBoolCheckBox(e, 'Person_Stopped', 'Is_Stud')} />
@@ -1425,10 +1463,10 @@ class Form extends React.Component {
                         <span className='required'>required</span><a className="required regref" target="_blank" href="/regulation#999-226-a-4">§999.226(a)(4)</a>
                         {this.state.validationErrorMsg.race && <div className="error-alert"> {this.state.validationErrorMsg.race} </div>}
                         <CheckBoxListSection type="CheckBox" stateValue={this.state.stop.Person_Stopped.perceivedRace} node='perceivedRace' node2='race' itemList={perceivedRace} function={this.checkBoxSelection} />
-                       
+
                         <h3>Perceived Gender</h3>
                         <span className='required'>required</span><a className="required regref" target="_blank" href="/regulation#999-226-a-5">§999.226(a)(5)</a>
-                        {this.state.validationErrorMsg.gender && <div className="error-alert"> {this.state.validationErrorMsg.gender}</div> }
+                        {this.state.validationErrorMsg.gender && <div className="error-alert"> {this.state.validationErrorMsg.gender}</div>}
                         <RadioButtonListSection stateValue={this.state.stop.Person_Stopped.perceivedGender} node='perceivedGender' itemList={perceivedGender} function={this.radioSelection} />
                         <CheckBox2 key="genderNonconforming" className="list-item" checked={this.state.stop.Person_Stopped.genderNonconforming} value="Gender nonconforming" name="Gender nonconforming" onClick={(e) => this.updateBoolCheckBox(e, 'Person_Stopped', 'genderNonconforming')} />
 
@@ -1436,8 +1474,8 @@ class Form extends React.Component {
                         <span className='required'>required</span><a className="required regref" target="_blank" href="/regulation#999-226-a-6">§999.226(a)(6)</a>
                         {this.state.validationErrorMsg.lgbt && <div className="error-alert"> {this.state.validationErrorMsg.lgbt}</div>}
                         <RadioButton className="list-item" stateValue={this.state.stop.Person_Stopped.perceivedLgbt} value="Yes" name="Yes" onClick={(e) => this.radioSelection(e, 'perceivedLgbt')} />
-                        {(this.state.stop.Person_Stopped.perceivedGender !== "Transgender man/boy" && this.state.stop.Person_Stopped.perceivedGender !== "Transgender woman/girl")  &&
-                        <RadioButton className="list-item" stateValue={this.state.stop.Person_Stopped.perceivedLgbt} value="No" name="No" onClick={(e) => this.radioSelection(e, 'perceivedLgbt')} />
+                        {(this.state.stop.Person_Stopped.perceivedGender !== "Transgender man/boy" && this.state.stop.Person_Stopped.perceivedGender !== "Transgender woman/girl") &&
+                            <RadioButton className="list-item" stateValue={this.state.stop.Person_Stopped.perceivedLgbt} value="No" name="No" onClick={(e) => this.radioSelection(e, 'perceivedLgbt')} />
                         }
                         {/*<RadioButtonListSection stateValue={this.state.stop.perceivedLgbt} node='perceivedLgbt' itemList={lgbt} function={this.radioSelection} />*/}
 
@@ -1458,17 +1496,17 @@ class Form extends React.Component {
                         {this.state.stop.Person_Stopped.perceivedOrKnownDisability.map(function (y) { return y.disability }).indexOf("None") == -1 &&
                             <div>
                                 {this.state.stop.location.school && this.state.stop.Person_Stopped.Is_Stud &&
-                            <CheckBox2 key="Disability related to hyperactivity or impulsive behavior" className="list-item" checked={this.state.stop.Person_Stopped.perceivedOrKnownDisability.map(function (y) { return y.disability }).indexOf("Disability related to hyperactivity or impulsive behavior") > -1} value="Disability related to hyperactivity or impulsive behavior" name="Disability related to hyperactivity or impulsive behavior" onClick={(e) => this.checkBoxSelection(e, 'perceivedOrKnownDisability', 'disability', '', 7)} />
+                                    <CheckBox2 key="Disability related to hyperactivity or impulsive behavior" className="list-item" checked={this.state.stop.Person_Stopped.perceivedOrKnownDisability.map(function (y) { return y.disability }).indexOf("Disability related to hyperactivity or impulsive behavior") > -1} value="Disability related to hyperactivity or impulsive behavior" name="Disability related to hyperactivity or impulsive behavior" onClick={(e) => this.checkBoxSelection(e, 'perceivedOrKnownDisability', 'disability', '', 7)} />
                                 }
                                 <CheckBoxListSection type="CheckBox" stateValue={this.state.stop.Person_Stopped.perceivedOrKnownDisability} node='perceivedOrKnownDisability' node2='disability' itemList={perceivedOrKnowDisability} function={this.checkBoxSelection} />
                             </div>
                         }
-                        
+
                         {this.state.validationErrorMsg.errorFlag && <div className="error-summary error-flip-margin ">Oops, you may have missed something! Please review your selections above.</div>}
                         <div className="button-container">
-                        <a href="" className="button-left" title="<< Back" name="1" onClick={(e) => this.handleFormSectionFilter(e)} > Back </a>
-                        <a href="" className="button-left button-cancel" title="Cancel" name="" onClick={(e) => this.cancelStopInProgress(e)} > Cancel </a> 
-                        <a href="" className="button-right" title="Next >>" name="3" onClick={(e) => this.handleFormSectionFilter(e)} > Next </a>
+                            <a href="" className="button-left" title="<< Back" name="1" onClick={(e) => this.handleFormSectionFilter(e)} > Back </a>
+                            <a href="" className="button-left button-cancel" title="Cancel" name="" onClick={(e) => this.cancelStopInProgress(e)} > Cancel </a>
+                            <a href="" className="button-right" title="Next >>" name="3" onClick={(e) => this.handleFormSectionFilter(e)} > Next </a>
                         </div>
                         <p className="styled">
                             <progress value={this.state.progress} max="100"></progress>
@@ -1482,31 +1520,31 @@ class Form extends React.Component {
                             <progress value={this.state.progress} max="100"></progress>
                             Step {this.state.formPartFilter} of 5 (Person {this.state.personCount})
                         </p>
-                        {this.state.personCount > 1 && 
+                        {this.state.personCount > 1 &&
                             <div className="button-container">
-                                <a href="" className="button-right" title="Next >>" name="2" onClick={(e) => this.pullForwardPerson(e)} ><span> Pull forward from previous Person</span> </a>                                
+                                <a href="" className="button-right" title="Next >>" name="2" onClick={(e) => this.pullForwardPerson(e)} ><span> Pull forward from previous Person</span> </a>
                             </div>
-                           
+
                         }
                         <h3>Reasons For Stop</h3>
                         <span className='required'>required</span><a className="required regref" target="_blank" href="/regulation#999-226-a-10">§999.226(a)(10)</a>
-                    
+
                         {/*<Codes codes={this.state.codes.VC} />
                         <Codes codes={this.state.codes.PC} />*/}
 
                         {this.state.validationErrorMsg.reason && <div className="error-alert"> {this.state.validationErrorMsg.reason}</div>}
                         {this.state.stop.location.school && this.state.stop.Person_Stopped.Is_Stud &&
-                        <div>
-                        
-                        <RadioButtonListSection checked={this.state.stop.Person_Stopped.reasonForStop.reason} stateValue={this.state.stop.Person_Stopped.reasonForStop.reason} node="reasonForStop" node2="reason" node2b="details" itemList={reasonsForStop_4} function={this.radioSelection} />
-                            {this.state.stop.Person_Stopped.reasonForStop.reason == "Possible conduct warranting discipline under Education Code sections 48900, 48900.2, 48900.3, 48900.4 and 48900.7" &&
-                                <div>
-                            {this.state.validationErrorMsg.eduDiscipline && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.eduDiscipline}</div>}
-                                     <RadioButtonListSection  stateValue={this.state.stop.Person_Stopped.reasonForStop.details[0].reason} node="reasonForStop" node2="reason" node2b="details" itemList={disciplineUnderEC_1} function={this.radioNestedRadioSelection} />
+                            <div>
 
-                                    {this.state.stop.Person_Stopped.reasonForStop.details[0].key == 1 &&
+                                <RadioButtonListSection checked={this.state.stop.Person_Stopped.reasonForStop.reason} stateValue={this.state.stop.Person_Stopped.reasonForStop.reason} node="reasonForStop" node2="reason" node2b="details" itemList={reasonsForStop_4} function={this.radioSelection} />
+                                {this.state.stop.Person_Stopped.reasonForStop.reason == "Possible conduct warranting discipline under Education Code sections 48900, 48900.2, 48900.3, 48900.4 and 48900.7" &&
                                     <div>
-                                        <Tags tags={this.state.stop.Person_Stopped.reasonForStop.codes}
+                                        {this.state.validationErrorMsg.eduDiscipline && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.eduDiscipline}</div>}
+                                        <RadioButtonListSection stateValue={this.state.stop.Person_Stopped.reasonForStop.details[0].reason} node="reasonForStop" node2="reason" node2b="details" itemList={disciplineUnderEC_1} function={this.radioNestedRadioSelection} />
+
+                                        {this.state.stop.Person_Stopped.reasonForStop.details[0].key == 1 &&
+                                            <div>
+                                                <Tags tags={this.state.stop.Person_Stopped.reasonForStop.codes}
                                                     suggestions={this.state.codes.EC}
                                                     autofocus={false}
                                                     allowDeleteFromEmptyInput={false}
@@ -1515,54 +1553,54 @@ class Form extends React.Component {
                                                     handleAddition={(e) => this.handleCodeAdd(e, 'reasonForStop', 'EC')}
                                                     handleFilterSuggestions={this.handleFilterSuggestions} />
                                                 <label className="list-item-nested"> Select 1 EC code (required)</label>
-                                        </div>
-                                    }
-                                    <RadioButtonListSection  stateValue={this.state.stop.Person_Stopped.reasonForStop.details[0].reason} node="reasonForStop" node2="reason" node2b="details" itemList={disciplineUnderEC_2} function={this.radioNestedRadioSelection} />
-                                </div>
-                            } 
-                            <RadioButtonListSection checked={this.state.stop.Person_Stopped.reasonForStop.reason} stateValue={this.state.stop.Person_Stopped.reasonForStop.reason} node="reasonForStop" node2="reason" node2b="details" itemList={reasonsForStop_5} function={this.radioSelection} />
-                        </div>
+                                            </div>
+                                        }
+                                        <RadioButtonListSection stateValue={this.state.stop.Person_Stopped.reasonForStop.details[0].reason} node="reasonForStop" node2="reason" node2b="details" itemList={disciplineUnderEC_2} function={this.radioNestedRadioSelection} />
+                                    </div>
+                                }
+                                <RadioButtonListSection checked={this.state.stop.Person_Stopped.reasonForStop.reason} stateValue={this.state.stop.Person_Stopped.reasonForStop.reason} node="reasonForStop" node2="reason" node2b="details" itemList={reasonsForStop_5} function={this.radioSelection} />
+                            </div>
                         }
                         <RadioButtonListSection checked={this.state.stop.Person_Stopped.reasonForStop.reason} stateValue={this.state.stop.Person_Stopped.reasonForStop.reason} node="reasonForStop" node2="reason" node2b="details" itemList={reasonsForStop_1} function={this.radioSelection} />
 
                         {this.state.stop.Person_Stopped.reasonForStop.reason == "Traffic Violation" &&
                             <div>
-                        {this.state.validationErrorMsg.trafficViolation && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.trafficViolation}</div>}
+                                {this.state.validationErrorMsg.trafficViolation && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.trafficViolation}</div>}
 
-                    
-                        <RadioButtonListSection  stateValue={this.state.stop.Person_Stopped.reasonForStop.details[0].reason} node="reasonForStop" node2="reason" node2b="details" itemList={trafficViolation} function={this.radioNestedRadioSelection} />
 
-                          
+                                <RadioButtonListSection stateValue={this.state.stop.Person_Stopped.reasonForStop.details[0].reason} node="reasonForStop" node2="reason" node2b="details" itemList={trafficViolation} function={this.radioNestedRadioSelection} />
 
-                                    <Tags tags={this.state.stop.Person_Stopped.reasonForStop.codes}
-                            suggestions={this.state.codes.AllCodes}
-                            autofocus={false}
-                            allowDeleteFromEmptyInput={false}
-                                        placeholder='Add Vehicle Code'
-                                        handleDelete={(e) => this.handleCodeDelete(e, 'reasonForStop', 'codes')}
-                                        handleAddition={(e) => this.handleCodeAdd(e, 'reasonForStop', 'AllCodes')}
-                                        handleFilterSuggestions={this.handleFilterSuggestions} />
-                                    <label className="list-item-nested"> Select 1 Offense Code (required)</label>
-                            </div>
-                        }
-                        <RadioButtonListSection checked={this.state.stop.Person_Stopped.reasonForStop.reason} stateValue={this.state.stop.Person_Stopped.reasonForStop.reason} node="reasonForStop" node2="reason" node2b="details" itemList={reasonsForStop_2} function={this.radioSelection}  />
-                        {this.state.stop.Person_Stopped.reasonForStop.reason == "Reasonable Suspicion" &&
-                        <div>
-                        {this.state.validationErrorMsg.reasonableSuspicion && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.reasonableSuspicion}</div>}
 
-                        <CheckBoxListSection type="CheckBox" stateValue={this.state.stop.Person_Stopped.reasonForStop.details} node="reasonForStop" node2="reason" node2b="details" itemList={reasonableSuspicion} function={this.radioNestedCheckBoxSelection} />
-                        
 
                                 <Tags tags={this.state.stop.Person_Stopped.reasonForStop.codes}
-                            suggestions={this.state.codes.AllCodes}
-                            placeholder='Add Penal Code'
-                            autofocus={false}
-                            allowDeleteFromEmptyInput={false}
+                                    suggestions={this.state.codes.AllCodes}
+                                    autofocus={false}
+                                    allowDeleteFromEmptyInput={false}
+                                    placeholder='Add Vehicle Code'
                                     handleDelete={(e) => this.handleCodeDelete(e, 'reasonForStop', 'codes')}
                                     handleAddition={(e) => this.handleCodeAdd(e, 'reasonForStop', 'AllCodes')}
                                     handleFilterSuggestions={this.handleFilterSuggestions} />
                                 <label className="list-item-nested"> Select 1 Offense Code (required)</label>
-                                
+                            </div>
+                        }
+                        <RadioButtonListSection checked={this.state.stop.Person_Stopped.reasonForStop.reason} stateValue={this.state.stop.Person_Stopped.reasonForStop.reason} node="reasonForStop" node2="reason" node2b="details" itemList={reasonsForStop_2} function={this.radioSelection} />
+                        {this.state.stop.Person_Stopped.reasonForStop.reason == "Reasonable Suspicion" &&
+                            <div>
+                                {this.state.validationErrorMsg.reasonableSuspicion && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.reasonableSuspicion}</div>}
+
+                                <CheckBoxListSection type="CheckBox" stateValue={this.state.stop.Person_Stopped.reasonForStop.details} node="reasonForStop" node2="reason" node2b="details" itemList={reasonableSuspicion} function={this.radioNestedCheckBoxSelection} />
+
+
+                                <Tags tags={this.state.stop.Person_Stopped.reasonForStop.codes}
+                                    suggestions={this.state.codes.AllCodes}
+                                    placeholder='Add Penal Code'
+                                    autofocus={false}
+                                    allowDeleteFromEmptyInput={false}
+                                    handleDelete={(e) => this.handleCodeDelete(e, 'reasonForStop', 'codes')}
+                                    handleAddition={(e) => this.handleCodeAdd(e, 'reasonForStop', 'AllCodes')}
+                                    handleFilterSuggestions={this.handleFilterSuggestions} />
+                                <label className="list-item-nested"> Select 1 Offense Code (required)</label>
+
                             </div>
                         }
                         <RadioButtonListSection checked={this.state.stop.Person_Stopped.reasonForStop.reason} stateValue={this.state.stop.Person_Stopped.reasonForStop.reason} node="reasonForStop" node2="reason" node2b="details" itemList={reasonsForStop_3} function={this.radioSelection} />
@@ -1570,13 +1608,13 @@ class Form extends React.Component {
                         {this.state.validationErrorMsg.reasonBrief && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.reasonBrief}</div>}
                         <TextInput type="text" stateValue={this.state.stop.Person_Stopped.reasonForStopExplanation} className="list-item" label="Brief Explanation. Important: Do not include personally identifying information." name="reasonForStopExplanation" onChange={this.updatePersonInput} />
                         <span>{250 - this.state.stop.Person_Stopped.reasonForStopExplanation.length} characters remaining</span>
-                        
+
                         {this.state.validationErrorMsg.errorFlag &&
                             <div className="error-summary error-flip-margin"> Oops, you may have missed something! Please review your selections above.</div>}
                         <div className="button-container">
-                        <a href="" className="button-left" title="<< Back" name="2" onClick={(e) => this.handleFormSectionFilter(e)} > Back </a>
-                        <a href="" className="button-left button-cancel" title="Cancel" name="" onClick={(e) => this.cancelStopInProgress(e)} > Cancel </a> 
-                        <a href="" className="button-right" title="Next >>" name="4" onClick={(e) => this.handleFormSectionFilter(e)} > Next </a>
+                            <a href="" className="button-left" title="<< Back" name="2" onClick={(e) => this.handleFormSectionFilter(e)} > Back </a>
+                            <a href="" className="button-left button-cancel" title="Cancel" name="" onClick={(e) => this.cancelStopInProgress(e)} > Cancel </a>
+                            <a href="" className="button-right" title="Next >>" name="4" onClick={(e) => this.handleFormSectionFilter(e)} > Next </a>
                         </div>
                         <p className="styled">
                             <progress value={this.state.progress} max="100"></progress>
@@ -1590,83 +1628,83 @@ class Form extends React.Component {
                             <progress value={this.state.progress} max="100"></progress>
                             Step {this.state.formPartFilter} of 5 (Person {this.state.personCount})
                         </p>
-                       
+
                         <h3>Actions Taken During Stop </h3>
                         <span className='required'>required</span><a className="required regref" target="_blank" href="/regulation#999-226-a-12">§999.226(a)(12)</a>
                         {this.state.validationErrorMsg.action && <div className="error-alert  error-flip-margin"> {this.state.validationErrorMsg.action}</div>}
-                            <CheckBox2 key="None" className="list-item" checked={this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("None") > -1} value="None" name="None" onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '24,na')} />
-                            {this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (y) { return y.action }).indexOf("None") == -1 &&
-                        <div>
-                       
-                        {this.state.stop.location.school && this.state.stop.Person_Stopped.Is_Stud &&
-                            <CheckBox2 key="Admission or written statement obtained from student" className="list-item" checked={this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Admission or written statement obtained from student") > -1} value="Admission or written statement obtained from student" name="Admission or written statement obtained from student" onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '23,na')} />
-                        }
-                        <CheckBoxListSection type="CheckBox" stateValue={this.state.stop.Person_Stopped.actionsTakenDuringStop} node="actionsTakenDuringStop" node2="action" node2b="details" itemList={actionsTakenDuringStop_1} function={this.checkBoxSelection} />
-                      
-
-                        <CheckBox2 key="Vehicle impounded" className="list-item" checked={this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Vehicle impounded") > -1} value="Vehicle impounded" name="Vehicle impounded" onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '22,na')} />
-
-                        <p><strong>Search</strong></p>
-                        <CheckBox2 key="Asked for consent to search person" className="list-item" checked={this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Asked for consent to search person") > -1} value="Asked for consent to search person" name="Asked for consent to search person" onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '17,N')} />
-                        {this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Asked for consent to search person") > -1 &&
-                            <CheckBox2 key="personSearchConsentGiven" checked={this.state.stop.Person_Stopped.actionsTakenDuringStop[this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Asked for consent to search person")].personSearchConsentGiven} className="list-item-nested" value="Person Search Consent Given" name="personSearchConsentGiven" onClick={(e) => this.searchConsentGiven(e)} />
-                        }
-                        <CheckBox2 key="Search of person was conducted" className="list-item" checked={this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Search of person was conducted") > -1} value="Search of person was conducted" name="Search of person was conducted" onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '18,na')} />
-                     
-                        <CheckBox2 key="Asked for consent to search property" className="list-item" checked={this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Asked for consent to search property") > -1} value="Asked for consent to search property" name="Asked for consent to search property" onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '19,N')} />
-                        {this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Asked for consent to search property") > -1 &&
-                            <CheckBox2
-                                key="propertySearchConsentGiven"
-                                checked={this.state.stop.Person_Stopped.actionsTakenDuringStop[this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Asked for consent to search property")].propertySearchConsentGiven}
-                                className="list-item-nested"
-                                value="Property Search Consent Given"
-                                name="propertySearchConsentGiven"
-                                onClick={(e) => this.searchConsentGiven(e)} />
-                        }
-                        <CheckBox2
-                            key="Search of property was conducted"
-                            className="list-item"
-                            checked={this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Search of property was conducted") > -1}
-                            value="Search of property was conducted"
-                            name="Search of property was conducted"
-                            onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '20,na')} />
-                        {(this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Search of person was conducted") > -1 || this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Search of property was conducted") > -1) &&
+                        <CheckBox2 key="None" className="list-item" checked={this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("None") > -1} value="None" name="None" onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '24,na')} />
+                        {this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (y) { return y.action }).indexOf("None") == -1 &&
                             <div>
 
-                                <h4 className="">Basis for Search </h4>
-                                <span className='required'>required</span><a className="required regref" target="_blank" href="/regulation#999-226-a-12-b">§999.226(a)(12)(B)</a>
-                                {this.state.validationErrorMsg.searchBasis && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.searchBasis}</div>}
-
-
                                 {this.state.stop.location.school && this.state.stop.Person_Stopped.Is_Stud &&
-                                <CheckBox2 key="Suspected violation of school policy" checked={this.state.stop.Person_Stopped.basisForSearch.map(function (y) { return y.basis }).indexOf("Suspected violation of school policy") > -1} className="list-item-nested" value="Suspected violation of school policy" name="Suspected violation of school policy" onClick={(e) => this.checkBoxSelection(e, 'basisForSearch', 'basis', '' , 13)} />
+                                    <CheckBox2 key="Admission or written statement obtained from student" className="list-item" checked={this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Admission or written statement obtained from student") > -1} value="Admission or written statement obtained from student" name="Admission or written statement obtained from student" onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '23,na')} />
                                 }
-                                <CheckBoxListSection type="CheckBox" stateValue={this.state.stop.Person_Stopped.basisForSearch} itemList={searchOfPersonOrPropertyConducted} node="basisForSearch" node2="basis" function={this.checkBoxSelection} />
-                               
-                                {this.state.validationErrorMsg.searchBrief && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.searchBrief}</div>}
-                                <TextInput type="text" stateValue={this.state.stop.Person_Stopped.basisForSearchBrief} className="list-item-nested" label="Brief Explanation (250 characters). Important: Do not include personally identifying information." name="basisForSearchBrief" onChange={this.updatePersonInput} />
-                                <span className="list-item-nested">{250 - this.state.stop.Person_Stopped.basisForSearchBrief.length}  characters remaining</span>
-                            </div>
-                        }
+                                <CheckBoxListSection type="CheckBox" stateValue={this.state.stop.Person_Stopped.actionsTakenDuringStop} node="actionsTakenDuringStop" node2="action" node2b="details" itemList={actionsTakenDuringStop_1} function={this.checkBoxSelection} />
 
-                        <p><strong>Seizure</strong></p>
-                        <CheckBox2 key="Property was seized" className="list-item" checked={this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Property was seized") > -1} value="Property was seized" name="Property was seized" onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '21,na')} />
-                        {this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Property was seized") > -1 &&
-                            <div>
-                                <h4 className="">Basis for Property Seizure </h4>
-                                <span className='required'>required</span><a className="required regref" target="_blank" href="/regulation#999-226-a-12-d-1">§999.226(a)(12)(D)(1)</a>
-                                {this.state.validationErrorMsg.seizureBasis && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.seizureBasis}</div>}
 
-                                {this.state.stop.location.school && this.state.stop.Person_Stopped.Is_Stud &&
-                                <CheckBox2 key="Suspected violation of school policy" checked={this.state.stop.Person_Stopped.basisForPropertySeizure.map(function (y) { return y.basis }).indexOf("Suspected violation of school policy") > -1} className="list-item-nested" value="Suspected violation of school policy" name="Suspected violation of school policy" onClick={(e) => this.checkBoxSelection(e, 'basisForPropertySeizure', 'basis', '', 6)} />
+                                <CheckBox2 key="Vehicle impounded" className="list-item" checked={this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Vehicle impounded") > -1} value="Vehicle impounded" name="Vehicle impounded" onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '22,na')} />
+
+                                <p><strong>Search</strong></p>
+                                <CheckBox2 key="Asked for consent to search person" className="list-item" checked={this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Asked for consent to search person") > -1} value="Asked for consent to search person" name="Asked for consent to search person" onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '17,N')} />
+                                {this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Asked for consent to search person") > -1 &&
+                                    <CheckBox2 key="personSearchConsentGiven" checked={this.state.stop.Person_Stopped.actionsTakenDuringStop[this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Asked for consent to search person")].personSearchConsentGiven} className="list-item-nested" value="Person Search Consent Given" name="personSearchConsentGiven" onClick={(e) => this.searchConsentGiven(e)} />
                                 }
-                                <CheckBoxListSection type="CheckBox" stateValue={this.state.stop.Person_Stopped.basisForPropertySeizure} itemList={basisForPropertySeizure} node="basisForPropertySeizure" node2="basis" function={this.checkBoxSelection} />
-                                <h4 className="">Type of Property Seized </h4>
-                                <span className='required'>required</span><a className="required regref" target="_blank" href="/regulation#999-226-a-12-d-2">§999.226(a)(12)(D)(2)</a>
-                                {this.state.validationErrorMsg.seizureProperty && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.seizureProperty}</div>}
-                                <CheckBoxListSection type="CheckBox" stateValue={this.state.stop.Person_Stopped.typeOfPropertySeized} node="typeOfPropertySeized" node2="type" itemList={typeOfPropertySeized} function={this.checkBoxSelection} />
-                            </div>
-                        }
+                                <CheckBox2 key="Search of person was conducted" className="list-item" checked={this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Search of person was conducted") > -1} value="Search of person was conducted" name="Search of person was conducted" onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '18,na')} />
+
+                                <CheckBox2 key="Asked for consent to search property" className="list-item" checked={this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Asked for consent to search property") > -1} value="Asked for consent to search property" name="Asked for consent to search property" onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '19,N')} />
+                                {this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Asked for consent to search property") > -1 &&
+                                    <CheckBox2
+                                        key="propertySearchConsentGiven"
+                                        checked={this.state.stop.Person_Stopped.actionsTakenDuringStop[this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Asked for consent to search property")].propertySearchConsentGiven}
+                                        className="list-item-nested"
+                                        value="Property Search Consent Given"
+                                        name="propertySearchConsentGiven"
+                                        onClick={(e) => this.searchConsentGiven(e)} />
+                                }
+                                <CheckBox2
+                                    key="Search of property was conducted"
+                                    className="list-item"
+                                    checked={this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Search of property was conducted") > -1}
+                                    value="Search of property was conducted"
+                                    name="Search of property was conducted"
+                                    onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '20,na')} />
+                                {(this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Search of person was conducted") > -1 || this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Search of property was conducted") > -1) &&
+                                    <div>
+
+                                        <h4 className="">Basis for Search </h4>
+                                        <span className='required'>required</span><a className="required regref" target="_blank" href="/regulation#999-226-a-12-b">§999.226(a)(12)(B)</a>
+                                        {this.state.validationErrorMsg.searchBasis && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.searchBasis}</div>}
+
+
+                                        {this.state.stop.location.school && this.state.stop.Person_Stopped.Is_Stud &&
+                                            <CheckBox2 key="Suspected violation of school policy" checked={this.state.stop.Person_Stopped.basisForSearch.map(function (y) { return y.basis }).indexOf("Suspected violation of school policy") > -1} className="list-item-nested" value="Suspected violation of school policy" name="Suspected violation of school policy" onClick={(e) => this.checkBoxSelection(e, 'basisForSearch', 'basis', '', 13)} />
+                                        }
+                                        <CheckBoxListSection type="CheckBox" stateValue={this.state.stop.Person_Stopped.basisForSearch} itemList={searchOfPersonOrPropertyConducted} node="basisForSearch" node2="basis" function={this.checkBoxSelection} />
+
+                                        {this.state.validationErrorMsg.searchBrief && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.searchBrief}</div>}
+                                        <TextInput type="text" stateValue={this.state.stop.Person_Stopped.basisForSearchBrief} className="list-item-nested" label="Brief Explanation (250 characters). Important: Do not include personally identifying information." name="basisForSearchBrief" onChange={this.updatePersonInput} />
+                                        <span className="list-item-nested">{250 - this.state.stop.Person_Stopped.basisForSearchBrief.length}  characters remaining</span>
+                                    </div>
+                                }
+
+                                <p><strong>Seizure</strong></p>
+                                <CheckBox2 key="Property was seized" className="list-item" checked={this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Property was seized") > -1} value="Property was seized" name="Property was seized" onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '21,na')} />
+                                {this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Property was seized") > -1 &&
+                                    <div>
+                                        <h4 className="">Basis for Property Seizure </h4>
+                                        <span className='required'>required</span><a className="required regref" target="_blank" href="/regulation#999-226-a-12-d-1">§999.226(a)(12)(D)(1)</a>
+                                        {this.state.validationErrorMsg.seizureBasis && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.seizureBasis}</div>}
+
+                                        {this.state.stop.location.school && this.state.stop.Person_Stopped.Is_Stud &&
+                                            <CheckBox2 key="Suspected violation of school policy" checked={this.state.stop.Person_Stopped.basisForPropertySeizure.map(function (y) { return y.basis }).indexOf("Suspected violation of school policy") > -1} className="list-item-nested" value="Suspected violation of school policy" name="Suspected violation of school policy" onClick={(e) => this.checkBoxSelection(e, 'basisForPropertySeizure', 'basis', '', 6)} />
+                                        }
+                                        <CheckBoxListSection type="CheckBox" stateValue={this.state.stop.Person_Stopped.basisForPropertySeizure} itemList={basisForPropertySeizure} node="basisForPropertySeizure" node2="basis" function={this.checkBoxSelection} />
+                                        <h4 className="">Type of Property Seized </h4>
+                                        <span className='required'>required</span><a className="required regref" target="_blank" href="/regulation#999-226-a-12-d-2">§999.226(a)(12)(D)(2)</a>
+                                        {this.state.validationErrorMsg.seizureProperty && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.seizureProperty}</div>}
+                                        <CheckBoxListSection type="CheckBox" stateValue={this.state.stop.Person_Stopped.typeOfPropertySeized} node="typeOfPropertySeized" node2="type" itemList={typeOfPropertySeized} function={this.checkBoxSelection} />
+                                    </div>
+                                }
                             </div>
                         }
 
@@ -1680,92 +1718,92 @@ class Form extends React.Component {
 
                         <h3>Result of Stop </h3>
                         <span className='required'>required</span><a className="required regref" target="_blank" href="/regulation#999-226-a-13">§999.226(a)(13)</a>
-                        {this.state.validationErrorMsg.result && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.result}</div>}                        
+                        {this.state.validationErrorMsg.result && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.result}</div>}
 
                         <CheckBox2 key="No Action" className="list-item" checked={this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("No Action") > -1} value="No Action" name="No Action" onClick={(e) => this.checkBoxSelection(e, 'resultOfStop', 'result', '', 1)} />
                         {this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("No Action") == -1 &&
                             <div>
-                        {this.state.stop.location.school && this.state.stop.Person_Stopped.Is_Stud &&
+                                {this.state.stop.location.school && this.state.stop.Person_Stopped.Is_Stud &&
                                     <div>
                                         <CheckBox2 key="Referral to school administrator" className="list-item" checked={this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("Referral to school administrator") > -1} value="Referral to school administrator" name="Referral to school administrator" onClick={(e) => this.checkBoxSelection(e, 'resultOfStop', 'result', '', 12)} />
                                         <CheckBox2 key="Referral to school counselor or other support staff" className="list-item" checked={this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("Referral to school counselor or other support staff") > -1} value="Referral to school counselor or other support staff" name="Referral to school counselor or other support staff" onClick={(e) => this.checkBoxSelection(e, 'resultOfStop', 'result', '', 13)} />
                                     </div>
                                 }
 
-                        <CheckBox2 key="Warning (verbal or written)" className="list-item" checked={this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("Warning (verbal or written)") > -1} value="Warning (verbal or written)" name="Warning (verbal or written)" onClick={(e) => this.checkBoxSelection(e, 'resultOfStop', 'result', '', 2)} />
-                        
+                                <CheckBox2 key="Warning (verbal or written)" className="list-item" checked={this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("Warning (verbal or written)") > -1} value="Warning (verbal or written)" name="Warning (verbal or written)" onClick={(e) => this.checkBoxSelection(e, 'resultOfStop', 'result', '', 2)} />
+
                                 {this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("Warning (verbal or written)") > -1 &&
 
-                            <div>
-                            <Tags tags={this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (y) { return y.result }).indexOf("Warning (verbal or written)")].codes}
-                                suggestions={this.state.codes.AllCodes}
-                                placeholder='Add Vehicle Code'
-                                autofocus={false}
-                                allowDeleteFromEmptyInput={false}
-                                    handleDelete={(e) => this.handleCodeDelete(e, 'resultOfStop', '', 'result', 'Warning (verbal or written)')}
-                                    handleAddition={(e) => this.handleCodeAdd(e, '', 'AllCodes', 'resultOfStop', 'result', 'Warning (verbal or written)')}
-                                    handleFilterSuggestions={this.handleFilterSuggestions} />
-                            
-                                <label className="list-item-nested"> Select Offense Code (up to 5)</label>
-                            </div>
-                        }
+                                    <div>
+                                        <Tags tags={this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (y) { return y.result }).indexOf("Warning (verbal or written)")].codes}
+                                            suggestions={this.state.codes.AllCodes}
+                                            placeholder='Add Vehicle Code'
+                                            autofocus={false}
+                                            allowDeleteFromEmptyInput={false}
+                                            handleDelete={(e) => this.handleCodeDelete(e, 'resultOfStop', '', 'result', 'Warning (verbal or written)')}
+                                            handleAddition={(e) => this.handleCodeAdd(e, '', 'AllCodes', 'resultOfStop', 'result', 'Warning (verbal or written)')}
+                                            handleFilterSuggestions={this.handleFilterSuggestions} />
+
+                                        <label className="list-item-nested"> Select Offense Code (up to 5)</label>
+                                    </div>
+                                }
                                 <CheckBox2 key="Citation or infraction" className="list-item" checked={this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("Citation or infraction") > -1} value="Citation or infraction" name="Citation or infraction" onClick={(e) => this.checkBoxSelection(e, 'resultOfStop', 'result', '', 3)} />
                                 {this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("Citation or infraction") > -1 &&
-                            <div>
-                                <Tags tags={this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (y) { return y.result }).indexOf("Citation or infraction")].codes}
-                                suggestions={this.state.codes.AllCodes}
-                                placeholder='Add Vehicle Code'
-                                autofocus={false}
-                                allowDeleteFromEmptyInput={false}
-                                    handleDelete={(e) => this.handleCodeDelete(e, 'resultOfStop', '', 'result', 'Citation or infraction')}
-                                    handleAddition={(e) => this.handleCodeAdd(e, '', 'AllCodes', 'resultOfStop', 'result', 'Citation or infraction')}
-                                    handleFilterSuggestions={this.handleFilterSuggestions} />
-                                
-                                <label className="list-item-nested"> Select Offense Code (up to 5)</label>
-                            </div>
+                                    <div>
+                                        <Tags tags={this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (y) { return y.result }).indexOf("Citation or infraction")].codes}
+                                            suggestions={this.state.codes.AllCodes}
+                                            placeholder='Add Vehicle Code'
+                                            autofocus={false}
+                                            allowDeleteFromEmptyInput={false}
+                                            handleDelete={(e) => this.handleCodeDelete(e, 'resultOfStop', '', 'result', 'Citation or infraction')}
+                                            handleAddition={(e) => this.handleCodeAdd(e, '', 'AllCodes', 'resultOfStop', 'result', 'Citation or infraction')}
+                                            handleFilterSuggestions={this.handleFilterSuggestions} />
+
+                                        <label className="list-item-nested"> Select Offense Code (up to 5)</label>
+                                    </div>
                                 }
                                 <CheckBox2 key="In-field cite and release" className="list-item" checked={this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("In-field cite and release") > -1} value="In-field cite and release" name="In-field cite and release" onClick={(e) => this.checkBoxSelection(e, 'resultOfStop', 'result', '', 4)} />
                                 {this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("In-field cite and release") > -1 &&
-                            <div>
-                            <Tags tags={this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (y) { return y.result }).indexOf("In-field cite and release")].codes}
-                                suggestions={this.state.codes.AllCodes}
-                                placeholder='Add Vehicle Code'
-                                autofocus={false}
-                                allowDeleteFromEmptyInput={false}
-                                        handleDelete={(e) => this.handleCodeDelete(e, 'resultOfStop', '', 'result', 'In-field cite and release')}
-                                        handleAddition={(e) => this.handleCodeAdd(e, '', 'AllCodes', 'resultOfStop', 'result', 'In-field cite and release')}
-                                        handleFilterSuggestions={this.handleFilterSuggestions} />
-                            
-                            <label className="list-item-nested"> Select Offense Code (up to 5)</label>
-                            </div>
+                                    <div>
+                                        <Tags tags={this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (y) { return y.result }).indexOf("In-field cite and release")].codes}
+                                            suggestions={this.state.codes.AllCodes}
+                                            placeholder='Add Vehicle Code'
+                                            autofocus={false}
+                                            allowDeleteFromEmptyInput={false}
+                                            handleDelete={(e) => this.handleCodeDelete(e, 'resultOfStop', '', 'result', 'In-field cite and release')}
+                                            handleAddition={(e) => this.handleCodeAdd(e, '', 'AllCodes', 'resultOfStop', 'result', 'In-field cite and release')}
+                                            handleFilterSuggestions={this.handleFilterSuggestions} />
+
+                                        <label className="list-item-nested"> Select Offense Code (up to 5)</label>
+                                    </div>
                                 }
                                 <CheckBox2 key="Custodial Arrest pursuant to outstanding warrant" className="list-item" checked={this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("Custodial Arrest pursuant to outstanding warrant") > -1} value="Custodial Arrest pursuant to outstanding warrant" name="Custodial Arrest pursuant to outstanding warrant" onClick={(e) => this.checkBoxSelection(e, 'resultOfStop', 'result', '', 5)} />
                                 <CheckBox2 key="Custodial Arrest without warrant" className="list-item" checked={this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("Custodial Arrest without warrant") > -1} value="Custodial Arrest without warrant" name="Custodial Arrest without warrant" onClick={(e) => this.checkBoxSelection(e, 'resultOfStop', 'result', '', 6)} />
                                 {this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("Custodial Arrest without warrant") > -1 &&
-                            <div>
-                            <Tags tags={this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (y) { return y.result }).indexOf("Custodial Arrest without warrant")].codes}
-                                suggestions={this.state.codes.AllCodes}
-                                placeholder='Add Vehicle Code'
-                                autofocus={false}
-                                allowDeleteFromEmptyInput={false}
-                                        handleDelete={(e) => this.handleCodeDelete(e, 'resultOfStop', '', 'result', 'Custodial Arrest without warrant')}
-                                        handleAddition={(e) => this.handleCodeAdd(e, '', 'AllCodes', 'resultOfStop', 'result', 'Custodial Arrest without warrant')}
-                                        handleFilterSuggestions={this.handleFilterSuggestions} />
-                           
-                            <label className="list-item-nested">Select  Offense Code (up to 5)</label>
-                            </div>
+                                    <div>
+                                        <Tags tags={this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (y) { return y.result }).indexOf("Custodial Arrest without warrant")].codes}
+                                            suggestions={this.state.codes.AllCodes}
+                                            placeholder='Add Vehicle Code'
+                                            autofocus={false}
+                                            allowDeleteFromEmptyInput={false}
+                                            handleDelete={(e) => this.handleCodeDelete(e, 'resultOfStop', '', 'result', 'Custodial Arrest without warrant')}
+                                            handleAddition={(e) => this.handleCodeAdd(e, '', 'AllCodes', 'resultOfStop', 'result', 'Custodial Arrest without warrant')}
+                                            handleFilterSuggestions={this.handleFilterSuggestions} />
+
+                                        <label className="list-item-nested">Select  Offense Code (up to 5)</label>
+                                    </div>
                                 }
                                 <CheckBoxListSection type="CheckBox" stateValue={this.state.stop.Person_Stopped.resultOfStop} node="resultOfStop" node2="result" node2b="details" itemList={resultOfStop} function={this.checkBoxSelection} />
                             </div>
                         }
                         <div className="text-field-view">
-                       
+
                         </div>
                         {this.state.validationErrorMsg.errorFlag && <div className="error-summary error-flip-margin ">Oops, you may have missed something! Please review your selections above.</div>}
                         <div className="button-container">
-                        <a href="" className="button-left" title="<< Back" name="3" onClick={(e) => this.handleFormSectionFilter(e)} > Back </a>
-                        <a href="" className="button-left button-cancel" title="Cancel" name="" onClick={(e) => this.cancelStopInProgress(e)} > Cancel </a> 
-                        <a href="" className="button-right" title="Next >>" name="5" onClick={(e) => this.handleFormSectionFilter(e)} > Next </a>
+                            <a href="" className="button-left" title="<< Back" name="3" onClick={(e) => this.handleFormSectionFilter(e)} > Back </a>
+                            <a href="" className="button-left button-cancel" title="Cancel" name="" onClick={(e) => this.cancelStopInProgress(e)} > Cancel </a>
+                            <a href="" className="button-right" title="Next >>" name="5" onClick={(e) => this.handleFormSectionFilter(e)} > Next </a>
                         </div>
                         <p className="styled">
                             <progress value={this.state.progress} max="100"></progress>
@@ -1784,18 +1822,18 @@ class Form extends React.Component {
                         pre>{JSON.stringify(this.state.stop, null, 2)}</pre>*/}
 
                         <div className="stops-detail">
-                        <label>Person Count <pre>{this.state.personCount}</pre></label>
+                            <label>Person Count <pre>{this.state.personCount}</pre></label>
                             <ul>
-                            <ListValue className="" labelValue="Date" stateValue={this.state.stop.date} />
-                            <ListValue className="" labelValue="Time" stateValue={this.state.stop.time} />
+                                <ListValue className="" labelValue="Date" stateValue={this.state.stop.date} />
+                                <ListValue className="" labelValue="Time" stateValue={this.state.stop.time} />
                                 <li>
                                     Location
                                     <ul>
                                         {this.state.stop.location.school &&
-                                        <ListValue className="" labelValue="School Name" stateValue={this.state.stop.location.schoolName.codes[0].text} />
+                                            <ListValue className="" labelValue="School Name" stateValue={this.state.stop.location.schoolName.codes[0].text} />
                                         }
                                         {this.state.stop.location.intersection &&
-                                        <ListValue className="" labelValue="Intersection" stateValue={this.state.stop.location.intersection} />
+                                            <ListValue className="" labelValue="Intersection" stateValue={this.state.stop.location.intersection} />
                                         }
                                         {this.state.stop.location.blockNumber &&
                                             <ListValue className="" labelValue="Block" stateValue={this.state.stop.location.blockNumber} />
@@ -1820,23 +1858,23 @@ class Form extends React.Component {
                                 }
                             </ul>
                             <ListPerson persons={this.state.stop.ListPerson_Stopped} />
-                           
+
                         </div>
 
                         {/*<div id="stop"></div>*/}
-                    <div className='button-container'>
-                        <a href="" className="button-left" title="Add Person" onClick={this.addPerson} > + Add Person </a> 
+                        <div className='button-container'>
+                            <a href="" className="button-left" title="Add Person" onClick={this.addPerson} > + Add Person </a>
                         </div>
                         <div className="button-container">
-                        <a href="" className="button-left" title="<< Back" name="4" onClick={(e) => this.handleFormSectionFilter(e)} > Back </a>
-                        <a href="" className="button-left button-cancel" title="Cancel" name="" onClick={(e) => this.cancelStopInProgress(e)} > Cancel </a> 
-                        {!this.state.loader &&
-                            <a href="" className="button-right" title="Sumbit" value="Submit" name="Submit" onClick={this.handleSubmit} > Submit </a>
-                        }
-                        {this.state.loader &&
-                            <a href="" className="button-right" title="" value="Submit" name="Submit"  > Submitting.. </a>
-                        }
-                        {/*<a href="" className="button-left" title="" name="" onClick={this.setProgressCache} >Update Progress</a>*/}
+                            <a href="" className="button-left" title="<< Back" name="4" onClick={(e) => this.handleFormSectionFilter(e)} > Back </a>
+                            <a href="" className="button-left button-cancel" title="Cancel" name="" onClick={(e) => this.cancelStopInProgress(e)} > Cancel </a>
+                            {!this.state.loader &&
+                                <a href="" className="button-right" title="Sumbit" value="Submit" name="Submit" onClick={this.handleSubmit} > Submit </a>
+                            }
+                            {this.state.loader &&
+                                <a href="" className="button-right" title="" value="Submit" name="Submit"  > Submitting.. </a>
+                            }
+                            {/*<a href="" className="button-left" title="" name="" onClick={this.setProgressCache} >Update Progress</a>*/}
                         </div>
                         <p className="styled">
                             <progress value={this.state.progress} max="100">{this.state.progress}</progress>
@@ -1848,7 +1886,7 @@ class Form extends React.Component {
                     <div className="list-section">
                         <h3>RIPA STOP APP</h3>
                         <p>
-                           Thank you for your submission. 
+                            Thank you for your submission.
                         </p>
                         <div className="button-container">
                             <a href="/Stops" className="button-left" >My Stops</a>
@@ -1863,7 +1901,7 @@ class Form extends React.Component {
                             <pre>{JSON.stringify(this.state, null, 2)}</pre>
                         }
                     </div>
-                } 
+                }
             </form>
         );
     }
@@ -1887,7 +1925,7 @@ class CheckBoxListSection extends React.Component {
                                                 return x[key]
                                             }
                                         }
-                                    }).indexOf(item.value) > -1 ?  true  : null
+                                    }).indexOf(item.value) > -1 ? true : null
                                 }
                             />
                     )}
@@ -1896,7 +1934,7 @@ class CheckBoxListSection extends React.Component {
         );
     }
 }
-class CheckBox extends React.Component { 
+class CheckBox extends React.Component {
     render(props) {
         return (
             <div className={this.props.className}>
@@ -1950,7 +1988,7 @@ class TextInput extends React.Component {
         return (
             <div className="text-field-view">
                 <label htmlFor="id" className={this.props.className} >{this.props.label}</label>
-                <input value={this.props.stateValue} type={this.props.type} min={this.props.min} max={this.props.max} name={this.props.name} className={this.props.className} pattern={this.props.pattern} onChange={this.props.onChange}  />
+                <input value={this.props.stateValue} type={this.props.type} min={this.props.min} max={this.props.max} name={this.props.name} className={this.props.className} pattern={this.props.pattern} onChange={this.props.onChange} />
             </div>
         );
     }
@@ -1966,11 +2004,11 @@ class LookupInput extends React.Component {
     }
 }
 class Codes extends React.Component {
-    render(props) {        
+    render(props) {
         return (
             <select className={this.props.className}>
                 <option value="" ></option>
-                {this.props.codes.map((item) => <option key={item.Offense_Code} value={item.Description}>{item.Description}</option> )}
+                {this.props.codes.map((item) => <option key={item.Offense_Code} value={item.Description}>{item.Description}</option>)}
             </ select>
         );
     }
@@ -1988,8 +2026,8 @@ class Button extends React.Component {
 
 const perceivedRace = [
     { key: 1, value: "Asian", className: "list-item", onClick: "" },
-    { key: 2, value: "Black/African American", className: "list-item", onClick: ""},
-    { key: 3, value: "Hispanic/Latino/a", className: "list-item", onClick: ""},
+    { key: 2, value: "Black/African American", className: "list-item", onClick: "" },
+    { key: 3, value: "Hispanic/Latino/a", className: "list-item", onClick: "" },
     { key: 4, value: "Middle Eastern or South Asian", className: "list-item", onClick: "" },
     { key: 5, value: "Native American", className: "list-item", onClick: "" },
     { key: 6, value: "Pacific Islander", className: "list-item", onClick: "" },
@@ -2016,34 +2054,34 @@ const perceivedOrKnowDisability = [
 const reasonsForStop_1 = [
     { key: 1, value: "Traffic Violation", className: "list-item", onClick: "" }
 ];
-    const disciplineUnderEC_1 = [
-        { key: 1, value: "48900 - Suspension or expulsion (select subsection)", className: "list-item-nested", onClick: "" }
-    ];
-    const disciplineUnderEC_2 = [
-        { key: 2, value: "48900.2 - Suspension or expulsion for sexual harassment", className: "list-item-nested", onClick: "" },
-        { key: 3, value: "48900.3 - Suspension or expulsion for hate violence", className: "list-item-nested", onClick: "" },
-        { key: 4, value: "48900.4 - Suspension or expulsion for harassment, threats or intimidation", className: "list-item-nested", onClick: "" },
-        { key: 5, value: "48900.7 - Suspension or expulsion for terroristic threats", className: "list-item-nested", onClick: "" }
-    ];
-    const trafficViolation = [
-        { key: 1, value: "Moving Violation", className: "list-item-nested", onClick: "" },
-        { key: 2, value: "Equipment Violation", className: "list-item-nested", onClick: "" },
-        { key: 3, value: "Non-moving Violation, including Registration Violation", className: "list-item-nested", onClick: "" }
-    ];
+const disciplineUnderEC_1 = [
+    { key: 1, value: "48900 - Suspension or expulsion (select subsection)", className: "list-item-nested", onClick: "" }
+];
+const disciplineUnderEC_2 = [
+    { key: 2, value: "48900.2 - Suspension or expulsion for sexual harassment", className: "list-item-nested", onClick: "" },
+    { key: 3, value: "48900.3 - Suspension or expulsion for hate violence", className: "list-item-nested", onClick: "" },
+    { key: 4, value: "48900.4 - Suspension or expulsion for harassment, threats or intimidation", className: "list-item-nested", onClick: "" },
+    { key: 5, value: "48900.7 - Suspension or expulsion for terroristic threats", className: "list-item-nested", onClick: "" }
+];
+const trafficViolation = [
+    { key: 1, value: "Moving Violation", className: "list-item-nested", onClick: "" },
+    { key: 2, value: "Equipment Violation", className: "list-item-nested", onClick: "" },
+    { key: 3, value: "Non-moving Violation, including Registration Violation", className: "list-item-nested", onClick: "" }
+];
 const reasonsForStop_2 = [
     { key: 2, value: "Reasonable Suspicion", className: "list-item", onClick: "" }
 ];
-    const reasonableSuspicion = [
-        { key: 1, value: "Officer witnessed commission of a crime", className: "list-item-nested", onClick: "" },
-        { key: 2, value: "Matched suspect description", className: "list-item-nested", onClick: "" },
-        { key: 3, value: "Witness or Victim identification of Suspect at the scene", className: "list-item-nested", onClick: "" },
-        { key: 4, value: "Carrying Suspicious Object", className: "list-item-nested", onClick: "" },
-        { key: 5, value: "Actions indicative of casing a victim or location", className: "list-item-nested", onClick: "" },
-        { key: 6, value: "Suspected of Acting as Lookout", className: "list-item-nested", onClick: "" },
-        { key: 7, value: "Actions indicative of drug transaction", className: "list-item-nested", onClick: "" },
-        { key: 8, value: "Actions indicative of engaging in violent crime", className: "list-item-nested", onClick: "" },
-        { key: 9, value: "Other Reasonable Suspicion of a crime", className: "list-item-nested", onClick: "" }
-    ];
+const reasonableSuspicion = [
+    { key: 1, value: "Officer witnessed commission of a crime", className: "list-item-nested", onClick: "" },
+    { key: 2, value: "Matched suspect description", className: "list-item-nested", onClick: "" },
+    { key: 3, value: "Witness or Victim identification of Suspect at the scene", className: "list-item-nested", onClick: "" },
+    { key: 4, value: "Carrying Suspicious Object", className: "list-item-nested", onClick: "" },
+    { key: 5, value: "Actions indicative of casing a victim or location", className: "list-item-nested", onClick: "" },
+    { key: 6, value: "Suspected of Acting as Lookout", className: "list-item-nested", onClick: "" },
+    { key: 7, value: "Actions indicative of drug transaction", className: "list-item-nested", onClick: "" },
+    { key: 8, value: "Actions indicative of engaging in violent crime", className: "list-item-nested", onClick: "" },
+    { key: 9, value: "Other Reasonable Suspicion of a crime", className: "list-item-nested", onClick: "" }
+];
 const reasonsForStop_3 = [
     { key: 3, value: "Known to be on Parole / Probation / PRCS / Mandatory Supervision", className: "list-item", onClick: "" },
     { key: 4, value: "Knowledge of outstanding arrest warrant/wanted person", className: "list-item", onClick: "" },
@@ -2140,7 +2178,7 @@ const typeOfPropertySeized = [
     { key: 7, value: "Drug Paraphernalia", className: "list-item-nested", onClick: "" },
     { key: 8, value: "Suspected Stolen property", className: "list-item-nested", onClick: "" },
     { key: 9, value: "Cell phone(s) or electronic device(s)", className: "list-item-nested", onClick: "" },
-    { key: 10, value: "Vehicle", className: "list-item-nested", onClick: "" }, 
+    { key: 10, value: "Vehicle", className: "list-item-nested", onClick: "" },
     { key: 11, value: "Other Contraband or evidence", className: "list-item-nested", onClick: "" }
 ];
 const resultOfStop = [
@@ -2164,6 +2202,6 @@ const officerAssignment = [
 ];
 
 ReactDOM.render(
-    <Form/>,
+    <Form />,
     document.getElementById('root')
 );
