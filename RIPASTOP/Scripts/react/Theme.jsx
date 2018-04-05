@@ -9,7 +9,7 @@ class ThemeToggle extends React.Component {
     }
     componentWillMount() {
         if (localStorage.getItem('stylePath')) {
-            this.setState({ stylePath: store.get('stylePath') });
+            this.setState({ stylePath: localStorage.getItem('stylePath') });
         }
     }
     toggleTheme() {
