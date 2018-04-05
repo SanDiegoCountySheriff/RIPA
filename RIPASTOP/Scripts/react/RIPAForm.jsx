@@ -429,6 +429,11 @@ class Form extends React.Component {
             if (node2 == 'genderNonconforming' && val == false) {
                 newStop[node].gendNC = '';
             }
+            if (node2 == 'school' && val == false) {
+                newStop[node].schoolName = {
+                    codes: []
+                };
+            }
         } else {
             newStop[node] = val;
         }
@@ -1285,10 +1290,10 @@ class Form extends React.Component {
                 var newStop = this.state.stop.location;
                 newStop[node] = arr;
                 this.setState({ location: newStop });
-                if (!store.enabled) {
-                    alert('Local storage is not supported by your browser. Please disable "Private Mode", or upgrade to a modern browser.')
-                    return
-                }
+                //if (!store.enabled) {
+                //    alert('Local storage is not supported by your browser. Please disable "Private Mode", or upgrade to a modern browser.')
+                //    return
+                //}
                 //store.set('LastLocation', newStop);
                 var lastlocation = JSON.stringify(newStop);
                 localStorage.setItem('LastLocation', lastlocation);
