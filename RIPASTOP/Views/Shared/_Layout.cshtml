@@ -12,11 +12,28 @@
     @*@Styles.Render("~/Content/css")*@
     @*@Scripts.Render("~/bundles/modernizr")*@
 
-    
+    <script>
+        // IE Polyfill for .includes() method in ECMAScript 2015
+        if (!String.prototype.includes) {
+            String.prototype.includes = function (search, start) {
+                'use strict';
+                if (typeof start !== 'number') {
+                    start = 0;
+                }
+
+                if (start + search.length > this.length) {
+                    return false;
+                } else {
+                    return this.indexOf(search, start) !== -1;
+                }
+            };
+        }
+    </script>
+
     <script src="~/Scripts/react/react.js"></script>
     <script src="~/Scripts/react/react-dom.js"></script>
     @*<script src="~/Scripts/store.everything.min.js"></script>*@
-   
+
 </head>
 <body>
     <div class="navbar">
