@@ -100,7 +100,7 @@ namespace RIPASTOP.Controllers
         }
 
         // GET: UserProfiles/Edit/5
-        public ActionResult Edit(Guid? id)
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
