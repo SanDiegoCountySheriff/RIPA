@@ -1,6 +1,7 @@
 ﻿using RIPASTOP.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -25,6 +26,7 @@ namespace RIPASTOP.Controllers
                 ViewBag.ori = UserProfile.ORI;
                 ViewBag.agency = UserProfile.Agency;
                 ViewBag.UserProfileID = UserProfile.ID;
+                ViewBag.reverseGeoURI = ConfigurationManager.AppSettings["reverseGeoURI"];
 
                 // web.config debug setting
                 ViewBag.debug = HttpContext.IsDebuggingEnabled;
