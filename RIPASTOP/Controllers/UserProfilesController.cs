@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Configuration;
+//using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -45,6 +46,8 @@ namespace RIPASTOP.Controllers
 
             // web.config debug setting
             ViewBag.debug = HttpContext.IsDebuggingEnabled;
+            ViewBag.agency = ConfigurationManager.AppSettings["agency"];
+            ViewBag.ori = ConfigurationManager.AppSettings["ori"];
 
             if (User.Identity.IsAuthenticated && UserProfile_Conf == null)
             {
@@ -187,5 +190,6 @@ namespace RIPASTOP.Controllers
             }
             base.Dispose(disposing);
         }
+
     }
 }
