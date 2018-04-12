@@ -35,7 +35,7 @@ The SQL folder also has a script for the lookup tables, along with sample data. 
 
 **IIS Setup** - Set up a new web application, turn on Windows Authentication and set up your port 443/https bindings, a dev cert will suffice, unless you are setting up production. Make sure the application pool identity has read/write access to the database you set up in the previous step.
 
-**Update Web.config** - Make sure you update the app settings in Web.config wiht your agency specific information.
-* `<add key="reverseGeoURI" value="https://www.mysite.us/arcgis/rest/services/Locators/REDI_COMPOSITE_FI/GeocodeServer/reverseGeocode?distance=1000&amp;f=pjson&amp;location="/>`
+**Update Web.config** - Make sure you update the app settings in Web.config with your agency specific information.
+* `<add key="reverseGeoURI" value="https://www.mysite.us/arcgis/rest/....."/>`
 * `<add key="agency" value="AG"/>`
 * `<add key="ori" value="CA0000000"/>`
