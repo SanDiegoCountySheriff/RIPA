@@ -215,6 +215,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CitiesController.cs" />
     <Compile Include="Controllers\CJISOffenseCodesController.cs" />
+    <Compile Include="Controllers\ExtractJNode.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RegulationController.cs" />
     <Compile Include="Controllers\SchoolsController.cs" />
