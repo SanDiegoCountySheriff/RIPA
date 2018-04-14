@@ -81,8 +81,7 @@ namespace RIPASTOP.Controllers
 
             //Todo: Map JsonStop to DojStop 
             //stop.JsonDojStop = dojTransform(stop.JsonStop);
-            string dojJson = dojTransform(stop.JsonStop);
-            stop.JsonDojStop = dojJson;
+
             db.Stop.Add(stop);
 
             //await db.SaveChangesAsync();
@@ -90,19 +89,26 @@ namespace RIPASTOP.Controllers
            
             try
             {
+                db.SaveChanges();
+                //return RedirectToAction("Index");
+                string dojJson = dojTransform(stop);
+                stop.JsonDojStop = dojJson;
+                db.Entry(stop).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError); 
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
 
         }
 
-        public string dojTransform(string jsonStop)
+        public string dojTransform(Stop stop)
         {
             ExtractJNode eJson, deJson;
+
+            string jsonStop = stop.JsonStop;
 
             try
             {
@@ -172,7 +178,7 @@ namespace RIPASTOP.Controllers
                 {
                     //stopdatarecord = new
                     //{
-                    LEARecordID = "",
+                    LEARecordID = stop.ID.ToString(),
                     BatchID = "",
                     ORI = ori,
                     TX_Type = "I",
@@ -407,8 +413,7 @@ namespace RIPASTOP.Controllers
                         }                      
 
                     }
-
-
+                    
 
                     jString = JsonConvert.SerializeObject(jsonObject);
                 }
