@@ -6,7 +6,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>C:\Projects\Github\RIPA\RIPASTOP\bin\Release\PublishOutput</_PublishTargetUrl>
+    <_PublishTargetUrl>C:\Projects\TFS\RIPA\pilot\RIPASTOP\bin\Release\PublishOutput</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="ApplicationInsights.config">
@@ -85,13 +85,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/12/2018 11:19:38</publishTime>
     </File>
     <File Include="bin/RIPASTOP.dll">
-      <publishTime>03/16/2018 15:11:15</publishTime>
+      <publishTime>04/19/2018 14:20:51</publishTime>
     </File>
     <File Include="bin/RIPASTOP.dll.config">
-      <publishTime>03/09/2018 15:05:03</publishTime>
+      <publishTime>04/11/2018 17:29:44</publishTime>
     </File>
     <File Include="bin/RIPASTOP.pdb">
-      <publishTime>03/16/2018 15:11:15</publishTime>
+      <publishTime>04/19/2018 14:20:51</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>02/12/2018 11:19:33</publishTime>
@@ -223,13 +223,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/12/2018 11:19:38</publishTime>
     </File>
     <File Include="Content/dark.css">
-      <publishTime>03/09/2018 14:38:46</publishTime>
+      <publishTime>04/18/2018 13:16:03</publishTime>
     </File>
     <File Include="Content/favicon.ico">
       <publishTime>02/02/2018 16:02:04</publishTime>
     </File>
     <File Include="Content/light.css">
-      <publishTime>03/08/2018 15:31:09</publishTime>
+      <publishTime>04/18/2018 13:16:35</publishTime>
     </File>
     <File Include="Content/mode.png">
       <publishTime>02/02/2018 16:02:04</publishTime>
@@ -292,7 +292,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/02/2018 16:02:08</publishTime>
     </File>
     <File Include="Scripts/react/RIPAForm.jsx">
-      <publishTime>03/16/2018 14:38:47</publishTime>
+      <publishTime>04/19/2018 14:25:39</publishTime>
     </File>
     <File Include="Scripts/react/RIPAStop.jsx">
       <publishTime>02/02/2018 16:02:08</publishTime>
@@ -301,13 +301,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/02/2018 16:02:08</publishTime>
     </File>
     <File Include="Scripts/react/Theme.jsx">
-      <publishTime>02/02/2018 16:02:08</publishTime>
+      <publishTime>04/05/2018 16:31:19</publishTime>
     </File>
     <File Include="Scripts/store.everything.min.js">
       <publishTime>02/02/2018 16:02:08</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>02/02/2018 16:02:08</publishTime>
+      <publishTime>04/11/2018 17:29:44</publishTime>
     </File>
     <File Include="Views/Regulation/Index.cshtml">
       <publishTime>03/14/2018 12:34:06</publishTime>
@@ -316,16 +316,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/02/2018 16:02:08</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>02/02/2018 16:02:08</publishTime>
+      <publishTime>04/18/2018 12:56:16</publishTime>
     </File>
     <File Include="Views/Stops/Index.cshtml">
       <publishTime>02/27/2018 09:59:03</publishTime>
     </File>
     <File Include="Views/UserProfiles/Create.cshtml">
-      <publishTime>03/14/2018 16:07:59</publishTime>
+      <publishTime>04/11/2018 17:29:44</publishTime>
     </File>
     <File Include="Views/UserProfiles/Edit.cshtml">
-      <publishTime>02/02/2018 16:02:08</publishTime>
+      <publishTime>04/17/2018 17:12:45</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>02/02/2018 16:02:08</publishTime>
@@ -334,7 +334,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/02/2018 16:02:08</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>03/09/2018 15:05:55</publishTime>
+      <publishTime>04/12/2018 17:25:44</publishTime>
     </File>
   </ItemGroup>
 </Project>

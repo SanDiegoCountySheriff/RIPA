@@ -37,7 +37,7 @@ class Form extends React.Component {
                         perceivedOrKnownDisability: [],
                         perceivedAge: '',
                         perceivedGender: '',
-                        genderNonconforming: false,
+                        genderNonconforming: false,                                                                                                                        
                         Gend: '',
                         gendNC: '',
                         perceivedLgbt: '',
@@ -60,6 +60,7 @@ class Form extends React.Component {
             debug: false,
             toggleJson: false,
             toggleOfficerOptions: false,
+            reverseGeoURI: '',
             progress: 8,
             formPartFilter: '0',
             loader: false,
@@ -95,7 +96,7 @@ class Form extends React.Component {
                         typeOfPropertySeized: [],
                         resultOfStop: [{
                             result: "Citation or infraction",
-                            codes: [{ code: "54106", text: "22350 VC - UNSAFE SPEED:PREVAIL COND (I) 54106" }],
+                            codes: [{ code: "65002", text: "65002 ZZ - LOCAL ORDINANCE VIOL (I) 65002" }],
                             key: 3
                         }]
                     }
@@ -128,7 +129,7 @@ class Form extends React.Component {
                             { action: "Search of property was conducted", key: 20 }],
                         contrabandOrEvidenceDiscovered: [{ contraband: "None", key: 1 }],
                         basisForSearch: [{ basis: "Condition of parole / probation/ PRCS / mandatory supervision", key: 4 }],
-                        basisForSearchBrief: 'Subject/Location known to be Parole / Probation / PRCS / Mandatory Supervision',
+                        basisForSearchBrief: '',
                         basisForPropertySeizure: [],
                         typeOfPropertySeized: [],
                         resultOfStop: [{ result: "No Action", codes: [], key: 1 }]
@@ -238,7 +239,7 @@ class Form extends React.Component {
                     arr = [];
                     newPerson.basisForSearch = [];
                     newPerson.basisForSearchBrief = '';
-                    newPerson.contrabandOrEvidenceDiscovered = [];
+                    //newPerson.contrabandOrEvidenceDiscovered = [];
                     newPerson.basisForPropertySeizure = [];
                     newPerson.typeOfPropertySeized = [];
                 }
@@ -248,10 +249,17 @@ class Form extends React.Component {
                     key: itemkey
                 })
             } else if (node === 'resultOfStop') { 
-                if (val == 'No Action') {
-                    arr = []
+
+                //this.checkBoxSelection(e, 'resultOfStop', 'result', '', 3
+                if (itemkey == 3) {
+                    arr.push({
+                        [node2]: val, codes: [{ code: "65002", text: "65002 ZZ - LOCAL ORDINANCE VIOL (I) 65002" }], key: itemkey });
+                } else {
+                    if (val == 'No Action') {
+                        arr = []
+                    }
+                    arr.push({ [node2]: val, codes: [], key: itemkey });
                 }
-                arr.push({ [node2]: val, codes: [], key: itemkey});
             } else if (node2b) { //default nested
                 arr.push({ [node2]: val, [node2b]: [], key: itemkey});
                 //arr.push({ [node2]: val });
@@ -382,17 +390,20 @@ class Form extends React.Component {
         }
         newStop.location = newLocation;       
         //var location = this.state.stop.location;
-        if (!store.enabled) {
-            alert('Local storage is not supported by your browser. Please disable "Private Mode", or upgrade to a modern browser.')
-            return
-        }
-        store.set('LastLocation', newLocation);
+        //if (!store.enabled) {
+        //if (localStorage.storageAvailable()) {
+        //    alert('Local storage is not supported by your browser. Please disable "Private Mode", or upgrade to a modern browser.')
+        //    return
+        //}
+        //store.set('LastLocation', newLocation);
+        localStorage.setItem('LastLocation', JSON.stringify(newLocation));
         this.setState({ stop: newStop });
         //alert(JSON.stringify(store.get('LastLocation')));
     }
     useLastLocation(e) {
         var newStop = this.state.stop;
-        var newLocation = store.get('LastLocation');    
+        //var newLocation = store.get('LastLocation');    
+        var newLocation = JSON.parse(localStorage.getItem('LastLocation'));
         if (newLocation) {
             newStop.location = newLocation;
             this.setState({ stop: newStop });
@@ -415,7 +426,7 @@ class Form extends React.Component {
         newStop[name] = val;
         this.setState({ Person_Stopped: newStop });
     }
-    updateBoolCheckBox(e, node, node2){
+    updateBoolCheckBox(e, node, node2) {
         var val = e.target.checked ? true : false;
         var newStop = this.state.stop;
         if (node2) {
@@ -423,13 +434,18 @@ class Form extends React.Component {
             if (node2 == 'genderNonconforming' && val == true) {
                 newStop[node].gendNC = 5;
             }
-            if (node2 == 'genderNonconforming' && val == false){
+            if (node2 == 'genderNonconforming' && val == false) {
                 newStop[node].gendNC = '';
+            }
+            if (node2 == 'school' && val == false) {
+                newStop[node].schoolName = {
+                    codes: []
+                };
             }
         } else {
             newStop[node] = val;
         }
-        
+
         this.setState({ stop: newStop });
     }
     
@@ -493,9 +509,9 @@ class Form extends React.Component {
         //});       
     }
     geoReverseGeocode(x, y) {
-        var thiss = this;        
-        //fetch('https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?distance=1000&f=pjson&location=' + x + ',' + y + '&outSR=4326')
-        fetch('https://www.sdlaw.us/arcgis/rest/services/Locators/REDI_COMPOSITE_FI/GeocodeServer/reverseGeocode?distance=1000&f=pjson&location=' + x + ',' + y + '&outSR=4326')
+        var thiss = this;
+        var uri = this.state.reverseGeoURI + '' + x + ',' + y + '&outSR=4326';
+        fetch(uri)
             .then(function (response) {
                 return response.json()
                     .then(function (json) {
@@ -712,8 +728,10 @@ class Form extends React.Component {
             }
             var template = this.state.stop;
             if (templatename) {
-                if (store.get('LastLocation') && includeLocation) {
-                    template.location = store.get('LastLocation');
+                //if (store.get('LastLocation') && includeLocation) {
+                if (localStorage.getItem('LastLocation') && includeLocation) {
+                    //template.location = store.get('LastLocation');
+                    template.location = JSON.parse(localStorage.getItem('LastLocation'));
                 }
                 template.Person_Stopped = this.state.templates[templatename].Person_Stopped;
                 instrumentation.template = templatename;
@@ -770,238 +788,245 @@ class Form extends React.Component {
     validateFormSection() {
         var step = this.state.formPartFilter;
         var msg = this.state.validationErrorMsg;
+        var stop = this.state.stop;
         switch (step) {
             case '1':
-                //this.validateDateTime();
-                //if (!this.validateDuration(this.state.stop.stopDuration)) {
-                //    msg.duration = '*Please enter a valid Duration of Stop in minutes'
-                //    msg.errorFlag = true;
-                //} else { msg.duration = ''; }
+                this.validateDateTime();
+                if (!this.validateDuration(this.state.stop.stopDuration)) {
+                    msg.duration = '*Please enter a valid Duration of Stop in minutes'
+                    msg.errorFlag = true;
+                } else { msg.duration = ''; }
 
-                //if ((!this.state.stop.location.streetName || !this.state.stop.location.blockNumber) && !this.state.stop.location.intersection && !this.state.stop.location.highwayExit && !this.state.stop.location.landMark) {
-                //    msg.block = '*Please enter a Street Name and Block Number  - or - the closest intersection - or - highway and closest exit - or - road marker, landmark or other.'
-                //    msg.errorFlag = true;
-                //} else { msg.block = ''; }
+                if ((!this.state.stop.location.streetName || !this.state.stop.location.blockNumber) && !this.state.stop.location.intersection && !this.state.stop.location.highwayExit && !this.state.stop.location.landMark) {
+                    msg.block = '*Please enter a Street Name and Block Number  - or - the closest intersection - or - highway and closest exit - or - road marker, landmark or other.'
+                    msg.errorFlag = true;
+                } else { msg.block = ''; }
 
-                //if (this.state.stop.location.streetName && this.state.stop.location.blockNumber) {
-                //    this.state.stop.location.intersection = '';
-                //    this.state.stop.location.highwayExit = ''
-                //    this.state.stop.location.landMark = ''
-                //}
-                //if ((!this.state.stop.location.streetName || !this.state.stop.location.blockNumber) && this.state.stop.location.intersection) {
-                //    this.state.stop.location.highwayExit = ''
-                //    this.state.stop.location.landMark = ''
-                //}
-                //if ((!this.state.stop.location.streetName || !this.state.stop.location.blockNumber) && this.state.stop.location.highwayExit) {
-                //    this.state.stop.location.intersection = ''
-                //    this.state.stop.location.landMark = ''
-                //}
-                //if ((!this.state.stop.location.streetName || !this.state.stop.location.blockNumber) && this.state.stop.location.landMark) {
-                //    this.state.stop.location.highwayExit = ''
-                //    this.state.stop.location.intersection = ''
-                //}
+                if (this.state.stop.location.streetName && this.state.stop.location.blockNumber) {
+                    this.state.stop.location.intersection = '';
+                    this.state.stop.location.highwayExit = ''
+                    this.state.stop.location.landMark = ''
+                }
+                if ((!this.state.stop.location.streetName || !this.state.stop.location.blockNumber) && this.state.stop.location.intersection) {
+                    this.state.stop.location.highwayExit = ''
+                    this.state.stop.location.landMark = ''
+                }
+                if ((!this.state.stop.location.streetName || !this.state.stop.location.blockNumber) && this.state.stop.location.highwayExit) {
+                    this.state.stop.location.intersection = ''
+                    this.state.stop.location.landMark = ''
+                }
+                if ((!this.state.stop.location.streetName || !this.state.stop.location.blockNumber) && this.state.stop.location.landMark) {
+                    this.state.stop.location.highwayExit = ''
+                    this.state.stop.location.intersection = ''
+                }
 
-                //if(this.state.stop.location.school && this.state.stop.location.schoolName.codes.length < 1){
-                //    msg.school = '*Please enter a school name'
-                //    msg.errorFlag = true;
-                //} else { msg.school = '';}
+                if(this.state.stop.location.school && this.state.stop.location.schoolName.codes.length < 1){
+                    msg.school = '*Please enter a school name'
+                    msg.errorFlag = true;
+                } else { msg.school = '';}
 
-                //if (this.state.stop.location.city.codes.length < 1) {
-                //    msg.city = '*Please enter a City'
-                //    msg.errorFlag = true; 
-                //} else { msg.city = ''; }
+                if (this.state.stop.location.city.codes.length < 1) {
+                    msg.city = '*Please enter a City'
+                    msg.errorFlag = true; 
+                } else { msg.city = ''; }
 
-                //if (!this.state.stop.ExpYears) {
-                //    msg.years = 'Please make a selection for Officer Years Of Experience'
-                //    msg.errorFlag = true;
-                //} else { msg.years = '' } 
-                //if (this.state.stop.officerAssignment.key == 0) {
-                //    msg.assignment = 'Please make a selection for Officer Assignment'
-                //    msg.errorFlag = true;
-                //} else if (!this.state.stop.officerAssignment.otherType && this.state.stop.officerAssignment.key == 10) {
-                //    msg.assignment = 'Please enter a description for other assignment type'
-                //    msg.errorFlag = true;
-                //} else { msg.assignment = '' } 
+                if (!this.state.stop.ExpYears) {
+                    msg.years = 'Please make a selection for Officer Years Of Experience'
+                    msg.errorFlag = true;
+                } else { msg.years = '' } 
+                if (this.state.stop.officerAssignment.key == 0) {
+                    msg.assignment = 'Please make a selection for Officer Assignment'
+                    msg.errorFlag = true;
+                } else if (!this.state.stop.officerAssignment.otherType && this.state.stop.officerAssignment.key == 10) {
+                    msg.assignment = 'Please enter a description for other assignment type'
+                    msg.errorFlag = true;
+                } else { msg.assignment = '' } 
 
-                //this.validateDate(this.state.stop.date) &&
-                //    this.validateTime(this.state.stop.time) &&
-                //    this.validateDuration(this.state.stop.stopDuration) &&
-                //    this.state.stop.location.streetName &&
-                //    this.state.stop.location.blockNumber &&
-                //    this.state.stop.location.city.codes.length == 1 &&
-                //    !msg.school &&
-                //    !msg.assignment &&
-                //    !msg.years
-                //    ? msg.errorFlag = false : null;
+                this.validateDate(this.state.stop.date) &&
+                    this.validateTime(this.state.stop.time) &&
+                    this.validateDuration(this.state.stop.stopDuration) &&
+                    this.state.stop.location.streetName &&
+                    this.state.stop.location.blockNumber &&
+                    this.state.stop.location.city.codes.length == 1 &&
+                    !msg.school &&
+                    !msg.assignment &&
+                    !msg.years
+                    ? msg.errorFlag = false : null;
                 break;
             case '2':
-                //if (!this.state.stop.Person_Stopped.perceivedGender && !this.state.stop.Person_Stopped.genderNonconforming) {
-                //    msg.gender = '*Please make a selection for Perceived Gender'
-                //    msg.errorFlag = true;
-                //} else { msg.gender = ''; }
-                //if (this.state.stop.Person_Stopped.perceivedRace.length < 1) {
-                //    msg.race = '*Please make a selection for Perceived Race'
-                //    msg.errorFlag = true;
-                //} else { msg.race = ''; }
-                //if (!this.state.stop.Person_Stopped.perceivedLgbt) {
-                //    msg.lgbt = '*Please make a selection for Perceived LGBT'
-                //    msg.errorFlag = true;
-                //} else { msg.lgbt = ''; }
-                //if (!this.validateAge(this.state.stop.Person_Stopped.perceivedAge)) {
-                //    msg.age = '*Please enter a valid Perceived Age'
-                //    msg.errorFlag = true;
-                //} else { msg.age = ''; }
-                //if (this.state.stop.Person_Stopped.perceivedOrKnownDisability.length < 1) {
-                //    msg.disability = '*Please make a selection for Perceived Or Known Disability'
-                //    msg.errorFlag = true;
-                //} else { msg.disability = ''; }
-                //(this.state.stop.Person_Stopped.perceivedGender || this.state.stop.Person_Stopped.genderNonconforming) &&
-                //    this.state.stop.Person_Stopped.perceivedRace.length > 0 &&
-                //    this.state.stop.Person_Stopped.perceivedLgbt &&
-                //    this.validateAge(this.state.stop.Person_Stopped.perceivedAge) &&
-                //    this.state.stop.Person_Stopped.perceivedOrKnownDisability.length > 0 ? msg.errorFlag = false : null;
+                if (!this.state.stop.Person_Stopped.perceivedGender && !this.state.stop.Person_Stopped.genderNonconforming) {
+                    msg.gender = '*Please make a selection for Perceived Gender'
+                    msg.errorFlag = true;
+                } else { msg.gender = ''; }
+                if (this.state.stop.Person_Stopped.perceivedRace.length < 1) {
+                    msg.race = '*Please make a selection for Perceived Race'
+                    msg.errorFlag = true;
+                } else { msg.race = ''; }
+                if (!this.state.stop.Person_Stopped.perceivedLgbt) {
+                    msg.lgbt = '*Please make a selection for Perceived LGBT'
+                    msg.errorFlag = true;
+                } else { msg.lgbt = ''; }
+                if (!this.validateAge(this.state.stop.Person_Stopped.perceivedAge)) {
+                    msg.age = '*Please enter a valid Perceived Age'
+                    msg.errorFlag = true;
+                } else { msg.age = ''; }
+                if (this.state.stop.Person_Stopped.perceivedOrKnownDisability.length < 1) {
+                    msg.disability = '*Please make a selection for Perceived Or Known Disability'
+                    msg.errorFlag = true;
+                } else { msg.disability = ''; }
+                (this.state.stop.Person_Stopped.perceivedGender || this.state.stop.Person_Stopped.genderNonconforming) &&
+                    this.state.stop.Person_Stopped.perceivedRace.length > 0 &&
+                    this.state.stop.Person_Stopped.perceivedLgbt &&
+                    this.validateAge(this.state.stop.Person_Stopped.perceivedAge) &&
+                    this.state.stop.Person_Stopped.perceivedOrKnownDisability.length > 0 ? msg.errorFlag = false : null;
                 break;
             case '3':
-                //if (!this.state.stop.Person_Stopped.reasonForStop.reason) {
-                //    msg.reason = '*Please make a selection for Reasons for Stop'
-                //    msg.errorFlag = true;
-                //} else {
-                //    msg.reason = '';
-                //    if (this.state.stop.Person_Stopped.reasonForStop.reason == "Traffic Violation") {
-                //        if (this.state.stop.Person_Stopped.reasonForStop.details.length < 1 || !this.state.stop.Person_Stopped.reasonForStop.details[0].reason) {
-                //            msg.trafficViolation = '*Please make a selection for Traffic Violation'
-                //            msg.errorFlag = true;
-                //        } else if (this.state.stop.Person_Stopped.reasonForStop.codes.length < 1 ) {
-                //            msg.trafficViolation = '*Please add a Vehicle Code section'
-                //            msg.errorFlag = true;
-                //        } else { msg.eduDiscipline = '', msg.reasonableSuspicion = '', msg.trafficViolation = '' }  
-                //    }
-                //    if (this.state.stop.Person_Stopped.reasonForStop.reason == "Reasonable Suspicion") {
-                //        if (this.state.stop.Person_Stopped.reasonForStop.details.length < 1 || !this.state.stop.Person_Stopped.reasonForStop.details[0].reason) {
-                //            msg.reasonableSuspicion = '*Please make a selection for Reasonable Suspicion'
-                //            msg.errorFlag = true;
-                //        } else if (this.state.stop.Person_Stopped.reasonForStop.codes.length < 1) {
-                //            msg.reasonableSuspicion = '*Please add a Penal Code section'
-                //            msg.errorFlag = true;
-                //        } else { msg.eduDiscipline = '', msg.reasonableSuspicion = '', msg.trafficViolation = '' }  
-                //    }
-                //    if (this.state.stop.Person_Stopped.reasonForStop.key == 8) { //education code
-                //        if (this.state.stop.Person_Stopped.reasonForStop.details.length < 1 || !this.state.stop.Person_Stopped.reasonForStop.details[0].reason) {
-                //            msg.eduDiscipline = '*Please make a selection for Possible conduct warranting discipline..'
-                //            msg.errorFlag = true;
-                //        } else if (this.state.stop.Person_Stopped.reasonForStop.details[0].key == 1 && this.state.stop.Person_Stopped.reasonForStop.codes.length < 1) {
-                //            msg.eduDiscipline = '*Please add a 48900 Sub Code section'
-                //            msg.errorFlag = true;
-                //        } else {msg.eduDiscipline = '', msg.reasonableSuspicion = '', msg.trafficViolation = ''} 
-                //    }
-                //}
-                //if (this.state.stop.Person_Stopped.reasonForStopExplanation.length < 5 || this.state.stop.Person_Stopped.reasonForStopExplanation.length > 250) {
-                //    msg.reasonBrief = '*Please provide a brief explanation regarding the reason for the stop (at least 5 and less than 250 characters)'
-                //    msg.errorFlag = true;
-                //} else { msg.reasonBrief = '' } 
+                if (!this.state.stop.Person_Stopped.reasonForStop.reason) {
+                    msg.reason = '*Please make a selection for Reasons for Stop'
+                    msg.errorFlag = true;
+                } else {
+                    msg.reason = '';
+                    if (this.state.stop.Person_Stopped.reasonForStop.reason == "Traffic Violation") {
+                        if (this.state.stop.Person_Stopped.reasonForStop.details.length < 1 || !this.state.stop.Person_Stopped.reasonForStop.details[0].reason) {
+                            msg.trafficViolation = '*Please make a selection for Traffic Violation'
+                            msg.errorFlag = true;
+                        } else if (this.state.stop.Person_Stopped.reasonForStop.codes.length < 1 ) {
+                            msg.trafficViolation = '*Please add a Vehicle Code section'
+                            msg.errorFlag = true;
+                        } else { msg.eduDiscipline = '', msg.reasonableSuspicion = '', msg.trafficViolation = '' }  
+                    }
+                    if (this.state.stop.Person_Stopped.reasonForStop.reason == "Reasonable Suspicion") {
+                        if (this.state.stop.Person_Stopped.reasonForStop.details.length < 1 || !this.state.stop.Person_Stopped.reasonForStop.details[0].reason) {
+                            msg.reasonableSuspicion = '*Please make a selection for Reasonable Suspicion'
+                            msg.errorFlag = true;
+                        } else if (this.state.stop.Person_Stopped.reasonForStop.codes.length < 1) {
+                            msg.reasonableSuspicion = '*Please add a Penal Code section'
+                            msg.errorFlag = true;
+                        } else { msg.eduDiscipline = '', msg.reasonableSuspicion = '', msg.trafficViolation = '' }  
+                    }
+                    if (this.state.stop.Person_Stopped.reasonForStop.key == 8) { //education code
+                        if (this.state.stop.Person_Stopped.reasonForStop.details.length < 1 || !this.state.stop.Person_Stopped.reasonForStop.details[0].reason) {
+                            msg.eduDiscipline = '*Please make a selection for Possible conduct warranting discipline..'
+                            msg.errorFlag = true;
+                        } else if (this.state.stop.Person_Stopped.reasonForStop.details[0].key == 1 && this.state.stop.Person_Stopped.reasonForStop.codes.length < 1) {
+                            msg.eduDiscipline = '*Please add a 48900 Sub Code section'
+                            msg.errorFlag = true;
+                        } else {msg.eduDiscipline = '', msg.reasonableSuspicion = '', msg.trafficViolation = ''} 
+                    }
+                }
+                if (this.state.stop.Person_Stopped.reasonForStopExplanation.length < 5 || this.state.stop.Person_Stopped.reasonForStopExplanation.length > 250) {
+                    msg.reasonBrief = '*Please provide a brief explanation regarding the reason for the stop (at least 5 and less than 250 characters)'
+                    msg.errorFlag = true;
+                } else { msg.reasonBrief = '' } 
 
-                //this.state.stop.Person_Stopped.reasonForStop.reason &&
-                //    this.state.stop.Person_Stopped.reasonForStopExplanation &&
-                //    !msg.reasonableSuspicion &&
-                //    !msg.eduDiscipline &&
-                //    !msg.trafficViolation &&
-                //    !msg.reasonableSuspicion &&
-                //    !msg.reasonBrief ? msg.errorFlag = false : null;
+                this.state.stop.Person_Stopped.reasonForStop.reason &&
+                    this.state.stop.Person_Stopped.reasonForStopExplanation &&
+                    !msg.reasonableSuspicion &&
+                    !msg.eduDiscipline &&
+                    !msg.trafficViolation &&
+                    !msg.reasonableSuspicion &&
+                    !msg.reasonBrief ? msg.errorFlag = false : null;
                 break;
             case '4':
-                //if (this.state.stop.Person_Stopped.actionsTakenDuringStop.length < 1) {
-                //    msg.action = '*Please make a selection for Actions Taken During Stop'
-                //    msg.errorFlag = true;
-                //} else {
-                //    msg.action = '';
-                //    if (this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf('Search of person was conducted') > -1 || this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf('Search of property was conducted') > -1) { 
-                //        if (this.state.stop.Person_Stopped.basisForSearch.length < 1) { 
-                //            msg.searchBasis = '*Please make a selection for Basis for search'
-                //            msg.errorFlag = true;
-                //        } else { msg.searchBasis = '' }
-                //    } 
+                if (this.state.stop.Person_Stopped.actionsTakenDuringStop.length < 1) {
+                    msg.action = '*Please make a selection for Actions Taken During Stop'
+                    msg.errorFlag = true;
+                } else {
+                    msg.action = '';
+                    if (this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf('Search of person was conducted') > -1 || this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf('Search of property was conducted') > -1) { 
+                        if (this.state.stop.Person_Stopped.basisForSearch.length < 1) { 
+                            msg.searchBasis = '*Please make a selection for Basis for search'
+                            msg.errorFlag = true;
+                        } else if (this.state.stop.Person_Stopped.basisForSearch.map(function (x) { return x.key; }).indexOf(4) == -1 || this.state.stop.Person_Stopped.basisForSearch.length > 1) {
+                            if (this.state.stop.Person_Stopped.basisForSearchBrief.length < 5 || this.state.stop.Person_Stopped.basisForSearchBrief.length > 250) {
+                                msg.searchBrief = '*Please provide a brief explanation regarding the reason for the stop (at least 5 and less than 250 characters)'
+                                msg.errorFlag = true;
+                            } else { msg.searchBrief = '' }
+                        } else {
+                            msg.searchBrief = '';
+                            msg.searchBasis = '';
+                            stop.Person_Stopped.basisForSearchBrief = ''
+                        }
+                    } 
                     
-                //    if (this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf('Property was seized') > -1) {
-                //        if (this.state.stop.Person_Stopped.basisForPropertySeizure.length < 1) {
-                //            msg.seizureBasis = '*Please make a selection for Basis for property seizure'
-                //            msg.errorFlag = true;
-                //        } else { msg.seizureBasis = '' }
-                //        if (this.state.stop.Person_Stopped.typeOfPropertySeized.length < 1) {
-                //            msg.seizureProperty = '*Please make a selection for Type of property seized'
-                //            msg.errorFlag = true;
-                //        } else { msg.seizureProperty = '' }
-                //    }
-                //}
+                    if (this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf('Property was seized') > -1) {
+                        if (this.state.stop.Person_Stopped.basisForPropertySeizure.length < 1) {
+                            msg.seizureBasis = '*Please make a selection for Basis for property seizure'
+                            msg.errorFlag = true;
+                        } else { msg.seizureBasis = '' }
+                        if (this.state.stop.Person_Stopped.typeOfPropertySeized.length < 1) {
+                            msg.seizureProperty = '*Please make a selection for Type of property seized'
+                            msg.errorFlag = true;
+                        } else { msg.seizureProperty = '' }
+                    }
+                   
+                }
+               
 
-                //if (this.state.stop.Person_Stopped.basisForSearchBrief.length < 5 || this.state.stop.Person_Stopped.basisForSearchBrief.length > 250) {
-                //    msg.searchBrief = '*Please provide a brief explanation regarding the reason for the stop (at least 5 and less than 250 characters)'
-                //    msg.errorFlag = true;
-                //} else { msg.searchBrief = '' } 
+                if (this.state.stop.Person_Stopped.resultOfStop.length < 1) {
+                    msg.result = '*Please make a selection for Result of Stop'
+                    msg.errorFlag = true;
+                } else {
+                    msg.result = '';
+                }
 
-                //if (this.state.stop.Person_Stopped.resultOfStop.length < 1) {
-                //    msg.result = '*Please make a selection for Result of Stop'
-                //    msg.errorFlag = true;
-                //} else {
-                //    msg.result = '';
-                //}
-
-                //if (this.state.stop.Person_Stopped.resultOfStop.length > 0) {
-                //   if (this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(2) > -1) {
-                //        if (this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(2)].codes.length < 1) {
-                //            msg.result = '*Please add Vehicle/Penal Code section'
-                //            msg.errorFlag = true;
-                //        } else { msg.result = ''; }
-                //    }
-                //}
+                if (this.state.stop.Person_Stopped.resultOfStop.length > 0) {
+                   if (this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(2) > -1) {
+                        if (this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(2)].codes.length < 1) {
+                            msg.result = '*Please add Vehicle/Penal Code section'
+                            msg.errorFlag = true;
+                        } else { msg.result = ''; }
+                    }
+                }
                 
-                //if (this.state.stop.Person_Stopped.resultOfStop.length > 0) {
-                //    if (this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(3) > -1) {
-                //        if (this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(3)].codes.length < 1) {
-                //            msg.result = '*Please add Vehicle/Penal Code section'
-                //            msg.errorFlag = true;
-                //        } else { msg.result = ''; }
-                //    }
-                //}
-                //if (this.state.stop.Person_Stopped.resultOfStop.length > 0) {
-                //    if (this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(4) > -1) {
-                //        if (this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(4)].codes.length < 1) {
-                //            msg.result = '*Please add Vehicle/Penal Code section'
-                //            msg.errorFlag = true;
-                //        } else { msg.result = ''; }
-                //    }
-                //}
-                //if (this.state.stop.Person_Stopped.resultOfStop.length > 0) {
-                //    if (this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(6) > -1) {
-                //        if (this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(6)].codes.length < 1) {
-                //            msg.result = '*Please add Vehicle/Penal Code section'
-                //            msg.errorFlag = true;
-                //        } else { msg.result = ''; }
-                //    }
-                //}
+                if (this.state.stop.Person_Stopped.resultOfStop.length > 0) {
+                    if (this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(3) > -1) {
+                        if (this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(3)].codes.length < 1) {
+                            msg.result = '*Please add Vehicle/Penal Code section'
+                            msg.errorFlag = true;
+                        } else { msg.result = ''; }
+                    }
+                }
+                if (this.state.stop.Person_Stopped.resultOfStop.length > 0) {
+                    if (this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(4) > -1) {
+                        if (this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(4)].codes.length < 1) {
+                            msg.result = '*Please add Vehicle/Penal Code section'
+                            msg.errorFlag = true;
+                        } else { msg.result = ''; }
+                    }
+                }
+                if (this.state.stop.Person_Stopped.resultOfStop.length > 0) {
+                    if (this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(6) > -1) {
+                        if (this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(6)].codes.length < 1) {
+                            msg.result = '*Please add Vehicle/Penal Code section'
+                            msg.errorFlag = true;
+                        } else { msg.result = ''; }
+                    }
+                }
 
-                //if (this.state.stop.Person_Stopped.contrabandOrEvidenceDiscovered.length < 1) {
-                //    msg.contraband = '*Please make a selection for Contraband or Evidence Discovered'
-                //    msg.errorFlag = true;
-                //} else {
-                //    msg.contraband = '';
-                //}
+                if (this.state.stop.Person_Stopped.contrabandOrEvidenceDiscovered.length < 1) {
+                    msg.contraband = '*Please make a selection for Contraband or Evidence Discovered'
+                    msg.errorFlag = true;
+                } else {
+                    msg.contraband = '';
+                }
 
-                //this.state.stop.Person_Stopped.actionsTakenDuringStop.length > 0 &&
-                //    this.state.stop.Person_Stopped.resultOfStop.length > 0 && 
-                //    this.state.stop.Person_Stopped.contrabandOrEvidenceDiscovered.length > 0 &&
+                this.state.stop.Person_Stopped.actionsTakenDuringStop.length > 0 &&
+                    this.state.stop.Person_Stopped.resultOfStop.length > 0 && 
+                    this.state.stop.Person_Stopped.contrabandOrEvidenceDiscovered.length > 0 &&
                     
-                //    !msg.searchBasis &&
-                //    !msg.seizureBasis &&
-                //    !msg.seizureProperty &&
-                //    !msg.searchBrief
-                //    !msg.result 
-                //    ? msg.errorFlag = false : null;
+                    !msg.searchBasis &&
+                    !msg.seizureBasis &&
+                    !msg.seizureProperty &&
+                    !msg.searchBrief &&
+                    !msg.result 
+                    ? msg.errorFlag = false : null;
                 break;
             case '5':
                 
                 break;
         }
-        this.setState({ validationErrorMsg: msg });
+        this.setState({ validationErrorMsg: msg, stop: stop });
         
     }
     componentWillMount() {
@@ -1025,8 +1050,10 @@ class Form extends React.Component {
     }
     fetchCodes(uri, name, type, label) {
         var codenode = this.state.codes;
-        if (store.get(label)) {
-            codenode[label] = store.get(label);
+        //if (store.get(label)) {
+        if (localStorage.getItem(label)) {
+            //codenode[label] = store.get(label);
+            codenode[label] = JSON.parse(localStorage.getItem(label));
             this.setState({ codes: codenode });
         } else {
             var thiss = this;
@@ -1036,7 +1063,7 @@ class Form extends React.Component {
             .then(function (response) {
                 return response.json()
                     .then(function (json) {
-                        console.log(json.map(function (x) { return x }))
+                        //console.log(json.map(function (x) { return x }))
                         if(label != 'Cities'){
                             thiss.handleCodes(json.map(function (x) { return x.Description + ' ' + x.Code }), label);
                         } else {
@@ -1056,22 +1083,36 @@ class Form extends React.Component {
         }
     }
     clearStore() {
-        store.clearAll();
+        //store.clearAll();
+        //Storage.clear();
+        localStorage.clear();
     }
     handleCodes(json, label) {
         var codenode = this.state.codes;
         codenode[label] = json;
         this.setState({ codes: codenode });
         //alert(JSON.stringify(json));
-        if (!store.enabled) {
-            alert('Local storage is not supported by your browser. Please disable "Private Mode", or upgrade to a modern browser.')
-            return
-        }        
-        store.set(label, this.state.codes[label]);
+        //if (!store.enabled) {
+        //if (!localStorage.storageAvailable()) {
+        //    alert('Local storage is not supported by your browser. Please disable "Private Mode", or upgrade to a modern browser.')
+        //    return
+        //}        
+        //store.set(label, this.state.codes[label]);
+        localStorage.setItem(label, JSON.stringify(this.state.codes[label]));
     }
     setStopInProgress() {
-        store.remove('stopInProgress');
-        store.set('stopInProgress', {
+        localStorage.removeItem('stopInProgress');
+        //store.remove('stopInProgress');
+        //store.set('stopInProgress', {
+        //    stop: this.state.stop,
+        //    instrumentation: this.state.instrumentation,
+        //    formPartFilter: this.state.formPartFilter,
+        //    progress: this.state.progress,
+        //    latitude: this.state.latitude,
+        //    longitude: this.state.longitude,
+        //    beat: this.state.beat
+        //})
+        localStorage.setItem('stopInProgress', JSON.stringify({
             stop: this.state.stop,
             instrumentation: this.state.instrumentation,
             formPartFilter: this.state.formPartFilter,
@@ -1079,13 +1120,15 @@ class Form extends React.Component {
             latitude: this.state.latitude,
             longitude: this.state.longitude,
             beat: this.state.beat
-        })
-        console.log(store.get('stopInProgress'));
+        }));
+       // console.log(store.get('stopInProgress'));
+       // console.log(localStorage.getItem('stopInProgress'));
        // e.preventDefault();
     }
     cancelStopInProgress(e) {
         if (confirm('Are you sure you want to cancel this Stop?')) {
-            store.remove('stopInProgress');
+            ///store.remove('stopInProgress');
+            localStorage.removeItem('stopInProgress')
         }
     };
     // update stop progress cache with every update
@@ -1093,7 +1136,8 @@ class Form extends React.Component {
         if (this.state.formPartFilter < '6' && this.state.formPartFilter > '0') {
             this.setStopInProgress();
         } else {
-            store.remove('stopInProgress');
+            //store.remove('stopInProgress');
+            localStorage.removeItem('stopInProgress')
         }
     };
 
@@ -1109,15 +1153,25 @@ class Form extends React.Component {
         var beat = this.state.beat;
 
         // check if active cache exists, if so, mount the cache
-        if (store.get('stopInProgress')) {
-            stop = store.get('stopInProgress').stop;
-            instrumentation = store.get('stopInProgress').instrumentation;
+        //if (store.get('stopInProgress')) {
+        //    stop = store.get('stopInProgress').stop;
+        //    instrumentation = store.get('stopInProgress').instrumentation;
+        //    instrumentation.cacheFlag = true;
+        //    formPartFilter = store.get('stopInProgress').formPartFilter;
+        //    progress = store.get('stopInProgress').progress;
+        //    latitude = store.get('stopInProgress').latitude;
+        //    longitude = store.get('stopInProgress').longitude;
+        //    beat = store.get('stopInProgress').beat;
+        if (localStorage.getItem('stopInProgress')) {
+            var stopInProgress = JSON.parse(localStorage.getItem('stopInProgress'));
+            stop = stopInProgress.stop;
+            instrumentation = stopInProgress.instrumentation;
             instrumentation.cacheFlag = true;
-            formPartFilter = store.get('stopInProgress').formPartFilter;
-            progress = store.get('stopInProgress').progress;
-            latitude = store.get('stopInProgress').latitude;
-            longitude = store.get('stopInProgress').longitude;
-            beat = store.get('stopInProgress').beat;
+            formPartFilter = stopInProgress.formPartFilter;
+            progress = stopInProgress.progress;
+            latitude = stopInProgress.latitude;
+            longitude = stopInProgress.longitude;
+            beat = stopInProgress.beat;
         } else {
             stop.date = moment().format('YYYY-MM-DD');
             stop.time = moment().format('HH:mm:ss');
@@ -1138,7 +1192,8 @@ class Form extends React.Component {
             latitude: latitude,
             longitude: longitude,
             beat: beat,
-            debug: document.getElementById('debug').innerHTML
+            debug: document.getElementById('debug').innerHTML,
+            reverseGeoURI: document.getElementById('reverseGeoURI').innerText
         });        
     }
 
@@ -1180,11 +1235,13 @@ class Form extends React.Component {
             newStop[node][node2] = arr;
             
             this.setState({ location: newStop });
-            if (!store.enabled) {
-                alert('Local storage is not supported by your browser. Please disable "Private Mode", or upgrade to a modern browser.')
-                return
-            }
-            store.set('LastLocation', newStop);
+            //if (!store.enabled) {
+            //if (localStorage.storageAvailable()) {
+            //    alert('Local storage is not supported by your browser. Please disable "Private Mode", or upgrade to a modern browser.')
+            //    return
+            //}
+            //store.set('LastLocation', newStop);
+            localStorage.setItem('LastLocation', JSON.stringify(newStop));
         } else if (node == 'reasonForStop') {
             var newStop = this.state.stop.Person_Stopped;
             newStop[node][node2] = arr;
@@ -1249,11 +1306,13 @@ class Form extends React.Component {
                 var newStop = this.state.stop.location;
                 newStop[node] = arr;
                 this.setState({ location: newStop });
-                if (!store.enabled) {
-                    alert('Local storage is not supported by your browser. Please disable "Private Mode", or upgrade to a modern browser.')
-                    return
-                }
-                store.set('LastLocation', newStop);
+                //if (!store.enabled) {
+                //    alert('Local storage is not supported by your browser. Please disable "Private Mode", or upgrade to a modern browser.')
+                //    return
+                //}
+                //store.set('LastLocation', newStop);
+                var lastlocation = JSON.stringify(newStop);
+                localStorage.setItem('LastLocation', lastlocation);
                 
             } else if (node == 'reasonForStop') {
                 var newStop = this.state.stop.Person_Stopped;
@@ -1417,15 +1476,19 @@ class Form extends React.Component {
                         <progress value={this.state.progress} max="100"></progress>
                         Step {this.state.formPartFilter} of 5 (Person {this.state.personCount})
                         </p>
+                        {this.state.stop.location.school &&
+                            <div>
+                                <h3>Student</h3>
+                                <span className='required'>required</span><a className="required regref" target="_blank" href="/regulation#999-224-a-16">§999.224(a)(16)</a>
+                                <CheckBox2 key="Student" className="list-item" checked={this.state.stop.Person_Stopped.Is_Stud} value="K-12 Public School Student" name="Student" onClick={(e) => this.updateBoolCheckBox(e, 'Person_Stopped', 'Is_Stud')} />
+                            </div>
+                        }
+                                <h3>Perceived Race or Ethnicity</h3>
+                                <span className='required'>required</span><a className="required regref" target="_blank" href="/regulation#999-226-a-4">§999.226(a)(4)</a>
+                                {this.state.validationErrorMsg.race && <div className="error-alert"> {this.state.validationErrorMsg.race} </div>}
+                                <CheckBoxListSection type="CheckBox" stateValue={this.state.stop.Person_Stopped.perceivedRace} node='perceivedRace' node2='race' itemList={perceivedRace} function={this.checkBoxSelection} />
+                            
                         
-                        <h3>Student</h3>
-                        <span className='required'>required</span><a className="required regref" target="_blank" href="/regulation#999-224-a-16">§999.224(a)(16)</a>
-                        <CheckBox2 key="Student" className="list-item" checked={this.state.stop.Person_Stopped.Is_Stud} value="K-12 Public School Student" name="Student" onClick={(e) => this.updateBoolCheckBox(e, 'Person_Stopped', 'Is_Stud')} />
-                        <h3>Perceived Race or Ethnicity</h3>
-                        <span className='required'>required</span><a className="required regref" target="_blank" href="/regulation#999-226-a-4">§999.226(a)(4)</a>
-                        {this.state.validationErrorMsg.race && <div className="error-alert"> {this.state.validationErrorMsg.race} </div>}
-                        <CheckBoxListSection type="CheckBox" stateValue={this.state.stop.Person_Stopped.perceivedRace} node='perceivedRace' node2='race' itemList={perceivedRace} function={this.checkBoxSelection} />
-                       
                         <h3>Perceived Gender</h3>
                         <span className='required'>required</span><a className="required regref" target="_blank" href="/regulation#999-226-a-5">§999.226(a)(5)</a>
                         {this.state.validationErrorMsg.gender && <div className="error-alert"> {this.state.validationErrorMsg.gender}</div> }
@@ -1642,11 +1705,16 @@ class Form extends React.Component {
                                 <CheckBox2 key="Suspected violation of school policy" checked={this.state.stop.Person_Stopped.basisForSearch.map(function (y) { return y.basis }).indexOf("Suspected violation of school policy") > -1} className="list-item-nested" value="Suspected violation of school policy" name="Suspected violation of school policy" onClick={(e) => this.checkBoxSelection(e, 'basisForSearch', 'basis', '' , 13)} />
                                 }
                                 <CheckBoxListSection type="CheckBox" stateValue={this.state.stop.Person_Stopped.basisForSearch} itemList={searchOfPersonOrPropertyConducted} node="basisForSearch" node2="basis" function={this.checkBoxSelection} />
-                               
-                                {this.state.validationErrorMsg.searchBrief && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.searchBrief}</div>}
-                                <TextInput type="text" stateValue={this.state.stop.Person_Stopped.basisForSearchBrief} className="list-item-nested" label="Brief Explanation (250 characters). Important: Do not include personally identifying information." name="basisForSearchBrief" onChange={this.updatePersonInput} />
-                                <span className="list-item-nested">{250 - this.state.stop.Person_Stopped.basisForSearchBrief.length}  characters remaining</span>
-                            </div>
+
+                                {(this.state.stop.Person_Stopped.basisForSearch.map(function (x) { return x.key; }).indexOf(4) == -1 || this.state.stop.Person_Stopped.basisForSearch.length > 1) && 
+                                <div>
+                                    {this.state.validationErrorMsg.searchBrief && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.searchBrief}</div>}
+                                    <TextInput type="text" stateValue={this.state.stop.Person_Stopped.basisForSearchBrief} className="list-item-nested" label="Brief Explanation (250 characters). Important: Do not include personally identifying information." name="basisForSearchBrief" onChange={this.updatePersonInput} />
+                                    <span className="list-item-nested">{250 - this.state.stop.Person_Stopped.basisForSearchBrief.length}  characters remaining</span>
+                                </div>
+                                }
+
+                        </div>
                         }
 
                         <p><strong>Seizure</strong></p>
@@ -1713,15 +1781,13 @@ class Form extends React.Component {
                                 {this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("Citation or infraction") > -1 &&
                             <div>
                                 <Tags tags={this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (y) { return y.result }).indexOf("Citation or infraction")].codes}
-                                suggestions={this.state.codes.AllCodes}
+                                
                                 placeholder='Add Vehicle Code'
                                 autofocus={false}
                                 allowDeleteFromEmptyInput={false}
-                                    handleDelete={(e) => this.handleCodeDelete(e, 'resultOfStop', '', 'result', 'Citation or infraction')}
-                                    handleAddition={(e) => this.handleCodeAdd(e, '', 'AllCodes', 'resultOfStop', 'result', 'Citation or infraction')}
                                     handleFilterSuggestions={this.handleFilterSuggestions} />
                                 
-                                <label className="list-item-nested"> Select Offense Code (up to 5)</label>
+                                <label className="list-item-nested"> 65002 is selected by default</label>
                             </div>
                                 }
                                 <CheckBox2 key="In-field cite and release" className="list-item" checked={this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("In-field cite and release") > -1} value="In-field cite and release" name="In-field cite and release" onClick={(e) => this.checkBoxSelection(e, 'resultOfStop', 'result', '', 4)} />

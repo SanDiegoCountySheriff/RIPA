@@ -18,9 +18,10 @@ namespace RIPASTOP.Models
         public string Agency { get; set; }
         [StringLength(20)]
         public string ORI { get; set; }
+        [Range(1,50)]
         public int Years { get; set; }
         [StringLength(255)]
-        public string Assignment { get; set; }
+        public string Assignment { get; set; }        
         public string AssignmentOther { get; set; }
         public int AssignmentKey { get; set; }
         public List<Stop> Stops { get; set; }
