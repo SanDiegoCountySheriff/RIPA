@@ -349,8 +349,9 @@ label {
 }
 
 #dom-info {
-    position: absolute;
-    top: -1000px;
+    /*position: absolute;
+    top: -1000px;*/
+    display:none;
 }
 
 /* Styles for React Tags*/

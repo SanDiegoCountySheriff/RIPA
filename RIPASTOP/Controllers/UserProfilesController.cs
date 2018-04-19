@@ -38,6 +38,7 @@ namespace RIPASTOP.Controllers
         //    }
         //    return View(userProfile);
         //}
+       
 
         // GET: UserProfiles/Create
         public ActionResult Create()
@@ -48,6 +49,9 @@ namespace RIPASTOP.Controllers
             ViewBag.debug = HttpContext.IsDebuggingEnabled;
             ViewBag.agency = ConfigurationManager.AppSettings["agency"];
             ViewBag.ori = ConfigurationManager.AppSettings["ori"];
+
+           
+
 
             if (User.Identity.IsAuthenticated && UserProfile_Conf == null)
             {
