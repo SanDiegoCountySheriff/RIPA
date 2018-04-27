@@ -21,7 +21,8 @@ namespace RIPASTOP.Models
         [Range(1,50)]
         public int Years { get; set; }
         [StringLength(255)]
-        public string Assignment { get; set; }        
+        public string Assignment { get; set; }
+ //       [StringLength(255, MinimumLength = 3)]
         public string AssignmentOther { get; set; }
         public int AssignmentKey { get; set; }
         public List<Stop> Stops { get; set; }
@@ -33,6 +34,7 @@ namespace RIPASTOP.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         //public Guid ID { get; set; }
         public int ID { get; set; }
+        //[StringLength(200)]
         public string NTUserName { get; set; }
         public virtual UserProfile UserProfile { get; set; }
         //public string CountyID { get; set; }

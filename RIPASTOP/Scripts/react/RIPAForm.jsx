@@ -140,6 +140,7 @@ class Form extends React.Component {
             instrumentation: {
                 template: null,
                 cacheFlag: false,
+                server: '',
                 temporalTrace: {
                     startDate: moment().format('YYYY-MM-DD'), //componentDidMount
                     startTme: moment().format('HH:mm:ss'), //componentDidMount
@@ -150,12 +151,7 @@ class Form extends React.Component {
                 }
             },
             validationErrorMsg: {
-                errorFlag: false, datetime: '', time: '', duration: '', locationType: '', address: '', school: '',
-                gender: '', lgbt: '', race: '', age: '', disability: '', stopType: '', presence: '', reason: '',
-                radioDispatch: '', plannedOperation: '',
-                trafficViolation: '', reasonableSuspicion: '', eduDiscipline: '', reasonBrief: '', action: '', 
-                searchBasis: '', searchBrief: '', seizureBasis: '', resultOfStop: '',
-                seizureProperty: '', result: '', contraband: '',  warning: '', custody: '', years: '', assignment: ''
+                errorFlag: false
             },
             codes: {
             },
@@ -176,6 +172,7 @@ class Form extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleFormSectionFilter = this.handleFormSectionFilter.bind(this);
         this.geoFindMe = this.geoFindMe.bind(this);
+        this.geoSuccess2 = this.geoSuccess2.bind(this);
         this.geoSuccess = this.geoSuccess.bind(this);
         this.handleCodes = this.handleCodes.bind(this);
         this.validateDateTime = this.validateDateTime.bind(this);
@@ -360,8 +357,16 @@ class Form extends React.Component {
         
         var newLocation = this.state.stop.location;
         if (e.address) {// update location from reverse geocoder
-            newLocation.blockNumber = this.floorInteger(e.address.Street.substr(0, e.address.Street.indexOf(' ')));
-            newLocation.streetName = e.address.Street.substr(e.address.Street.indexOf(' ') + 1);
+            var streetNum = e.address.Street.substr(0, e.address.Street.indexOf(' '));
+            if (isNaN(streetNum)) {
+                newLocation.blockNumber = '';
+                newLocation.streetName = e.address.Street;
+            }
+            else {
+                newLocation.blockNumber = this.floorInteger(streetNum);
+                newLocation.streetName = e.address.Street.substr(e.address.Street.indexOf(' ') + 1);
+            }
+
             //newLocation.blockNumber = this.floorInteger(e.address.AddNum);
             //newLocation.streetName = e.address.Address.substr(e.address.Address.indexOf(' ') + 1);
             //newLocation.city = e.address.City == 'SD' ? 'SAN DIEGO' : e.address.City;
@@ -383,11 +388,17 @@ class Form extends React.Component {
             console.log(e.error);
         }
         else {
-            var val = e.target.value;
+            var val = e.target.value;            
             var name = e.target.name;
             val && (name === 'streetName' || name === 'blockNumber') ? e.target.className = 'list-item' : null;
             newLocation[name] = val;
+
+            if (val && name === 'blockNumber') {
+                newLocation.blockNumber = isNaN(this.floorInteger(e.target.value)) ? '' : this.floorInteger(e.target.value);
+            }
         }
+
+        
         newStop.location = newLocation;       
         //var location = this.state.stop.location;
         //if (!store.enabled) {
@@ -396,6 +407,8 @@ class Form extends React.Component {
         //    return
         //}
         //store.set('LastLocation', newLocation);
+       
+
         localStorage.setItem('LastLocation', JSON.stringify(newLocation));
         this.setState({ stop: newStop });
         //alert(JSON.stringify(store.get('LastLocation')));
@@ -416,6 +429,9 @@ class Form extends React.Component {
         var val = e.target.value;
         var newStop = this.state.stop;
         var name = e.target.name;
+        if (name == "ExpYears") {
+            val = Math.round(val);
+        }
         newStop[name] = val;
         this.setState({ stop: newStop });
     }
@@ -423,6 +439,9 @@ class Form extends React.Component {
         var val = e.target.value;
         var newStop = this.state.stop.Person_Stopped;
         var name = e.target.name;
+        if (name == "perceivedAge") {
+            val = Math.round(val);
+        }
         newStop[name] = val;
         this.setState({ Person_Stopped: newStop });
     }
@@ -466,6 +485,7 @@ class Form extends React.Component {
                 } else { e.target.className = 'list-item' }
                 break;
             case 'stopDuration':
+                val = Math.round(val);
                 if (!this.validateDuration(val)) {
                     e.target.className += ' input-error'
                 } else { e.target.className = 'list-item' }
@@ -485,14 +505,17 @@ class Form extends React.Component {
         return block * order;
     }
 
-    geoSuccess(position) {        
-                
+    geoSuccess(position) {                        
         this.geoReverseGeocode(position.coords.longitude, position.coords.latitude);
-
         this.setState({ latitude: position.coords.latitude, longitude: position.coords.longitude });
         //alert("Position recorded.");
     } 
-    geoFindMe(e) {
+    geoSuccess2(position) {
+        this.setState({ latitude: position.coords.latitude, longitude: position.coords.longitude });
+        //alert("Position recorded.");
+    } 
+
+    geoFindMe(e, RevGeo) {
         if (!navigator.geolocation) {
             console.log("Geolocation is not supported by your browser");
             alert("Geolocation is not supported by your browser");
@@ -503,7 +526,12 @@ class Form extends React.Component {
             alert("PositionError: " + e.code + " - " + e.message);
         }
         e.preventDefault();
-        navigator.geolocation.getCurrentPosition(this.geoSuccess, error);
+
+        if (RevGeo) {
+            navigator.geolocation.getCurrentPosition(this.geoSuccess, error);
+        } else {
+            navigator.geolocation.getCurrentPosition(this.geoSuccess2, error);
+        }
         //navigator.permissions.query({ name: 'geolocation' }).then(function(result) {
         //    alert("Geolocation API permissions status: " + result.state);
         //});       
@@ -601,72 +629,76 @@ class Form extends React.Component {
         
         if (!this.state.validationErrorMsg.errorFlag) {
 
-            // show loader button
-            thiss.setState({ loader: true })
+            
 
-            fetch("/", { //Test Network first before sumbitting
-                method: 'get',
-                credentials: "same-origin"
-            }).then(function (response) {
-                if (!response.ok) {
-                    alert('You are offline.')
-                    console.log("offline");
-                } else {
-                    //alert('You are online.')
-                    console.log("online");                    
-                }
-            }).then(function (response) {
-                console.log("ok");
+            if (this.state.latitude) {
+                // show loader button
+                thiss.setState({ loader: true })
 
-                var instrumentation = thiss.state.instrumentation;
-                var lastend = instrumentation.temporalTrace.stepTrace[
-                    instrumentation.temporalTrace.stepTrace.length - 1
-                ].endTimeStamp;
-                instrumentation.temporalTrace.stepTrace.push(
-                    { formPartFilter: '5', startTimeStamp: lastend, endTimeStamp: moment().format('YYYY-MM-DD HH:mm:ss') }
-                ); 
-
-                fetch('/stops/create', {
-                    method: 'post',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body:
-                    JSON.stringify({
-                        JsonStop: JSON.stringify(thiss.state.stop),
-                        JsonInstrumentation: JSON.stringify(instrumentation),
-                        Latitude: thiss.state.latitude,
-                        Longitude: thiss.state.longitude,
-                        Beat: thiss.state.beat,
-                        PersonCount: thiss.state.personCount
-                    }),
+                fetch("/", { //Test Network first before sumbitting
+                    method: 'get',
                     credentials: "same-origin"
                 }).then(function (response) {
                     if (!response.ok) {
-                        thiss.setState({ loader: false })
-                        throw Error(response.statusText);
+                        alert('You are offline.')
+                        console.log("offline");
+                    } else {
+                        //alert('You are online.')
+                        console.log("online");
                     }
-                    return response
-                }).then(function (data) {
-                    console.log(data);
-                    var progress = thiss.state.progress;
-                    progress = progress < 100 ? progress += 18 : progress;
-                    var instrumentation = thiss.state.instrumentation;
-                    instrumentation.temporalTrace.stepTrace = [];
-                    //store.remove('stopInProgress');
-                    thiss.setState({ formPartFilter: '6', progress: progress, instrumentation: instrumentation });
-                    }).catch(function (error) {
-                        thiss.setState({loader: false})
-                    alert('There has been a problem with your fetch operation: ' + error.message);
-                    throw error;
+                }).then(function (response) {
+                    console.log("ok");
 
+                    var instrumentation = thiss.state.instrumentation;
+                    var lastend = instrumentation.temporalTrace.stepTrace[
+                        instrumentation.temporalTrace.stepTrace.length - 1
+                    ].endTimeStamp;
+                    instrumentation.temporalTrace.stepTrace.push(
+                        { formPartFilter: '5', startTimeStamp: lastend, endTimeStamp: moment().format('YYYY-MM-DD HH:mm:ss') }
+                    );
+
+                    fetch('/stops/create', {
+                        method: 'post',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body:
+                        JSON.stringify({
+                            JsonStop: JSON.stringify(thiss.state.stop),
+                            JsonInstrumentation: JSON.stringify(instrumentation),
+                            Latitude: thiss.state.latitude,
+                            Longitude: thiss.state.longitude,
+                            Beat: thiss.state.beat,
+                            PersonCount: thiss.state.personCount
+                        }),
+                        credentials: "same-origin"
+                    }).then(function (response) {
+                        if (!response.ok) {
+                            thiss.setState({ loader: false })
+                            throw Error(response.statusText);
+                        }
+                        return response
+                    }).then(function (data) {
+                        console.log(data);
+                        var progress = thiss.state.progress;
+                        progress = progress < 100 ? progress += 18 : progress;
+                        var instrumentation = thiss.state.instrumentation;
+                        instrumentation.temporalTrace.stepTrace = [];
+                        //store.remove('stopInProgress');
+                        thiss.setState({ formPartFilter: '6', progress: progress, instrumentation: instrumentation });
+                    }).catch(function (error) {
+                        thiss.setState({ loader: false })
+                        alert('There has been a problem with your fetch operation: ' + error.message);
+                        throw error;
+
+                    });
+
+                }).catch(function (error) {
+                    thiss.state.loader = false;
+                    console.log(error);
                 });
-               
-            }).catch(function (error) {
-                thiss.state.loader = false;
-                console.log(error);
-            });
+            }
         }
         e.preventDefault();
     }
@@ -677,6 +709,7 @@ class Form extends React.Component {
         } else {
             this.validateFormSection();
         }
+
 
         if (!this.state.validationErrorMsg.errorFlag) {
             var val = e.target.name;
@@ -735,7 +768,11 @@ class Form extends React.Component {
                 }
                 template.Person_Stopped = this.state.templates[templatename].Person_Stopped;
                 instrumentation.template = templatename;
-            }            
+            }     
+            // if to check if LatLong exist
+            //if (!this.state.latitude) {
+                this.geoFindMe(e, false);
+            //}
             this.setState({ formPartFilter: val, stop: template, progress: progress, instrumentation: instrumentation });
             
             scroll(0, 0);
@@ -764,7 +801,8 @@ class Form extends React.Component {
     }
     validateDateTime() {
         var msg = this.state.validationErrorMsg;
-        if (!this.validateDate(this.state.stop.date)) {
+           
+       if (!this.validateDate(this.state.stop.date)) {
             msg.datetime = '*Please enter a valid date'
             msg.errorFlag = true;            
         } else { msg.datetime = '' }
@@ -773,17 +811,21 @@ class Form extends React.Component {
             msg.errorFlag = true;
         } else { msg.time = '' }
         if (this.validateDate(this.state.stop.date) && this.validateTime(this.state.stop.time)) {
-            if (moment(this.state.stop.date).isAfter()) {
-                msg.datetime = '*Please enter a date in the past'
+            var dateTime = this.state.stop.date + ' ' + this.state.stop.time;
+            var yesterday = moment().subtract(24, 'hours');
+            if (moment(dateTime, 'YYYY-MM-DD HH:mm').isAfter()) {
+                msg.datetime = '*Please enter a date & time in the past'
+                msg.errorFlag = true;
+            }
+            else if (moment(dateTime, 'YYYY-MM-DD HH:mm').isBefore(yesterday)) {
+                msg.datetime = '*Please enter a date & time within the past 24 hrs'
                 msg.errorFlag = true;
             } else {
-                msg.datetime = ''
-                if (moment(this.state.stop.date + ' ' + this.state.stop.time).isAfter()) {
-                    msg.time = '*Please enter a time in the past'
-                    msg.errorFlag = true;
-                } else { msg.time = ''; msg.errorFlag = false; }
-            }
+                msg.datetime = '';
+            }           
+
         } 
+        this.setState({ validationErrorMsg: msg });
     }
     validateFormSection() {
         var step = this.state.formPartFilter;
@@ -791,6 +833,7 @@ class Form extends React.Component {
         var stop = this.state.stop;
         switch (step) {
             case '1':
+
                 this.validateDateTime();
                 if (!this.validateDuration(this.state.stop.stopDuration)) {
                     msg.duration = '*Please enter a valid Duration of Stop in minutes'
@@ -820,37 +863,50 @@ class Form extends React.Component {
                     this.state.stop.location.intersection = ''
                 }
 
-                if(this.state.stop.location.school && this.state.stop.location.schoolName.codes.length < 1){
+                var locationStr = this.state.stop.location.blockNumber.toString() + this.state.stop.location.streetName + this.state.stop.location.intersection + this.state.stop.location.highwayExit + this.state.stop.location.landMark;
+                if (locationStr.length < 5) {
+                    msg.locationLength = '*Location of Stop must contain minimum of 5 characters'
+                    msg.errorFlag = true;
+                } else { msg.locationLength = ''; }
+
+                if (this.state.stop.location.school && this.state.stop.location.schoolName.codes.length < 1) {
                     msg.school = '*Please enter a school name'
                     msg.errorFlag = true;
-                } else { msg.school = '';}
+                } else { msg.school = ''; }
 
                 if (this.state.stop.location.city.codes.length < 1) {
                     msg.city = '*Please enter a City'
-                    msg.errorFlag = true; 
+                    msg.errorFlag = true;
                 } else { msg.city = ''; }
 
                 if (!this.state.stop.ExpYears) {
                     msg.years = 'Please make a selection for Officer Years Of Experience'
                     msg.errorFlag = true;
-                } else { msg.years = '' } 
+                } else { msg.years = '' }
                 if (this.state.stop.officerAssignment.key == 0) {
                     msg.assignment = 'Please make a selection for Officer Assignment'
                     msg.errorFlag = true;
                 } else if (!this.state.stop.officerAssignment.otherType && this.state.stop.officerAssignment.key == 10) {
                     msg.assignment = 'Please enter a description for other assignment type'
                     msg.errorFlag = true;
+                } else if (this.state.stop.officerAssignment.key == 10 && this.state.stop.officerAssignment.otherType.length < 3) {
+                    msg.assignment = 'Please enter at least 3 characters for other assignment description'
+                    msg.errorFlag = true;
                 } else { msg.assignment = '' } 
 
                 this.validateDate(this.state.stop.date) &&
                     this.validateTime(this.state.stop.time) &&
                     this.validateDuration(this.state.stop.stopDuration) &&
-                    this.state.stop.location.streetName &&
-                    this.state.stop.location.blockNumber &&
+                    ((this.state.stop.location.streetName &&
+                    this.state.stop.location.blockNumber) ||
+                    this.state.stop.location.intersection ||
+                    this.state.stop.location.highwayExit ||
+                    this.state.stop.location.landMark) &&
                     this.state.stop.location.city.codes.length == 1 &&
                     !msg.school &&
                     !msg.assignment &&
-                    !msg.years
+                    !msg.years &&
+                    !msg.datetime
                     ? msg.errorFlag = false : null;
                 break;
             case '2':
@@ -937,12 +993,32 @@ class Form extends React.Component {
                         if (this.state.stop.Person_Stopped.basisForSearch.length < 1) { 
                             msg.searchBasis = '*Please make a selection for Basis for search'
                             msg.errorFlag = true;
-                        } else if (this.state.stop.Person_Stopped.basisForSearch.map(function (x) { return x.key; }).indexOf(4) == -1 || this.state.stop.Person_Stopped.basisForSearch.length > 1) {
+                        }
+                        else if (this.state.stop.Person_Stopped.basisForSearch.map(function (x) { return x.key; }).indexOf(4) == -1 || this.state.stop.Person_Stopped.basisForSearch.length > 1) {
                             if (this.state.stop.Person_Stopped.basisForSearchBrief.length < 5 || this.state.stop.Person_Stopped.basisForSearchBrief.length > 250) {
                                 msg.searchBrief = '*Please provide a brief explanation regarding the reason for the stop (at least 5 and less than 250 characters)'
                                 msg.errorFlag = true;
                             } else { msg.searchBrief = '' }
-                        } else {
+
+                            if (this.state.stop.Person_Stopped.basisForSearch.map(function (x) { return x.key; }).indexOf(1) > -1) {
+
+                                if (this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.key; }).indexOf('17,N') > -1 &&
+                                    this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.key; }).indexOf('19,N') > -1) {
+                                    msg.searchBasis = '*"Basis for Search" indicates "Consent Given" but Person/Property search consent has not been selected'
+                                    msg.errorFlag = true;
+                                } else { msg.searchBasis = '' }
+                            }
+                            else {
+                                if (this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.key; }).indexOf('17,Y') > -1 ||
+                                    this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.key; }).indexOf('19,Y') > -1) {
+                                    msg.searchBasis = '*If "Person/Property search consent" is given then "Consent Given" has to be selected'
+                                    msg.errorFlag = true;
+                                } else { msg.searchBasis = '' }
+                            }
+                        }
+                  
+                        
+                        else {
                             msg.searchBrief = '';
                             msg.searchBasis = '';
                             stop.Person_Stopped.basisForSearchBrief = ''
@@ -973,7 +1049,7 @@ class Form extends React.Component {
                 if (this.state.stop.Person_Stopped.resultOfStop.length > 0) {
                    if (this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(2) > -1) {
                         if (this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(2)].codes.length < 1) {
-                            msg.result = '*Please add Vehicle/Penal Code section'
+                            msg.result = '*Please add Code section'
                             msg.errorFlag = true;
                         } else { msg.result = ''; }
                     }
@@ -982,7 +1058,7 @@ class Form extends React.Component {
                 if (this.state.stop.Person_Stopped.resultOfStop.length > 0) {
                     if (this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(3) > -1) {
                         if (this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(3)].codes.length < 1) {
-                            msg.result = '*Please add Vehicle/Penal Code section'
+                            msg.result = '*Please add Code section'
                             msg.errorFlag = true;
                         } else { msg.result = ''; }
                     }
@@ -990,7 +1066,7 @@ class Form extends React.Component {
                 if (this.state.stop.Person_Stopped.resultOfStop.length > 0) {
                     if (this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(4) > -1) {
                         if (this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(4)].codes.length < 1) {
-                            msg.result = '*Please add Vehicle/Penal Code section'
+                            msg.result = '*Please add Code section'
                             msg.errorFlag = true;
                         } else { msg.result = ''; }
                     }
@@ -998,7 +1074,7 @@ class Form extends React.Component {
                 if (this.state.stop.Person_Stopped.resultOfStop.length > 0) {
                     if (this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(6) > -1) {
                         if (this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(6)].codes.length < 1) {
-                            msg.result = '*Please add Vehicle/Penal Code section'
+                            msg.result = '*Please add Code section'
                             msg.errorFlag = true;
                         } else { msg.result = ''; }
                     }
@@ -1167,11 +1243,19 @@ class Form extends React.Component {
             stop = stopInProgress.stop;
             instrumentation = stopInProgress.instrumentation;
             instrumentation.cacheFlag = true;
+            instrumentation.server = document.getElementById('server').innerHTML;
             formPartFilter = stopInProgress.formPartFilter;
             progress = stopInProgress.progress;
             latitude = stopInProgress.latitude;
             longitude = stopInProgress.longitude;
             beat = stopInProgress.beat;
+            var userProfileUpdate = document.getElementById('userProfileUpdate').innerHTML;
+            if (userProfileUpdate == "True") {
+                stop.ExpYears = document.getElementById('officerYearsExperience').innerHTML;
+                stop.officerAssignment.type = document.getElementById('officerAssignment').innerHTML;
+                stop.officerAssignment.key = document.getElementById('officerAssignmentKey').innerHTML;
+                stop.officerAssignment.otherType = document.getElementById('officerAssignmentOther').innerHTML;
+            }
         } else {
             stop.date = moment().format('YYYY-MM-DD');
             stop.time = moment().format('HH:mm:ss');
@@ -1182,6 +1266,7 @@ class Form extends React.Component {
             stop.officerAssignment.type = document.getElementById('officerAssignment').innerHTML;
             stop.officerAssignment.key = document.getElementById('officerAssignmentKey').innerHTML;
             stop.officerAssignment.otherType = document.getElementById('officerAssignmentOther').innerHTML;
+            instrumentation.server = document.getElementById('server').innerHTML;
         }
 
         this.setState({
@@ -1365,7 +1450,7 @@ class Form extends React.Component {
                             Step {this.state.formPartFilter} of 5
                         </p>
 
-                        {this.state.validationErrorMsg.assignment && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.assignment}</div>}
+                        {/*this.state.validationErrorMsg.assignment && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.assignment}</div>*/}
                         <CheckBox2 key="Update Officer Information" className="list-item" checked={this.state.toggleOfficerOptions} value="Edit Assignment & Experience" name="Update Officer Information" onClick={(e) => this.toggleJson(e, 'toggleOfficerOptions')} />
                         {this.state.toggleOfficerOptions &&
                             <div>
@@ -1393,7 +1478,7 @@ class Form extends React.Component {
                         
                        
                         {this.state.validationErrorMsg.duration && <div className="error-alert"> {this.state.validationErrorMsg.duration}</div>}
-                        <TextInput type="number" min='0' stateValue={this.state.stop.stopDuration} className="list-item" label="Duration of Stop (in Minutes)" name="stopDuration" pattern="\d*" onChange={this.updateDateTime} />
+                        <TextInput type="number" min='0' stateValue={this.state.stop.stopDuration} className="list-item" label="Duration of Stop (in Minutes, maximum 1440)" name="stopDuration" pattern="\d*" onChange={this.updateDateTime} />
                        
 
                         {/*<h3>Stop in response to Call for Service </h3>
@@ -1422,9 +1507,10 @@ class Form extends React.Component {
                         }
                         <div className='button-container'>
                             <a href="" className="button-left" value="LastLocation" name="lastLocation" onClick={this.useLastLocation} > Use my last location</a>
-                            <a href="" className="button-right" value="Get Lat/Long" name="GPS" onClick={this.geoFindMe} > Look up my location </a>
+                            <a href="" className="button-right" value="Get Lat/Long" name="GPS" onClick={(e) => this.geoFindMe(e, true)} > Look up my location </a>
                         </div>
                         {this.state.validationErrorMsg.block && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.block}</div>}
+                        {this.state.validationErrorMsg.locationLength && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.locationLength}</div>}
                         <TextInput type="number" pattern="\d*" min="0" stateValue={this.state.stop.location.blockNumber} name="blockNumber" className="list-item" label="Block Number:" onChange={this.updateLocation} />
                         {this.state.validationErrorMsg.streetName && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.streetName}</div>}
                         <TextInput type="text" stateValue={this.state.stop.location.streetName} name="streetName" className="list-item" label="Street Name:" onChange={this.updateLocation} />
@@ -1693,6 +1779,7 @@ class Form extends React.Component {
                             value="Search of property was conducted"
                             name="Search of property was conducted"
                             onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '20,na')} />
+
                         {(this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Search of person was conducted") > -1 || this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Search of property was conducted") > -1) &&
                             <div>
 
@@ -1706,6 +1793,9 @@ class Form extends React.Component {
                                 }
                                 <CheckBoxListSection type="CheckBox" stateValue={this.state.stop.Person_Stopped.basisForSearch} itemList={searchOfPersonOrPropertyConducted} node="basisForSearch" node2="basis" function={this.checkBoxSelection} />
 
+                                {this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Search of property was conducted") > -1 &&
+                                    <CheckBoxListSection type="CheckBox" stateValue={this.state.stop.Person_Stopped.basisForSearch} itemList={searchOfPersonOrPropertyConducted_VehInv} node="basisForSearch" node2="basis" function={this.checkBoxSelection} />
+                                }
                                 {(this.state.stop.Person_Stopped.basisForSearch.map(function (x) { return x.key; }).indexOf(4) == -1 || this.state.stop.Person_Stopped.basisForSearch.length > 1) && 
                                 <div>
                                     {this.state.validationErrorMsg.searchBrief && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.searchBrief}</div>}
@@ -1767,14 +1857,14 @@ class Form extends React.Component {
                             <div>
                             <Tags tags={this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (y) { return y.result }).indexOf("Warning (verbal or written)")].codes}
                                 suggestions={this.state.codes.AllCodes}
-                                placeholder='Add Vehicle Code'
+                                placeholder='Add Code'
                                 autofocus={false}
                                 allowDeleteFromEmptyInput={false}
                                     handleDelete={(e) => this.handleCodeDelete(e, 'resultOfStop', '', 'result', 'Warning (verbal or written)')}
                                     handleAddition={(e) => this.handleCodeAdd(e, '', 'AllCodes', 'resultOfStop', 'result', 'Warning (verbal or written)')}
                                     handleFilterSuggestions={this.handleFilterSuggestions} />
                             
-                                <label className="list-item-nested"> Select Offense Code (up to 5)</label>
+                                <label className="list-item-nested"> Select Code (up to 5)</label>
                             </div>
                         }
                                 <CheckBox2 key="Citation or infraction" className="list-item" checked={this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("Citation or infraction") > -1} value="Citation or infraction" name="Citation or infraction" onClick={(e) => this.checkBoxSelection(e, 'resultOfStop', 'result', '', 3)} />
@@ -1782,7 +1872,7 @@ class Form extends React.Component {
                             <div>
                                 <Tags tags={this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (y) { return y.result }).indexOf("Citation or infraction")].codes}
                                 
-                                placeholder='Add Vehicle Code'
+                                placeholder='Add Code'
                                 autofocus={false}
                                 allowDeleteFromEmptyInput={false}
                                     handleFilterSuggestions={this.handleFilterSuggestions} />
@@ -1795,14 +1885,14 @@ class Form extends React.Component {
                             <div>
                             <Tags tags={this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (y) { return y.result }).indexOf("In-field cite and release")].codes}
                                 suggestions={this.state.codes.AllCodes}
-                                placeholder='Add Vehicle Code'
+                                placeholder='Add Code'
                                 autofocus={false}
                                 allowDeleteFromEmptyInput={false}
                                         handleDelete={(e) => this.handleCodeDelete(e, 'resultOfStop', '', 'result', 'In-field cite and release')}
                                         handleAddition={(e) => this.handleCodeAdd(e, '', 'AllCodes', 'resultOfStop', 'result', 'In-field cite and release')}
                                         handleFilterSuggestions={this.handleFilterSuggestions} />
                             
-                            <label className="list-item-nested"> Select Offense Code (up to 5)</label>
+                            <label className="list-item-nested"> Select Code (up to 5)</label>
                             </div>
                                 }
                                 <CheckBox2 key="Custodial Arrest pursuant to outstanding warrant" className="list-item" checked={this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("Custodial Arrest pursuant to outstanding warrant") > -1} value="Custodial Arrest pursuant to outstanding warrant" name="Custodial Arrest pursuant to outstanding warrant" onClick={(e) => this.checkBoxSelection(e, 'resultOfStop', 'result', '', 5)} />
@@ -1811,14 +1901,14 @@ class Form extends React.Component {
                             <div>
                             <Tags tags={this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (y) { return y.result }).indexOf("Custodial Arrest without warrant")].codes}
                                 suggestions={this.state.codes.AllCodes}
-                                placeholder='Add Vehicle Code'
+                                placeholder='Add Code'
                                 autofocus={false}
                                 allowDeleteFromEmptyInput={false}
                                         handleDelete={(e) => this.handleCodeDelete(e, 'resultOfStop', '', 'result', 'Custodial Arrest without warrant')}
                                         handleAddition={(e) => this.handleCodeAdd(e, '', 'AllCodes', 'resultOfStop', 'result', 'Custodial Arrest without warrant')}
                                         handleFilterSuggestions={this.handleFilterSuggestions} />
                            
-                            <label className="list-item-nested">Select  Offense Code (up to 5)</label>
+                            <label className="list-item-nested">Select Code (up to 5)</label>
                             </div>
                                 }
                                 <CheckBoxListSection type="CheckBox" stateValue={this.state.stop.Person_Stopped.resultOfStop} node="resultOfStop" node2="result" node2b="details" itemList={resultOfStop} function={this.checkBoxSelection} />
@@ -2174,7 +2264,10 @@ const searchOfPersonOrPropertyConducted = [
     { key: 8, value: "Canine detection", className: "list-item-nested", onClick: "" },
     { key: 9, value: "Evidence of crime", className: "list-item-nested", onClick: "" },
     { key: 10, value: "Incident to arrest", className: "list-item-nested", onClick: "" },
-    { key: 11, value: "Exigent circumstances/emergency", className: "list-item-nested", onClick: "" },
+    { key: 11, value: "Exigent circumstances/emergency", className: "list-item-nested", onClick: "" }
+    //{ key: 12, value: "Vehicle inventory", className: "list-item-nested", onClick: "" }
+];
+const searchOfPersonOrPropertyConducted_VehInv = [
     { key: 12, value: "Vehicle inventory", className: "list-item-nested", onClick: "" }
 ];
 const contrabandOrEvidence = [
