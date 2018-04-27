@@ -27,9 +27,19 @@ namespace RIPASTOP.Controllers
                 ViewBag.agency = UserProfile.Agency;
                 ViewBag.UserProfileID = UserProfile.ID;
                 ViewBag.reverseGeoURI = ConfigurationManager.AppSettings["reverseGeoURI"];
-
+                var referer = Request.Headers["Referer"];
+                if (referer != null)
+                {
+                    string refererStr = referer.ToString();
+                    if (refererStr.IndexOf("UserProfiles") > -1)
+                    {
+                        ViewBag.userProfileUpdate = "True";
+                    }
+                }
                 // web.config debug setting
                 ViewBag.debug = HttpContext.IsDebuggingEnabled;
+                ViewBag.test = ConfigurationManager.AppSettings["test"];
+                ViewBag.server = System.Environment.MachineName;
 
                 return View(UserProfile_Conf);
             } else {

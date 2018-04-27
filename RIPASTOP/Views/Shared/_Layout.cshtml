@@ -46,10 +46,13 @@
                 <li>@Html.ActionLink("Stops", "Index", "Stops", null, null)</li>
             }
             <li><div id="theme"></div></li>
-            <li>
-                <span style="top:-2px;" class='required'>
-                    @if (@ViewBag.debug){ <text>dev</text> } else { <text>test</text> }
-                </span>
+            <li> 
+                @if (@ViewBag.test == "true") {
+                    <span style="top:-2px;" class='required'>test</span>
+                }
+                @if (@ViewBag.debug){
+                    <span style="top:-2px;" class='required'>dev</span>
+                }
              </li>
         </ul>
     </div>

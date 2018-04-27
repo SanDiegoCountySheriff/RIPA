@@ -70,6 +70,9 @@ namespace RIPASTOP.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,Agency,ORI,Years,Assignment,AssignmentOther")] UserProfile userProfile)
         {
+            // web.config debug setting
+            ViewBag.debug = HttpContext.IsDebuggingEnabled;
+
             if (ModelState.IsValid && User.Identity.IsAuthenticated)
             {
                 //userProfile.ID = Guid.NewGuid();
@@ -81,10 +84,18 @@ namespace RIPASTOP.Controllers
                     {
                         userProfile.AssignmentOther = null;
                     }
-                    if(userProfile.AssignmentKey == 10 && string.IsNullOrEmpty(userProfile.AssignmentOther))
+                    else
                     {
-                        ViewBag.ErrorOtherType = "Please enter a description for assignment";
-                        return View();
+                        if(string.IsNullOrEmpty(userProfile.AssignmentOther))
+                        {
+                            ViewBag.ErrorOtherType = "Please enter a description for assignment";
+                            return View();
+                        }
+                        if(userProfile.AssignmentOther.Length < 3)
+                        {
+                            ViewBag.ErrorOtherType = "Please enter at least 3 characters for this field.";
+                            return View();
+                        }
                     }
                 }
                 db.UserProfiles.Add(userProfile);
@@ -98,8 +109,6 @@ namespace RIPASTOP.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            // web.config debug setting
-            ViewBag.debug = HttpContext.IsDebuggingEnabled;
 
             //return RedirectToAction("Index", "Home");
             //return View(userProfile);
@@ -136,6 +145,8 @@ namespace RIPASTOP.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,Agency,ORI,Years,Assignment,AssignmentOther")] UserProfile userProfile)
         {
+            // web.config debug setting
+            ViewBag.debug = HttpContext.IsDebuggingEnabled;
             if (ModelState.IsValid)
             {
                 if (!string.IsNullOrEmpty(userProfile.Assignment)) {
@@ -145,10 +156,18 @@ namespace RIPASTOP.Controllers
                     {
                         userProfile.AssignmentOther = null;
                     }
-                    if (userProfile.AssignmentKey == 10 && string.IsNullOrEmpty(userProfile.AssignmentOther))
+                    else
                     {
-                        ViewBag.ErrorOtherType = "Please enter a description for assignment";
-                        return View();
+                        if (string.IsNullOrEmpty(userProfile.AssignmentOther))
+                        {
+                            ViewBag.ErrorOtherType = "Please enter a description for assignment";
+                            return View();
+                        }
+                        if (userProfile.AssignmentOther.Length < 3)
+                        {
+                            ViewBag.ErrorOtherType = "Please enter at least 3 characters for this field.";
+                            return View();
+                        }
                     }
                 }
                 db.Entry(userProfile).State = EntityState.Modified;
@@ -156,7 +175,7 @@ namespace RIPASTOP.Controllers
                 return RedirectToAction("Index");
             }
             // web.config debug setting
-            ViewBag.debug = HttpContext.IsDebuggingEnabled;
+            //ViewBag.debug = HttpContext.IsDebuggingEnabled;
             return View(userProfile);
         }
 
