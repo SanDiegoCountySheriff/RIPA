@@ -627,11 +627,8 @@ class Form extends React.Component {
         var thiss = this;
         this.validateFormSection();
         
-        if (!this.state.validationErrorMsg.errorFlag) {
+        if (!this.state.validationErrorMsg.errorFlag) {            
 
-            
-
-            if (this.state.latitude) {
                 // show loader button
                 thiss.setState({ loader: true })
 
@@ -698,7 +695,7 @@ class Form extends React.Component {
                     thiss.state.loader = false;
                     console.log(error);
                 });
-            }
+          
         }
         e.preventDefault();
     }
