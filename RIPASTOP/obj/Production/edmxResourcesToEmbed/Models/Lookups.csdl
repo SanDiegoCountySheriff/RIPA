@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="JSON_SIA_TESTModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="CJISOffenseCodes" EntityType="JSON_SIA_TESTModel.CJISOffenseCodes" />
+    <EntitySet Name="schools" EntityType="JSON_SIA_TESTModel.schools" />
+    <EntitySet Name="Cities" EntityType="JSON_SIA_TESTModel.Cities" />
+  </EntityContainer>
+  <EntityType Name="CJISOffenseCodes">
+    <Key>
+      <PropertyRef Name="Offense_Code" />
+    </Key>
+    <Property Name="Offense_Validation_CD" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="Offense_Code" Type="Int32" Nullable="false" />
+    <Property Name="Offense_Txn_Type_CD" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="Offense_Statute" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="Offense_Type_of_Statute_CD" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+    <Property Name="Statute_Literal_25" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Offense_Default_Type_of_Charge" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="Offense_Type_of_Charge" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="Offense_Literal_Identifier_CD" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+    <Property Name="Offense_Degree" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="BCS_Hierarchy_CD" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Offense_Enacted" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Offense_Repealed" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="ALPS_Cognizant_CD" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="Add_Date_Time" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="schools">
+    <Key>
+      <PropertyRef Name="CDS_Code" />
+    </Key>
+    <Property Name="CDS_Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="County" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="District" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="schoolname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="sc_MailCity" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="sc_DOCType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Schooltype" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="sc_Latitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="sc_Longitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Cities">
+    <Key>
+      <PropertyRef Name="City" />
+    </Key>
+    <Property Name="State" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+    <Property Name="City" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="County" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+</Schema>

@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="JSON_SIA_TESTModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Cities">
+    <Key>
+      <PropertyRef Name="City" />
+    </Key>
+    <Property Name="State" Type="varchar" MaxLength="2" />
+    <Property Name="City" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="County" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="CJISOffenseCodes">
+    <Key>
+      <PropertyRef Name="Offense Code" />
+    </Key>
+    <Property Name="Offense Validation CD" Type="varchar" MaxLength="1" />
+    <Property Name="Offense Code" Type="int" Nullable="false" />
+    <Property Name="Offense Txn Type CD" Type="varchar" MaxLength="1" />
+    <Property Name="Offense Statute" Type="varchar" MaxLength="15" />
+    <Property Name="Offense Type of Statute CD" Type="varchar" MaxLength="2" />
+    <Property Name="Statute Literal 25" Type="varchar" MaxLength="50" />
+    <Property Name="Offense Default Type of Charge" Type="varchar" MaxLength="1" />
+    <Property Name="Offense Type of Charge" Type="varchar" MaxLength="1" />
+    <Property Name="Offense Literal Identifier CD" Type="varchar" MaxLength="5" />
+    <Property Name="Offense Degree" Type="varchar" MaxLength="1" />
+    <Property Name="BCS Hierarchy CD" Type="varchar" MaxLength="10" />
+    <Property Name="Offense Enacted" Type="varchar" MaxLength="10" />
+    <Property Name="Offense Repealed" Type="varchar" MaxLength="10" />
+    <Property Name="ALPS Cognizant CD" Type="varchar" MaxLength="1" />
+    <Property Name="Add_Date Time" Type="varchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="schools">
+    <Key>
+      <PropertyRef Name="CDS_Code" />
+    </Key>
+    <Property Name="CDS_Code" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Status" Type="varchar" MaxLength="50" />
+    <Property Name="County" Type="varchar" MaxLength="50" />
+    <Property Name="District" Type="varchar" MaxLength="50" />
+    <Property Name="schoolname" Type="varchar" MaxLength="50" />
+    <Property Name="sc_MailCity" Type="varchar" MaxLength="50" />
+    <Property Name="sc_DOCType" Type="varchar" MaxLength="50" />
+    <Property Name="Schooltype" Type="varchar" MaxLength="50" />
+    <Property Name="sc_Latitude" Type="varchar" MaxLength="50" />
+    <Property Name="sc_Longitude" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityContainer Name="JSON_SIA_TESTModelStoreContainer">
+    <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CJISOffenseCodes" EntityType="Self.CJISOffenseCodes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="schools" EntityType="Self.schools" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

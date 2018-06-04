@@ -22,6 +22,7 @@ namespace RIPASTOP.Controllers
         {
             public int Code { get; set; }
             public string Description { get; set; }
+            public string Repealed { get; set; }
         }
 
         // GET: api/CJISOffenseCodes
@@ -36,8 +37,10 @@ namespace RIPASTOP.Controllers
                .Select(x => new DTOCJISOffenseCodes()
                {
                    Code = x.Offense_Code,
-                   Description = x.Offense_Statute + " " + x.Offense_Type_of_Statute_CD + " - " + x.Statute_Literal_25 + " (" + x.Offense_Type_of_Charge + ")"
+                   Description = x.Offense_Statute + " " + x.Offense_Type_of_Statute_CD + " - " + x.Statute_Literal_25 + " (" + x.Offense_Type_of_Charge + ")",
+                   Repealed = x.Offense_Repealed
                })
+               .Where(x => x.Repealed.Trim().Length < 2)
                .OrderBy(x => x.Description);
             }
             else
@@ -47,9 +50,11 @@ namespace RIPASTOP.Controllers
                 .Select(x => new DTOCJISOffenseCodes()
                 {
                     Code = x.Offense_Code,
-                    Description = x.Offense_Statute + " " + x.Offense_Type_of_Statute_CD + " - " + x.Statute_Literal_25 + " (" + x.Offense_Type_of_Charge +")"
+                    Description = x.Offense_Statute + " " + x.Offense_Type_of_Statute_CD + " - " + x.Statute_Literal_25 + " (" + x.Offense_Type_of_Charge +")",
+                    Repealed = x.Offense_Repealed
                 })
-                .Where(x =>x.Description.Contains(fragment))
+                .Where(x => x.Repealed.Trim().Length < 2)
+                .Where(x => x.Description.Contains(fragment))
                 .OrderBy(x => x.Description); 
             }
         }
