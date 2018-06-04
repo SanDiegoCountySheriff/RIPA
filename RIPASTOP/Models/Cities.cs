@@ -16,7 +16,6 @@ namespace RIPASTOP.Models
     {
         public string State { get; set; }
         public string City { get; set; }
-        public string City_Inactive_Date { get; set; }
-        public string City_AddTime { get; set; }
+        public string County { get; set; }
     }
 }

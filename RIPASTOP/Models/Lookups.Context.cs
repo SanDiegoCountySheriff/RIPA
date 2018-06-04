@@ -26,7 +26,8 @@ namespace RIPASTOP.Models
         }
     
         public virtual DbSet<CJISOffenseCodes> CJISOffenseCodes { get; set; }
-        public virtual DbSet<Cities> Cities { get; set; }
         public virtual DbSet<schools> schools { get; set; }
+        public virtual DbSet<Cities> Cities { get; set; }
+        public virtual DbSet<Beats> Beats { get; set; }
     }
 }

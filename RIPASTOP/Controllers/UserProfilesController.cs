@@ -48,9 +48,7 @@ namespace RIPASTOP.Controllers
             // web.config debug setting
             ViewBag.debug = HttpContext.IsDebuggingEnabled;
             ViewBag.agency = ConfigurationManager.AppSettings["agency"];
-            ViewBag.ori = ConfigurationManager.AppSettings["ori"];
-
-           
+            ViewBag.ori = ConfigurationManager.AppSettings["ori"];           
 
 
             if (User.Identity.IsAuthenticated && UserProfile_Conf == null)
@@ -86,18 +84,24 @@ namespace RIPASTOP.Controllers
                     }
                     else
                     {
-                        if(string.IsNullOrEmpty(userProfile.AssignmentOther))
+                        if (string.IsNullOrEmpty(userProfile.AssignmentOther))
                         {
                             ViewBag.ErrorOtherType = "Please enter a description for assignment";
                             return View();
                         }
-                        if(userProfile.AssignmentOther.Length < 3)
+                        if (userProfile.AssignmentOther.Length < 3)
                         {
                             ViewBag.ErrorOtherType = "Please enter at least 3 characters for this field.";
                             return View();
                         }
                     }
+                    
                 }
+               
+                    userProfile.Agency = ConfigurationManager.AppSettings["agency"];
+                    userProfile.ORI = ConfigurationManager.AppSettings["ori"];
+               
+
                 db.UserProfiles.Add(userProfile);
                 db.UserProfile_Conf.Add(
                     new UserProfile_Conf() {
@@ -108,7 +112,6 @@ namespace RIPASTOP.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index", "Home");
             }
-
 
             //return RedirectToAction("Index", "Home");
             //return View(userProfile);
@@ -170,6 +173,10 @@ namespace RIPASTOP.Controllers
                         }
                     }
                 }
+                
+                    userProfile.Agency = ConfigurationManager.AppSettings["agency"];
+                    userProfile.ORI = ConfigurationManager.AppSettings["ori"];
+                
                 db.Entry(userProfile).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

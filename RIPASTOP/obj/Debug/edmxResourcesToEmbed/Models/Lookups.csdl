@@ -2,8 +2,9 @@
 <Schema Namespace="JSON_SIA_TESTModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
   <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="CJISOffenseCodes" EntityType="JSON_SIA_TESTModel.CJISOffenseCodes" />
-    <EntitySet Name="Cities" EntityType="JSON_SIA_TESTModel.Cities" />
     <EntitySet Name="schools" EntityType="JSON_SIA_TESTModel.schools" />
+    <EntitySet Name="Cities" EntityType="JSON_SIA_TESTModel.Cities" />
+    <EntitySet Name="Beats" EntityType="JSON_SIA_TESTModel.Beats" />
   </EntityContainer>
   <EntityType Name="CJISOffenseCodes">
     <Key>
@@ -25,15 +26,6 @@
     <Property Name="ALPS_Cognizant_CD" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
     <Property Name="Add_Date_Time" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
   </EntityType>
-  <EntityType Name="Cities">
-    <Key>
-      <PropertyRef Name="City" />
-    </Key>
-    <Property Name="State" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
-    <Property Name="City" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="City_Inactive_Date" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-    <Property Name="City_AddTime" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-  </EntityType>
   <EntityType Name="schools">
     <Key>
       <PropertyRef Name="CDS_Code" />
@@ -48,5 +40,21 @@
     <Property Name="Schooltype" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="sc_Latitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="sc_Longitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Cities">
+    <Key>
+      <PropertyRef Name="City" />
+    </Key>
+    <Property Name="State" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+    <Property Name="City" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="County" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Beats">
+    <Key>
+      <PropertyRef Name="Beat" />
+    </Key>
+    <Property Name="Beat" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+    <Property Name="Community" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+    <Property Name="Command" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
   </EntityType>
 </Schema>

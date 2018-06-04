@@ -1,0 +1,2447 @@
+﻿
+@{
+    ViewBag.Title = "California Code of Regulations - Title 11. Law Division 1. Enforcement - Chapter 19 - Final Text of Regulations";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<style type="text/css">
+    /** {
+        margin: 0;
+        padding: 0;
+        text-indent: 0;
+    }*/
+    
+
+    p {
+        /**/
+        font-family: "Times New Roman", serif;
+        font-style: normal;
+        font-weight: normal;
+        text-decoration: underline;
+        font-size: 12pt;
+        margin: 0pt;
+    }
+
+    h1 {
+        /**/
+        font-family: "Times New Roman", serif;
+        font-style: normal;
+        font-weight: bold;
+        text-decoration: underline;
+        font-size: 12pt;
+    }
+
+    li {
+        display: block;
+    }
+
+    #l1 {
+        padding-left: 0pt;
+        counter-reset: c1 0;
+    }
+
+        #l1 > li:before {
+            counter-increment: c1;
+            content: "("counter(c1, lower-latin)") ";
+            /**/
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l2 {
+        padding-left: 0pt;
+        counter-reset: c2 0;
+    }
+
+        #l2 > li:before {
+            counter-increment: c2;
+            content: "("counter(c2, decimal)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l3 {
+        padding-left: 0pt;
+        counter-reset: c3 0;
+    }
+
+        #l3 > li:before {
+            counter-increment: c3;
+            content: "("counter(c3, upper-latin)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l4 {
+        padding-left: 0pt;
+        counter-reset: c4 0;
+    }
+
+        #l4 > li:before {
+            counter-increment: c4;
+            content: counter(c4, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l5 {
+        padding-left: 0pt;
+        counter-reset: c4 0;
+    }
+
+        #l5 > li:before {
+            counter-increment: c4;
+            content: counter(c4, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l6 {
+        padding-left: 0pt;
+        counter-reset: c5 0;
+    }
+
+        #l6 > li:before {
+            counter-increment: c5;
+            content: counter(c5, lower-latin)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l7 {
+        padding-left: 0pt;
+        counter-reset: c5 0;
+    }
+
+        #l7 > li:before {
+            counter-increment: c5;
+            content: counter(c5, lower-latin)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l8 {
+        padding-left: 0pt;
+        counter-reset: c6 0;
+    }
+
+        #l8 > li:before {
+            counter-increment: c6;
+            content: "("counter(c6, decimal)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l9 {
+        padding-left: 0pt;
+        counter-reset: c3 0;
+    }
+
+        #l9 > li:before {
+            counter-increment: c3;
+            content: "("counter(c3, upper-latin)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    li {
+        display: block;
+    }
+
+    #l10 {
+        padding-left: 0pt;
+        counter-reset: d1 0;
+    }
+
+        #l10 > li:before {
+            counter-increment: d1;
+            content: "("counter(d1, lower-latin)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l11 {
+        padding-left: 0pt;
+        counter-reset: d2 0;
+    }
+
+        #l11 > li:before {
+            counter-increment: d2;
+            content: "("counter(d2, decimal)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    li {
+        display: block;
+    }
+
+    #l12 {
+        padding-left: 0pt;
+        counter-reset: e1 0;
+    }
+
+        #l12 > li:before {
+            counter-increment: e1;
+            content: "("counter(e1, lower-latin)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l13 {
+        padding-left: 0pt;
+        counter-reset: e2 0;
+    }
+
+        #l13 > li:before {
+            counter-increment: e2;
+            content: "("counter(e2, decimal)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l14 {
+        padding-left: 0pt;
+        counter-reset: e3 0;
+    }
+
+        #l14 > li:before {
+            counter-increment: e3;
+            content: "("counter(e3, upper-latin)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l15 {
+        padding-left: 0pt;
+        counter-reset: e4 0;
+    }
+
+        #l15 > li:before {
+            counter-increment: e4;
+            content: counter(e4, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l16 {
+        padding-left: 0pt;
+        counter-reset: e3 0;
+    }
+
+        #l16 > li:before {
+            counter-increment: e3;
+            content: "("counter(e3, upper-latin)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l17 {
+        padding-left: 0pt;
+        counter-reset: e4 0;
+    }
+
+        #l17 > li:before {
+            counter-increment: e4;
+            content: counter(e4, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l18 {
+        padding-left: 0pt;
+        counter-reset: f1 2;
+    }
+
+        #l18 > li:before {
+            counter-increment: f1;
+            content: counter(f1, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l19 {
+        padding-left: 0pt;
+        counter-reset: e3 0;
+    }
+
+        #l19 > li:before {
+            counter-increment: e3;
+            content: "("counter(e3, upper-latin)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l20 {
+        padding-left: 0pt;
+        counter-reset: e4 0;
+    }
+
+        #l20 > li:before {
+            counter-increment: e4;
+            content: counter(e4, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l21 {
+        padding-left: 0pt;
+        counter-reset: g1 5;
+    }
+
+        #l21 > li:before {
+            counter-increment: g1;
+            content: counter(g1, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l22 {
+        padding-left: 0pt;
+        counter-reset: g2 0;
+    }
+
+        #l22 > li:before {
+            counter-increment: g2;
+            content: counter(g2, lower-latin)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l23 {
+        padding-left: 0pt;
+        counter-reset: e3 0;
+    }
+
+        #l23 > li:before {
+            counter-increment: e3;
+            content: "("counter(e3, upper-latin)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l24 {
+        padding-left: 0pt;
+        counter-reset: e4 0;
+    }
+
+        #l24 > li:before {
+            counter-increment: e4;
+            content: counter(e4, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l25 {
+        padding-left: 0pt;
+        counter-reset: e4 0;
+    }
+
+        #l25 > li:before {
+            counter-increment: e4;
+            content: counter(e4, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l26 {
+        padding-left: 0pt;
+        counter-reset: e3 0;
+    }
+
+        #l26 > li:before {
+            counter-increment: e3;
+            content: "("counter(e3, upper-latin)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l27 {
+        padding-left: 0pt;
+        counter-reset: h1 3;
+    }
+
+        #l27 > li:before {
+            counter-increment: h1;
+            content: "("counter(h1, upper-latin)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l28 {
+        padding-left: 0pt;
+        counter-reset: e3 0;
+    }
+
+        #l28 > li:before {
+            counter-increment: e3;
+            content: "("counter(e3, upper-latin)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l29 {
+        padding-left: 0pt;
+        counter-reset: e4 0;
+    }
+
+        #l29 > li:before {
+            counter-increment: e4;
+            content: counter(e4, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l30 {
+        padding-left: 0pt;
+        counter-reset: e5 0;
+    }
+
+        #l30 > li:before {
+            counter-increment: e5;
+            content: counter(e5, lower-latin)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l31 {
+        padding-left: 0pt;
+        counter-reset: e5 0;
+    }
+
+        #l31 > li:before {
+            counter-increment: e5;
+            content: counter(e5, lower-latin)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l32 {
+        padding-left: 0pt;
+        counter-reset: i1 6;
+    }
+
+        #l32 > li:before {
+            counter-increment: i1;
+            content: counter(i1, lower-latin)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l33 {
+        padding-left: 0pt;
+        counter-reset: e5 0;
+    }
+
+        #l33 > li:before {
+            counter-increment: e5;
+            content: counter(e5, lower-latin)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l34 {
+        padding-left: 0pt;
+        counter-reset: e4 0;
+    }
+
+        #l34 > li:before {
+            counter-increment: e4;
+            content: counter(e4, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l35 {
+        padding-left: 0pt;
+        counter-reset: e3 0;
+    }
+
+        #l35 > li:before {
+            counter-increment: e3;
+            content: "("counter(e3, upper-latin)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l36 {
+        padding-left: 0pt;
+        counter-reset: e4 0;
+    }
+
+        #l36 > li:before {
+            counter-increment: e4;
+            content: counter(e4, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l37 {
+        padding-left: 0pt;
+        counter-reset: j1 3;
+    }
+
+        #l37 > li:before {
+            counter-increment: j1;
+            content: counter(j1, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l38 {
+        padding-left: 0pt;
+        counter-reset: k1 8;
+    }
+
+        #l38 > li:before {
+            counter-increment: k1;
+            content: counter(k1, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l39 {
+        padding-left: 0pt;
+        counter-reset: e5 0;
+    }
+
+        #l39 > li:before {
+            counter-increment: e5;
+            content: counter(e5, lower-latin)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l40 {
+        padding-left: 0pt;
+        counter-reset: e4 0;
+    }
+
+        #l40 > li:before {
+            counter-increment: e4;
+            content: counter(e4, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l41 {
+        padding-left: 0pt;
+        counter-reset: e5 0;
+    }
+
+        #l41 > li:before {
+            counter-increment: e5;
+            content: counter(e5, lower-latin)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l42 {
+        padding-left: 0pt;
+        counter-reset: l1 10;
+    }
+
+        #l42 > li:before {
+            counter-increment: l1;
+            content: counter(l1, lower-latin)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l43 {
+        padding-left: 0pt;
+        counter-reset: e5 0;
+    }
+
+        #l43 > li:before {
+            counter-increment: e5;
+            content: counter(e5, lower-latin)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l44 {
+        padding-left: 0pt;
+        counter-reset: e4 0;
+    }
+
+        #l44 > li:before {
+            counter-increment: e4;
+            content: counter(e4, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l45 {
+        padding-left: 0pt;
+        counter-reset: m1 2;
+    }
+
+        #l45 > li:before {
+            counter-increment: m1;
+            content: counter(m1, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l46 {
+        padding-left: 0pt;
+        counter-reset: n1 5;
+    }
+
+        #l46 > li:before {
+            counter-increment: n1;
+            content: counter(n1, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l47 {
+        padding-left: 0pt;
+        counter-reset: e4 0;
+    }
+
+        #l47 > li:before {
+            counter-increment: e4;
+            content: counter(e4, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l48 {
+        padding-left: 0pt;
+        counter-reset: e5 0;
+    }
+
+        #l48 > li:before {
+            counter-increment: e5;
+            content: counter(e5, lower-latin)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l49 {
+        padding-left: 0pt;
+        counter-reset: o1 2;
+    }
+
+        #l49 > li:before {
+            counter-increment: o1;
+            content: counter(o1, lower-latin)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l50 {
+        padding-left: 0pt;
+        counter-reset: e5 0;
+    }
+
+        #l50 > li:before {
+            counter-increment: e5;
+            content: counter(e5, lower-latin)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l51 {
+        padding-left: 0pt;
+        counter-reset: p1 6;
+    }
+
+        #l51 > li:before {
+            counter-increment: p1;
+            content: counter(p1, lower-latin)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l52 {
+        padding-left: 0pt;
+        counter-reset: e3 0;
+    }
+
+        #l52 > li:before {
+            counter-increment: e3;
+            content: "("counter(e3, upper-latin)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l53 {
+        padding-left: 0pt;
+        counter-reset: q1 6;
+    }
+
+        #l53 > li:before {
+            counter-increment: q1;
+            content: "("counter(q1, upper-latin)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l54 {
+        padding-left: 0pt;
+        counter-reset: e3 0;
+    }
+
+        #l54 > li:before {
+            counter-increment: e3;
+            content: "("counter(e3, upper-latin)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    li {
+        display: block;
+    }
+
+    #l55 {
+        padding-left: 0pt;
+        counter-reset: r1 6;
+    }
+
+        #l55 > li:before {
+            counter-increment: r1;
+            content: "("counter(r1, upper-latin)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    li {
+        display: block;
+    }
+
+    #l56 {
+        padding-left: 0pt;
+        counter-reset: s1 0;
+    }
+
+        #l56 > li:before {
+            counter-increment: s1;
+            content: "("counter(s1, lower-latin)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l57 {
+        padding-left: 0pt;
+        counter-reset: s2 0;
+    }
+
+        #l57 > li:before {
+            counter-increment: s2;
+            content: "("counter(s2, decimal)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l58 {
+        padding-left: 0pt;
+        counter-reset: s3 0;
+    }
+
+        #l58 > li:before {
+            counter-increment: s3;
+            content: "("counter(s3, upper-latin)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l59 {
+        padding-left: 0pt;
+        counter-reset: s2 0;
+    }
+
+        #l59 > li:before {
+            counter-increment: s2;
+            content: "("counter(s2, decimal)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l60 {
+        padding-left: 0pt;
+        counter-reset: s3 0;
+    }
+
+        #l60 > li:before {
+            counter-increment: s3;
+            content: "("counter(s3, upper-latin)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l61 {
+        padding-left: 0pt;
+        counter-reset: s4 0;
+    }
+
+        #l61 > li:before {
+            counter-increment: s4;
+            content: counter(s4, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l62 {
+        padding-left: 0pt;
+        counter-reset: s4 0;
+    }
+
+        #l62 > li:before {
+            counter-increment: s4;
+            content: counter(s4, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l63 {
+        padding-left: 0pt;
+        counter-reset: s2 0;
+    }
+
+        #l63 > li:before {
+            counter-increment: s2;
+            content: "("counter(s2, decimal)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l64 {
+        padding-left: 0pt;
+        counter-reset: s2 0;
+    }
+
+        #l64 > li:before {
+            counter-increment: s2;
+            content: "("counter(s2, decimal)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l65 {
+        padding-left: 0pt;
+        counter-reset: s3 0;
+    }
+
+        #l65 > li:before {
+            counter-increment: s3;
+            content: "("counter(s3, upper-latin)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l66 {
+        padding-left: 0pt;
+        counter-reset: s4 0;
+    }
+
+        #l66 > li:before {
+            counter-increment: s4;
+            content: counter(s4, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l67 {
+        padding-left: 0pt;
+        counter-reset: s4 0;
+    }
+
+        #l67 > li:before {
+            counter-increment: s4;
+            content: counter(s4, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l68 {
+        padding-left: 0pt;
+        counter-reset: s2 0;
+    }
+
+        #l68 > li:before {
+            counter-increment: s2;
+            content: "("counter(s2, decimal)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l69 {
+        padding-left: 0pt;
+        counter-reset: s3 0;
+    }
+
+        #l69 > li:before {
+            counter-increment: s3;
+            content: "("counter(s3, upper-latin)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l70 {
+        padding-left: 0pt;
+        counter-reset: s4 0;
+    }
+
+        #l70 > li:before {
+            counter-increment: s4;
+            content: counter(s4, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l71 {
+        padding-left: 0pt;
+        counter-reset: s3 0;
+    }
+
+        #l71 > li:before {
+            counter-increment: s3;
+            content: "("counter(s3, upper-latin)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l72 {
+        padding-left: 0pt;
+        counter-reset: s4 0;
+    }
+
+        #l72 > li:before {
+            counter-increment: s4;
+            content: counter(s4, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l73 {
+        padding-left: 0pt;
+        counter-reset: s4 0;
+    }
+
+        #l73 > li:before {
+            counter-increment: s4;
+            content: counter(s4, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l74 {
+        padding-left: 0pt;
+        counter-reset: s4 0;
+    }
+
+        #l74 > li:before {
+            counter-increment: s4;
+            content: counter(s4, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l75 {
+        padding-left: 0pt;
+        counter-reset: s4 0;
+    }
+
+        #l75 > li:before {
+            counter-increment: s4;
+            content: counter(s4, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l76 {
+        padding-left: 0pt;
+        counter-reset: s4 0;
+    }
+
+        #l76 > li:before {
+            counter-increment: s4;
+            content: counter(s4, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    #l77 {
+        padding-left: 0pt;
+        counter-reset: s4 0;
+    }
+
+        #l77 > li:before {
+            counter-increment: s4;
+            content: counter(s4, decimal)". ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    li {
+        display: block;
+    }
+
+    #l78 {
+        padding-left: 0pt;
+        counter-reset: t1 0;
+    }
+
+        #l78 > li:before {
+            counter-increment: t1;
+            content: "("counter(t1, lower-latin)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+    li {
+        display: block;
+    }
+
+    #l79 {
+        padding-left: 0pt;
+        counter-reset: u1 0;
+    }
+
+        #l79 > li:before {
+            counter-increment: u1;
+            content: "("counter(u1, lower-latin)") ";
+            
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+</style>
+<div class="">
+    
+    <div style="text-indent: 0pt;text-align: center;">
+        <a href='https://oag.ca.gov/ab953/regulations' target='_blank'>California Attorney General's Website</a>
+        <br />
+    </div>
+    
+    <h1 style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;">
+        CALIFORNIA CODE OF REGULATIONS TITLE 11. LAW
+    </h1>
+    <h1 style="padding-left: 5pt;text-indent: 0pt;">DIVISION 1. ENFORCEMENT CHAPTER 19</h1>
+    <h1 style="padding-left: 5pt;text-indent: 0pt;">FINAL TEXT OF REGULATIONS</h1> 
+    <p style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">Article 1. Definitions</p>
+    <p style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">Article 2. Law Enforcement Agencies Subject to Government Code section 12525.5</p>
+    <p style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">Article 3. Data Elements To Be Reported</p>
+    <p style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">Article 4. Reporting Requirements</p>   
+    <p style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">Article 5. Technical Specifications and Uniform Reporting Practices Article 6. Audits and Validation</p>
+    <p style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">Article 6. Audits and Validation</p>  
+    <h1 style="padding-top: 10pt;padding-left: 5pt;text-indent: 0pt;">
+       Article 1. Definitions
+    </h1>
+    
+    <h1 style="padding-left: 5pt;text-indent: 0pt;">§ 999.224</h1>
+   
+    <ol id="l1">
+        <li style="padding-left: 5pt;text-indent: 0pt;text-align: left;">
+            <p style="display: inline;">
+               For purposes of Government Code section 12525.5 and this chapter only, the following definitions shall apply:
+            </p>
+            <ol id="l2">
+                <li style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">
+                       “Act” means the provisions of the Racial and Identity Profiling Act of 2015, also known as “AB 953,” which are contained in Government Code section 12525.5, Penal Code section 13012, and Penal Code section 13519.4.
+                    </p>
+                   
+                </li>
+                <li style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">“Consensual search” is a search that occurs when a person gives a peace officer consent or permission to search the person or the person’s property. Consent can be given in writing or verbally, or may be implied by conduct.</p>
+                   
+                </li>
+                <li style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">“Custodial setting” means correctional institutions, juvenile detention facilities, and jails, including parking lots and grounds within the perimeter of these enumerated facilities. “Custodial setting” does not include home detention or any circumstances where persons are under house arrest outside of correctional institutions, juvenile detention facilities, or jails.</p>
+                   
+                </li>
+                <li style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">“Data element” refers to a category of information the peace officer must report regarding a stop. For example, “perceived gender of person stopped” is a data element that must be collected under Government Code section 12525.5.</p>
+                   
+                </li>
+                <li style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">“Data value” is a component or characteristic of a data element to be used in reporting each data element. For example, “male,” “female,” “transgender man/boy,” “transgender woman/girl,” and “gender nonconforming” are each data values to use in reporting the data element “perceived gender of person stopped.” Reporting agencies shall ensure that the technical specifications for data values are consistent with these regulations and in doing so shall follow the data dictionary prepared by the Department.</p>
+                    
+                </li>
+                <li style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;"> “Department” refers to the California Department of Justice or the California Attorney General.
+                    </p>
+                   
+                </li>
+                <li style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">“Detention,” unless otherwise provided in these regulations, means a seizure of a person by an officer that results from physical restraint, unequivocal verbal commands, or words or conduct by an officer that would result in a reasonable person believing that he or she is not free to leave or otherwise disregard the officer.</p>
+                    
+                </li>
+                <li style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">“Firearm” means a weapon that fires a shot by the force of an explosion, and includes all handguns, rifles, shotguns, and other such devices commonly referred to as firearms.</p>
+                    
+                </li>
+                <li style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">“K-12 Public School” means “California state educational institution,” as defined in this chapter.</p>
+                    
+                </li>
+                <li style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">“Probation officer” means an adult probation officer authorized by Penal Code section 1203.5, or a juvenile probation officer authorized by Welfare and Institutions Code section 270, whose duties are defined in Penal Code section 830.5 or Welfare and Institutions Code sections 280 and 283, respectively.</p>
+                    
+                </li>
+                <li style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">“Reporting agency” means:</p>
+                    
+                    <ol id="l3">
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Any city or county law enforcement agency that employs peace officers.</p>
+                            <ol id="l4">
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">“Reporting agency” includes any city or county law enforcement agency that employs peace officers, including officers who are contracted to work at other government agencies or private entities. This includes, but is not limited to, peace officers assigned to work in cities or other jurisdictions that are not within the original jurisdiction of the city or county law enforcement agency; peace officers of city or county law enforcement agencies assigned to or contracted to work at housing or transit agencies; and school resource officers assigned to work in California state educational institutions.</p>
+                                    
+                                </li>
+                            </ol>
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">The California Highway Patrol.</p>
+                            
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">The law enforcement agencies of any California state or university educational institutions.</p>
+                            
+                            <ol id="l5">
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">
+                                        “California state educational institution” means any public elementary or secondary school; the governing board of a school district; or any combination of school districts or counties recognized as the administrative agency for public elementary or secondary schools.
+                                    </p>
+                                    <ol id="l6">
+                                        <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">“The law enforcement agencies of California state educational institutions” refers to any police department established by a public school district pursuant to Education Code section 38000, subdivision (b).</p>
+                                        </li>
+                                    </ol>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">“California university educational institution” means the University of California, the California State University, and any college of the California Community Colleges.</p>
+                                    <ol id="l7">
+                                        <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">
+                                                “The law enforcement agencies of California university educational institutions” refers to the following:
+                                            </p>
+                                            <ol id="l8">
+                                                <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                                    <p style="display: inline;">Police departments of all campuses of the California State University established pursuant to Education Code section 89560;</p>
+                                                </li>
+                                                <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                                    <p style="display: inline;">Police departments of all campuses of the University of California established pursuant to Education Code section 92600; and</p>
+                                                </li>
+                                                <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                                    <p style="display: inline;">Police departments of all California community colleges established pursuant to Education Code section 72330.</p>
+                                                    
+                                                </li>
+                                            </ol>
+                                        </li>
+                                    </ol>
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>
+                </li>
+                <li style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">“School resource officer” includes, but is not limited to, “school resource officer” as defined by 42 U.S.C. § 3796dd-8(4).</p>
+                    
+                </li>
+                <li style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">“Search,” unless otherwise provided, means a search of a person’s body or property in the person’s possession or under his or her control, and includes a pat-down search of a person’s outer clothing as well as a consensual search, as defined in these regulations.</p>
+                  
+                </li>
+                <li style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">“Stop” for purposes of these regulations means (1) any detention, as defined in these regulations, by a peace officer of a person; or (2) any peace officer interaction with a person in which the officer conducts a search, as defined in these regulations.</p>
+                  
+                </li>
+                <li style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">“Stop data” refers collectively to the data elements and data values that must be reported to the Department.</p>
+                    
+                </li>
+                <li id="999-224-a-16" style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">“Student” means any person who is enrolled in a K-12 Public School, or any person who is subject to California’s compulsory education law as provided in Education Code section 48200. A “student” includes persons between 6 and 18 years of age who are not otherwise exempt from the compulsory education laws as provided in Education Code section 48200. “Student” also refers to persons up to 22 years of age who are being provided special education and services, as provided under Education Code section 56026. The reporting requirements of this chapter regarding “students” apply only to interactions between officers and students that take place in a K-12 Public School.</p>
+                    
+                    <ol id="l9">
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Example: A person between the ages of 6 and 18 who is not enrolled in a K-12 Public School because he or she has been expelled or is temporarily suspended from school is a student for purposes of these regulations.</p>
+                           
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Example: A person between the ages of 6 and 18 who is enrolled as a student at one K-12 Public School but who is stopped by an officer at another school is a student for purposes of these regulations.</p>
+                           
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Example: A 19-year old person who is enrolled in a K-12 Public School is a student for purposes of these regulations.</p>
+                          
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Example: A 21-year old special education student enrolled in a K-12 Public School is a student for purposes of these regulations.</p>
+                            
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Example: An interaction between an officer and a student that takes place at a mall must be reported pursuant to the general reporting requirements set forth in § 999.227, subdivision (a) of these regulations, and not the reporting requirements set forth at § 999.227, subdivision (e)(3) – (4) for interactions that take place between a student and an officer in a K-12 Public School.</p>
+                            
+                        </li>
+                    </ol>
+                </li>
+                <li style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">“Unique Identifying Information” means personally identifying information, the release of which, either alone or in combination with other data reported, is reasonably likely to reveal the identity of the individual officer who collected the stop data information. It does not include the minimum information that is specified in Government Code section 12525.5, subdivision (b).</p>
+                    
+                </li>
+                <li style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">“Vehicle” means motor vehicles as defined in Vehicle Code section 670; motorcycles, mopeds, and motorized scooters as defined in Vehicle Code sections 400, 406, and 407.5, respectively; and any motorized vehicles, including boats.</p>
+                </li>
+            </ol>
+        </li>
+    </ol>
+    <p style="padding-top: 0pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">Note: Authority cited: Section 12525.5, Government Code. Reference: Section 12525.5, Government Code.</p>
+    
+    <h1 style="padding-top: 10pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
+       Article 2. Law Enforcement Agencies Subject to Government Code Section 12525.5
+    </h1>
+ 
+    <h1 style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;">§ 999.225</h1>
+   
+    <ol id="l10">
+        <li style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
+            <p style="display: inline;">
+               The data collection requirements of this chapter apply only to peace officers, as defined in Chapter 4.5 (commencing with Section 830) of Title 3 of Part 2 of the Penal Code, who are employed by “reporting agencies,” subject to the exceptions set forth below.
+            </p>
+        </li>
+        <li style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
+            <p style="display: inline;">Probation officers are not subject to this chapter.</p>
+           
+        </li>
+        <li style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
+            <p style="display: inline;">Peace officers shall not report stops that occur in a custodial setting. Peace officers who work in custodial settings are subject to this chapter for stops that occur in non-custodial settings.</p>
+          
+        </li>
+        <li style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
+            <p style="display: inline;">All peace officers employed by a reporting agency, except for probation officers, are subject to this chapter even if the officer makes a stop while assigned or contracted to work for another governmental agency or a private entity pursuant to a contract or memorandum of understanding between the reporting agency and the governmental agency or private entity.</p>
+           
+            <ol id="l11">
+                <li style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">Example: A peace officer of a reporting agency who is also a member of a federal task force is subject to this chapter when stopping a person while the officer is performing duties as part of the task force, regardless of whether the officer must also comply with federal data collection policies, if any.</p>
+                    
+                </li>
+                <li style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">Example: A peace officer of a reporting agency assigned to work as a school resource officer in a K-12 Public School pursuant to a memorandum of understanding or other contractual relationship is subject to this chapter when stopping a person while on that assignment.</p>
+                </li>
+                <li style="padding-top: 5pt;padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">
+                        Example: A peace officer of a reporting agency hired pursuant to a memorandum of understanding or other contractual relationship between the reporting agency and a private entity to work at a private university or college, or sporting event, is subject to this chapter when stopping a person while working on that assignment.
+                    </p>
+                </li>
+            </ol>
+        </li>
+    </ol>
+    <p style="padding-top: 0pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">Note: Authority cited: Section 12525.5, Government Code. Reference: Section 12525.5, Government Code.</p>
+    
+    <h1 style="padding-top: 10pt;padding-left: 5pt;text-indent: 0pt;">
+        Article 3. Data Elements To Be Reported
+    </h1>
+    
+    <h1 style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;">§ 999.226</h1>
+   
+    <ol id="l12">
+        <li style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
+            <p style="display: inline;">
+               The data elements regarding stops that shall be collected by peace officers subject to this chapter are defined as follows:
+            </p>
+            <ol id="l13">
+                <li style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">“ORI number” is the data element that refers to the reporting agency’s Originating Agency Identifier, a unique identification code number assigned by the Federal Bureau of Investigation.</p>
+                   
+                </li>
+                <li id="999-226-a-2" style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">Date, Time, and Duration of Stop</p>
+                    
+                    <ol id="l14">
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">“Date of Stop” refers to the year, month, and day when the stop occurred. It shall be recorded as the date on which the stop began. If the stop extends over two days (e.g., if a stop began at 2330 hours on January 1st and concluded at 0030 hours on January 2nd), the “Date of Stop” should be recorded as the first date (in this example, January 1st).</p>
+                            
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">“Time of Stop” refers to the approximate time that the stop began and shall be recorded using a 24-hour clock (i.e., military time).</p>
+                            
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">“Duration of Stop” is the approximate length of the stop measured from the time the reporting officer, or any other officer, first detains or, if no initial detention, first searches the stopped person until the time when the person is free to leave or taken into physical custody. In reporting this data element, the officer shall enter the approximate length of the stop in minutes.</p>
+                           
+                            <ol id="l15">
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Example: Officer A stops a vehicle for suspected driving under the influence (DUI) at 1300 hours. Officer B then arrives at the scene 15 minutes later and conducts a field sobriety test on the driver, who fails the tests. Officer B then arrests and takes the driver into custody at 1345. “Duration of Stop” would be reported as 45 minutes.</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Example: Officer A begins interviewing witnesses to a robbery at 1100 hours. After approximately 30 minutes of interviews with different witnesses, Officer A observes what looks like a switchblade knife protruding from the waistband of one of the witnesses. Officer A then searches that person. “Duration of Stop” is measured from the time the person is searched (1130 hours) and not the time during which the officer began interviewing the witnesses to the robbery (1100 hours).</p>
+                                </li>
+                               
+                            </ol>
+                        </li>
+                    </ol>
+                </li>
+                <li style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p id="999-226-a-3" style="display: inline;">
+                       “Location of Stop” refers to the physical location where the stop took place and shall be reported as follows:
+                    </p>
+                    <ol id="l16">
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">The officer shall report one of the following options, which are provided in order of preference:</p>
+                           
+                            <ol id="l17">
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Block number and street name;</p>                                    
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Closest intersection; or</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Highway and closest highway exit.</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">If none of these options are applicable, the officer may report a road marker, landmark, or other description, except that the officer shall not provide a street address if the location is a residence.</p>
+                                </li>
+                            </ol>
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">The officer shall report the city. To ensure uniformity, the Department shall provide a list of cities within the State of California.</p>
+                            
+                        </li>
+                    </ol>
+                </li>
+                <li id="999-226-a-4" style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">“Perceived Race or Ethnicity of Person Stopped” refers to the officer’s perception of the race or ethnicity of the person stopped. When reporting this data element, the officer shall make his or her determination of the person’s race or ethnicity based on personal observation only. The officer shall not ask the person stopped his or her race or ethnicity, or ask questions or make comments or statements designed to elicit this information.</p>
+                  
+                    <ol id="l19">
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">When reporting this data element, the officer shall select all of the following data values that apply:</p>
+                           
+                            <ol id="l20">
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Asian</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Black/African American</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Hispanic/Latino(a)</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Middle Eastern or South Asian</p>
+                                 </li>
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Native American</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Pacific Islander</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">White</p>
+                                    <ol id="l22">
+                                        <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Example: If a person appears to be both Black and Latino(a), the officer shall select both “Black/African American” and “Hispanic/Latino(a).”</p>
+                                        </li>
+                                    </ol>
+                                </li>
+                            </ol>
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">“Asian” refers to a person having origins in any of the original peoples of the Far East or Southeast Asia, including for example, Cambodia, China, Japan, Korea, Malaysia, the Philippine Islands, Thailand, and Vietnam, but who does not fall within the definition of “Middle Eastern or South Asian” or “Pacific Islander.”</p>
+                           
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">“Black/African American” refers to a person having origins in any of the Black racial groups of Africa.</p>
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">
+                                “Hispanic/Latino(a)” refers to a person of Mexican, Puerto Rican, Cuban, Central or South American, or other Spanish culture or origin, regardless of race.
+                            </p>
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">“Middle Eastern or South Asian” refers to a person of Arabic, Israeli, Iranian, Indian, Pakistani, Bangladeshi, Sri Lankan, Nepali, Bhutanese, Maldivian, or Afghan origin.</p>
+                            
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">“Native American” refers to a person having origins in any of the original peoples of North, Central, and South America.</p>
+                            
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">“Pacific Islander” refers to a person having origins in any of the original peoples of Hawaii, Guam, Samoa, or other Pacific Islands, but who does not fall within the definition of “Middle Eastern or South Asian” or “Asian.”</p>
+                            
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">“White” refers to a person of Caucasian descent having origins in any of the original peoples of Europe and Eastern Europe.</p>
+                           
+                        </li>
+                    </ol>
+                </li>
+                <li id="999-226-a-5" style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">“Perceived Gender of Person Stopped” refers to the officer’s perception of the person’s gender. When reporting this data element, the officer shall make his or her determination of the person’s gender based on personal observation only. The officer shall not ask the person stopped his or her gender or use the gender specified on the person’s driver’s license or other identification, recognizing that the officer’s observation may not reflect the gender specified on the person’s identification.</p>
+                   
+                    <ol id="l23">
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">When reporting this data element, the officer shall select at least one of the following data values. In doing so and when applicable, the officer may select “Gender nonconforming” in addition to one of the four enumerated gender data values of Male, Female, Transgender man/boy, or Transgender woman/girl. If the officer cannot perceive the person stopped to be within the categories of Male, Female, Transgender man/boy, or Transgender woman/girl, the officer must select “Gender nonconforming” as the only data value.</p>
+                            <ol id="l24">
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Male</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Female</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Transgender man/boy</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Transgender woman/girl</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Gender nonconforming</p>
+                                </li>
+                            </ol>
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">For purposes of completing this data element, the officer shall refer to the following definitions:</p>
+                            
+                            <ol id="l25">
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">“Transgender man/boy” means a person who was assigned female at birth but who currently identifies as a man, or boy if the person is a minor.</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">“Transgender woman/girl” means a person who was assigned male at birth but who currently identifies as a woman, or girl if the person is a minor.</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">
+                                       “Gender nonconforming” means a person whose gender-related appearance, behavior, or both, differ from traditional conceptions about how males or females typically look or behave. A person of any gender or gender identity may be gender nonconforming. For this reason, an officer may select “Gender nonconforming” in addition to any of the other gender data values, if applicable.
+                                    </p>
+                                    
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>
+                </li>
+                <li id="999-226-a-6" style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">“Person Stopped Perceived to be LGBT” refers to the officer’s perception that the person stopped is LGBT. “LGBT” refers to lesbian, gay, bisexual or transgender. When reporting this data element, the officer shall select “Yes” or “No” and shall make his or her determination based on personal observation only, without asking whether the person is LGBT. If an officer selects “Transgender man/boy” or “Transgender woman/girl” in response to the data element for “Perceived Gender of Person Stopped,” he or she must also select “Yes” in response to this data element.</p>
+                  
+                </li>
+                <li id="999-226-a-7" style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">“Perceived Age of Person Stopped” refers to the officer’s perception of the approximate age of the person stopped. When reporting this data element, the officer shall make his or her determination based on personal observation only. The officer shall not ask the person stopped his or her age or use the age specified on the person’s identification, recognizing that the officer’s observation may not reflect the age specified on the person’s identification. In providing this information, the officer shall input an Arabic numeral (e.g., 1, 2, 3, 4) rounded up to the closest whole number.</p>
+                   
+                </li>
+                <li id="999-226-a-8" style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">“Person Stopped Has Limited or No English Fluency” refers to the officer’s perception that the person stopped has limited or no fluency in English. The officer shall only select this data element if it applies to the person stopped.</p>
+                
+                </li>
+                <li id="999-226-a-9" style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">“Perceived or Known Disability of Person Stopped” refers to the officer’s perception that the person stopped displayed signs of one or more of the following conditions; the officer’s knowledge that the person stopped has one or more of the following conditions because the person stopped so advised the officer; or the officer’s prior knowledge that the person stopped had one or more of the following conditions. Nothing in this provision alters any existing requirements to comply with reasonable accommodation and anti-discrimination laws with respect to the treatment of people with disabilities. When reporting this data element, the officer shall select all of the following data values that apply:</p>
+                   
+                    <ol id="l26">
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Deafness or difficulty hearing</p>
+                           
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Speech impairment or limited use of language </p>
+                            
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Blind or limited vision</p>
+                            
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Mental health condition</p>
+                            
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Intellectual or developmental disability, including dementia</p>
+                           
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Other disability</p>
+                           
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">None. If “None” is selected, no other data values can be selected.</p>
+                            
+                        </li>
+                        
+                        
+                    </ol>
+                </li>
+                <li id="999-226-a-10" style="padding-top: 3pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">
+                        “Reason for Stop” refers to the primary reason why the officer stopped the person.
+                    </p>
+                    <ol id="l28">
+                        <li style="padding-top: 5pt;padding-left: 15PT;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">When reporting this data element, the officer shall identify only the primary reason for stopping a person, by selecting one of the following data values. Justifications that did not inform the officer’s primary reason for the stop shall not be selected.</p>
+                           
+                            <ol id="l29">
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Traffic violation. When selecting this data value, the officer shall also identify the applicable Vehicle Code section and subdivision using the Department’s standard California Justice Information Services (CJIS) Offense Table. When the person stopped is the driver, the officer shall also designate the primary type of violation:</p>
+                                    <ol id="l30">
+                                        <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Moving violation</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Equipment violation</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Non-moving violation, including registration violation</p>
+                                        </li>
+                                    </ol>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Reasonable suspicion that the person was engaged in criminal activity. This data value should not be selected if “Traffic violation” is the reason for the stop. When selecting this data value, the officer shall select all applicable circumstances that gave rise to the officer’s reasonable suspicion from the list provided below. In addition, using the Department’s standard CJIS Offense Table, the officer shall identify the primary code section and subdivision of the suspected violation of law that formed the basis for the stop, if known to the officer.</p>
+                                    <ol id="l31">
+                                        <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Officer witnessed commission of a crime</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Matched suspect description</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Witness or victim identification of suspect at the scene </p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Carrying suspicious object</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Actions indicative of casing a victim or location</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Suspected of acting as a lookout</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Actions indicative of a drug transaction</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Actions indicative of engaging in a violent crime</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Other reasonable suspicion of a crime</p>
+                                        </li>
+                                           
+                                        
+                                    </ol>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Known to be on parole/probation/PRCS/mandatory supervision. The officer shall select this data value if the officer stopped the person because the officer knows that the person stopped is a supervised offender on parole, on probation, on post-release community supervision (PRCS), or on mandatory supervision. The officer shall not select this data value if the officer learns that the person has this status only after the person is stopped.</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Knowledge of outstanding arrest warrant/wanted person. The officer shall select this data value if the officer stopped the person because the officer knows that the person stopped is the subject of an outstanding arrest warrant or is a wanted person. The officer shall not select this data value if the officer learns, after the person is
+                                    stopped, that the person is the subject of an outstanding arrest warrant or is a wanted person.
+                                    </p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Investigation to determine whether the person is truant.</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Consensual encounter resulting in a search. A consensual encounter is an interaction in which the officer does not exert any authority over, or use any force on, a person, and the person is free to leave. The officer shall only select this data value if a consensual encounter results in a search, regardless of whether the resulting search is consensual.</p>
+                                    <ol id="l33">
+                                        <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Example: During the course of a witness interview in which the person is free to leave, the officer asks to search the person’s bag, and the person consents. In this case the reason for stop is a “consensual encounter resulting in a search.”</p>
+                                            
+                                        </li>
+                                    </ol>
+                                </li>
+                            </ol>
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">When reporting the “Reason for Stop,” the officer shall also provide a brief explanation (250-character maximum) regarding the reason for the stop. This explanation shall include additional detail beyond the general data values selected for the “Reason for Stop.” Officers shall not include any personal identifying information of the persons stopped or Unique Identifying Information of any officer in this explanation.</p>
+                           
+                            <ol id="l34">
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Example: If the officer selected “Reasonable suspicion that the person was engaged in criminal activity/Actions indicative of a drug transaction,” the officer must use this field to briefly note the specific nature of the actions indicative of a drug transaction and why they were suspicious.</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Example: If the officer selected “Vehicle Code 26708 (Material Obstructing or Reducing the Driver’s View)” from the Department’s standard CJIS Offense Table, the officer shall use this field to briefly note the specific nature of the obstruction/reduction of the driver’s view (i.e., what specifically did the officer observe and how was such item obstructing or reducing the driver’s view).</p>
+                                   
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>
+                </li>
+                <li id="999-226-a-11" style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">“Stop Made in Response to a Call for Service.” The officer shall only select this data element if the stop was made in response to a call for service, radio call, or dispatch. An interaction that occurs when an officer responds to a call for service is only reportable if the interaction meets the definition of “stop,” as specified in section 999.224, subdivision (a)(14). A call for service is not a reason for a stop.</p>
+                   
+                </li>
+                <li id="999-226-a-12" style="padding-top: 5pt;padding-left: 10pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">“Actions Taken by Officer During Stop” refers to an officer’s actions toward the person stopped.</p>
+                   
+                    <ol id="l35">
+                        <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">The reporting officer shall select all of the following data values that apply, even if any or all of the actions were undertaken by another officer:</p>
+                           
+                            <ol id="l36">
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Person removed from vehicle by order</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Person removed from vehicle by physical contact</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Field sobriety test conducted</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Curbside detention. This refers to any time an officer directs the person to sit on the sidewalk, curb, or ground.</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Handcuffed or flex cuffed</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Patrol car detention</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Canine removed from vehicle or used to search</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Firearm pointed at person</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Firearm discharged or used</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Electronic control device used</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Impact projectile discharged or used (e.g., blunt impact projectile, rubber bullets or bean bags)</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Canine bit or held person</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Baton or other impact weapon used</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Chemical spray used (e.g., pepper spray, mace, or other chemical irritants)</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Other physical or vehicle contact. This refers to any of the following contacts by the officer, when the purpose of such contact is to restrict movement or control a person’s resistance: any physical strike by the officer; instrumental contact with a person by an officer; or the use of significant physical contact by the officer. Examples of such contacts include, but are not limited to, carotid restraints, hard hand controls, the forcible taking of a subject to the ground, or use of vehicle in apprehension.</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Person photographed</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Asked for consent to search person</p>
+                                    <ol id="l39">
+                                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Consent given</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Consent not given</p>
+                                        </li>
+                                    </ol>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Search of person was conducted. This data value should be selected if a search of the person was conducted, regardless of whether the officer asked for or received consent to search the person.</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Asked for consent to search property</p>
+                                    <ol id="l39">
+                                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Consent given</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Consent not given</p>
+                                        </li>
+                                    </ol>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Search of property was conducted. This data value should be selected if a search of the person’s property was conducted, regardless of whether the officer asked for or received consent to search the property.</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Property was seized</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Vehicle impounded</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">None. This data value should only be selected if none of the enumerated data values apply. If “None” is selected, no other data values can be selected.</p>
+                                </li>
+                         
+                            </ol>
+                        </li>
+                        <li id="999-226-a-12-b" style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">“Basis for Search.” If, during the stop, the officer conducted a search of the person, the person’s property, or both, the officer shall report the basis for the search.</p>
+                            
+                            <ol id="l40">
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">The officer shall identify the basis for the search by selecting all of the following data values that apply:</p>
+                                    <ol id="l41">
+                                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Consent given</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Officer safety/safety of others</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Search warrant</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Condition of parole/probation/PRCS/mandatory supervision</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Suspected weapons</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Visible contraband</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Odor of contraband</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Canine detection</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Evidence of crime</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Incident to arrest</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Exigent circumstances/emergency</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Vehicle inventory (for search of property only)</p>
+                                        </li>                                        
+                                    </ol>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">When reporting the “Basis for Search,” the officer shall also provide a brief explanation (250-character maximum) regarding the basis for the search. This explanation shall include additional detail beyond the general data values selected for “Basis for Search.” Officers shall not include any personal identifying information of the persons stopped or Unique Identifying Information of any officer in this explanation. If the basis for the search is “Condition of parole/probation/PRCS/mandatory supervision,” this explanation is not required.</p>
+                                    <ol id="l43">
+                                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">
+                                                Example: If the officer selected “Suspected weapons” as the “Basis for Search,” the officer must use this field to explain the specific nature of the suspected weapons (i.e., what were the specific objects, shapes, and/or movements observed that made the officer suspicious and what type of weapons were suspected).
+                                            </p>
+                                          
+                                        </li>
+                                    </ol>
+                                </li>
+                            </ol>
+                        </li>
+                        <li id="999-226-a-12-c" style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">“Contraband or Evidence Discovered, if Any.” The officer shall indicate whether contraband or evidence was discovered during the stop, including contraband or evidence discovered in plain view or as the result of a search, and the type of contraband or evidence discovered, by selecting all of the following data values that apply:</p>
+                           
+                            <ol id="l44">
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">None. If “None” is selected, no other data values can be selected.</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Firearm(s)</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Ammunition</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">
+                                      Weapon(s) other than a firearm
+                                    </p>
+                                </li>             
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">
+                                        Drugs/narcotics
+                                    </p>
+                                </li>   
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Alcohol</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Money</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Drug paraphernalia</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Suspected stolen property</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Cell phone(s) or electronic device(s)</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Other contraband or evidence</p>
+                                </li>
+                            </ol>
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 20pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Additional Data Regarding Type of Property Seized.</p>
+                            <ol id="l47">
+                                <li id="999-226-a-12-d-1" style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">“Basis for Property Seizure.” If the officer seized property during the stop, regardless of whether the property belonged to the person stopped, the officer shall report the basis for the property seizure by selecting all of the following data values that apply:</p>
+                               
+                                <ol id="l48">
+                                    <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                        <p style="display: inline;">Safekeeping as allowed by law/statute</p>
+                                    </li>
+                                    <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                        <p style="display: inline;">Contraband</p>
+                                    </li>
+                                    <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                        <p style="display: inline;">Evidence</p>
+                                    </li>
+                                    <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                        <p style="display: inline;">Impound of vehicle</p>
+                                    </li>
+                                    <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                        <p style="display: inline;">Abandoned Property</p>
+                                    </li>
+                                </ol>
+                                 </li>   
+                                <li id="999-226-a-12-d-2" style="padding-top: 5pt;padding-left: 25pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">“Type of Property Seized.” If the officer seized property during the stop, regardless of whether the property belonged to the person stopped, the officer shall report the type of property seized, by selecting all of the following data values that apply:</p>
+                                    <ol id="l50">
+                                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Firearm(s)</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Ammunition</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Weapon(s) other than a firearm</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Drugs/narcotics</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Alcohol</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Money</p>
+                                        </li>
+                                        <li style="padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Drug paraphernalia</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Suspected stolen property</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Cell phone(s) or electronic device(s)</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Vehicle</p>
+                                        </li>
+                                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                                            <p style="display: inline;">Other contraband or evidence</p>
+                                        </li>
+                                    </ol>
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>
+                </li>
+                <li id="999-226-a-13" style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">“Result of Stop” refers to the outcome of the stop. When reporting this data element, the officer shall select all of the following data values that apply. In addition, for warnings, citations, cite and release, and custodial arrests (with the exception of an arrest pursuant to an outstanding warrant) the officer shall also, using the Department’s standard CJIS Offense Table, identify the code, including the section number and appropriate subdivision, that is the basis for the warning, citation, cite and release, or custodial arrest, where applicable. If more than one code section forms the basis for the warning, citation, cite and release or custodial arrest, the officer shall identify all applicable code sections and subdivisions. If the Result of Stop is based on an ordinance, the officer shall select “local ordinance viol” from the Department’s CJIS Offense Table without the need for the specific section number.</p>
+                 
+                    <ol id="l52">
+                                <li style="padding-top: 5pt;padding-left: 23pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">No action. If “No Action” is selected, no other data values can be selected.</p>                                   
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 23pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Warning (verbal or written)</p>                                   
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 23pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Citation for infraction </p>                                   
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 23pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">In-field cite and release</p>                                   
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 23pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Custodial arrest pursuant to outstanding warrant</p>                                   
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 23pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Custodial arrest without warrant</p>                                   
+                                </li>   
+                                <li style="padding-top: 5pt;padding-left: 23pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Field interview card completed</p>                                   
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 23pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Noncriminal transport or caretaking transport. This includes transport by an officer, transport by ambulance, or transport by another agency.</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 37pt;text-indent: -14pt;text-align: left;">
+                                    <p style="display: inline;">Contacted parent/legal guardian or other person responsible for the minor</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 23pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Psychiatric hold (pursuant to Welfare &amp; Institutions Code sections 5150 and/or 5585.20)</p>
+                                 </li>
+                                <li style="padding-top: 5pt;padding-left: 23pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Contacted U.S. Department of Homeland Security (e.g., Immigration and Customs Enforcement, Customs and Border Protection)</p>
+                                </li>
+                            </ol>
+                  
+                </li>
+                <li style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">“Officer’s Identification (I.D.) Number” refers to a permanent identification number assigned by the reporting agency to the reporting officer, which shall be used for all reporting to the Department required under this chapter. For purposes of these regulations, an Officer’s I.D. Number shall be considered Unique Identifying Information.</p>
+                   
+                </li>
+                <li id="999-226-a-15" style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">“Officer’s Years of Experience” refers to the officer’s total number of years he or she has been a peace officer as defined in Chapter 4.5 (commencing with Section 830) of Title 3 of Part 2 of the Penal Code. When reporting this data element, the officer shall count the total number of years he or she has been a peace officer, and not the number of years at his or her current agency. If the officer has served as a peace officer intermittently or part-time, he or she shall only count the time actually worked as a peace officer. In providing this information, the officer shall input an Arabic numeral (e.g., 1, 2, 3, 4) rounded up to the closest whole number.</p>
+                </li>
+                <li id="999-226-a-16" style="padding-top: 3pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">
+                        “Type of Assignment of Officer” refers to the type of assignment to which an officer is assigned at the time of the stop. When reporting this data element, the officer shall select one of the following data values:
+                    </p>                   
+                    <ol id="l54">
+                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Patrol, traffic enforcement, field operations</p>
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Gang enforcement</p>
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Compliance check (e.g., parole/probation/PRCS/mandatory supervision)</p>
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Special events (e.g., sports, concerts, protests)</p>
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Roadblock or DUI sobriety checkpoint</p>
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;"> Narcotics/vice</p>
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Task force</p>
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">K-12 Public School, including school resource officer or school police officer</p>
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Investigative/detective</p>
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 30pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Other. If other is selected, the officer shall specify the type of assignment.</p>
+                        </li>
+                    </ol>
+                </li>
+            </ol>
+        </li>
+    </ol>
+  
+    <p style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">Note: Authority cited: Section 12525.5, Government Code. Reference: Section 12525.5, Government Code.</p>
+  
+    <h1 style="padding-top: 10pt;padding-left: 5pt;text-indent: 0pt;">
+       Article 4. Reporting Requirements
+    </h1>
+   
+    <h1 style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;">§ 999.227</h1>
+   
+    <ol id="l56">
+        <li style="padding-top: 5pt;padding-left: 6pt;text-indent: 0pt;text-align: left;">
+            <p style="display: inline;">
+                General Reporting Requirements.
+            </p>
+         
+            <ol id="l57">
+                <li style="padding-top: 5pt;padding-left: 28pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">Peace officers subject to the reporting requirements of this chapter shall submit the data elements described in section 999.226, subdivision (a) for every person stopped by the officer, except as provided in subdivisions (b), (c), (d) and (e) of this section.</p>
+                    
+                </li>
+                <li style="padding-top: 5pt;padding-left: 28pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">The data elements described in section 999.226, subdivision (a) are the minimum that a reporting agency shall collect and report. Nothing in this section prohibits a reporting agency from voluntarily collecting additional data.</p>
+                    
+                </li>
+                <li style="padding-top: 5pt;padding-left: 28pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">Nothing in this section prohibits an agency not subject to these regulations from submitting stop data voluntarily to the Department.</p>
+                    
+                </li>
+                <li style="padding-top: 5pt;padding-left: 28pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">When two or more reporting agencies are involved in a stop, only the primary agency shall submit a report. The primary agency is the agency with investigative jurisdiction based on local, county, or state law or applicable interagency agreement or memoranda of understanding. If there is uncertainty as to the primary agency, the agencies shall agree on which agency is the primary agency for reporting purposes. If a stop is done in conjunction</p>
+                    <p style="padding-top: 4pt;padding-left: 28pt;text-indent: 0pt;text-align: left;">
+                       with a reporting agency and an agency that is not subject to the reporting requirements of this chapter, the reporting agency is required to submit data on the stop, even if it is not the primary agency responsible for the stop.
+                    </p>
+                   
+                </li>
+                <li style="padding-top: 5pt;padding-left: 28pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">If more than one peace officer of a reporting agency conducts a stop, only one officer shall collect and report the information required to be reported in this chapter. The officer with the highest level of engagement with the person stopped shall submit the full report for all data elements, regardless of whether that officer performed the specific action(s) reported.</p>
+                   
+                    <ol id="l58">
+                        <li style="padding-top: 5pt;padding-left: 42pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Example: If Officer A stops a person, questions them, and conducts a subsequent consensual search that results in the discovery of narcotics, but Officer B handcuffs the person and takes the person into custody, Officer A would complete the stop report and include all relevant actions of both Officer A and B in that stop report.</p>
+                          
+                        </li>
+                    </ol>
+                </li>
+                <li style="padding-top: 5pt;padding-left: 28pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">If multiple persons are stopped during one incident, then applicable stop data shall be submitted for each person within a single report, except that passengers in a vehicle that is stopped shall be reported only as set forth in subdivision (b) of this section.</p>
+                    
+                </li>
+                <li style="padding-top: 5pt;padding-left: 28pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">Nothing prohibits agencies subject to this chapter from providing information to the Department earlier than the deadlines set forth in Government Code section 12525.5, subdivision (a).</p>
+                    
+                </li>
+                <li style="padding-top: 5pt;padding-left: 28pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">On January 1 of each year until the agency begins reporting data to the Department, each reporting agency shall count the number of peace officers it employs who are subject to this chapter to determine the date that agency must start collecting stop data and reporting to the Department pursuant to Government Code section 12525.5, subdivisions (a)(1) and (a)(2).</p>
+                   
+                </li>
+                <li style="padding-top: 5pt;padding-left: 28pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">An officer shall complete all stop reports for stops made during his or her shift by the end of that shift, unless exigent circumstances preclude doing so. In such circumstances, the data shall be completed as soon as practicable.</p>
+                   
+                </li>
+                <li style="padding-top: 5pt;padding-left: 28pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">In order to ensure compliance with these regulations, a reporting agency, its officers, or both may review the stop data to correct errors before submitting the stop data to the Department. Once the stop data is submitted to the Department, however, an agency can only revise stop data through the Department’s error resolution process.</p>
+                    
+                </li>
+                <li style="padding-top: 5pt;padding-left: 28pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">Reporting agencies shall create the Officer’s I.D. Number defined at section 999.226, subdivision (a)(14) for each officer required to report stops under these regulations. Stop reports submitted to the Department shall include the Officer’s I.D. Number, but shall not include the officer’s name or badge number. However, each reporting agency shall maintain a system to match an individual officer to his or her Officer’s I.D. Number.</p>
+                    
+                </li>
+            </ol>
+        </li>
+        <li style="padding-top: 5pt;padding-left: 22pt;text-indent: -16pt;text-align: left;">
+            <p style="display: inline;">Reporting Requirements for Passengers in Vehicle Stops.</p>
+           
+            <ol id="l59">
+                <li style="padding-top: 5pt;padding-left: 24pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">Peace officers shall not submit the data elements described in section 999.226, subdivision (a) for passengers in vehicles subject to a stop unless either of the following applies:</p>
+                    <ol id="l60">
+                        <li style="padding-top: 5pt;padding-left: 42pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">
+                                The passenger is observed or suspected of violating the Vehicle Code or any other applicable law or ordinance.
+                            </p>
+                            
+                            <ol id="l61">
+                                <li style="padding-top: 5pt;padding-left: 60pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Example: An officer pulls over a vehicle because he or she observes the passenger of a vehicle throw a cigarette outside of the vehicle. The “Reason for Stop” is that the passenger was suspected of violating the Vehicle Code.</p>
+                                    
+                                </li>
+                            </ol>
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 42pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">The passenger is subjected to any of the actions identified as data values in section 999.226, subdivision (a)(12)(A), excluding “Vehicle impounded” and “None.”</p>
+                            
+                            <ol id="l62">
+                                <li style="padding-top: 5pt;padding-left: 60pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Example: An officer stops a speeding SUV containing a woman and her two small children. During the stop, the officer learns that the woman’s license has been revoked. The officer then orders the family to exit the vehicle and sit on the curb while he or she questions the woman. The officer shall submit stop data for each person, because ordering persons to sit on the curb is a data value in section 999.226, subdivision (a)(12)(A).</p>
+                                    
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 60pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Example: An officer stops a speeding truck containing a woman and her two teenage children. During the stop, the officer learns that the vehicle is stolen, and must impound the vehicle. The officer arrests the woman, and then asks the teenage children to exit the car so that he can impound the vehicle. The officer shall not submit stop data for the two children because “Vehicle impounded” is excluded from the data values under section 999.226, subdivision (a)(12)(A) that trigger the reporting of stop data regarding passengers.</p>
+                                    
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>
+                </li>
+            </ol>
+        </li>
+        <li style="padding-top: 5pt;padding-left: 6pt;text-indent: 0pt;text-align: left;">
+            <p style="display: inline;">Peace Officer Interactions that Are Not Reportable. The following interactions, even if they otherwise meet the definition of “detention” set forth in this chapter, shall not be construed to be “detentions” and shall not be reported as stops.</p>
+          
+            <ol id="l63">
+                <li style="padding-top: 5pt;padding-left: 24pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">Stops during public safety mass evacuations, including bomb threats, gas leaks, flooding, earthquakes and other similar critical incidents, are not subject to the reporting requirements of this chapter.</p>
+                   
+                </li>
+                <li style="padding-top: 5pt;padding-left: 24pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">Stops during an active shooter incident, meaning an individual is actively engaged in killing or attempting to kill people in a populated area, are not subject to the reporting requirements of this chapter.</p>
+                    
+                </li>
+                <li style="padding-top: 5pt;padding-left: 24pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">Stops that occur during or as a result of routine security screenings required of all persons to enter a building or special event, including metal detector screenings, including any secondary searches that result from that screening, are not subject to the reporting requirements of this chapter.</p>
+                   
+                </li>
+            </ol>
+        </li>
+        <li style="padding-top: 5pt;padding-left: 6pt;text-indent: 0pt;text-align: left;">
+            <p style="display: inline;">Peace Officer Interactions that Are Reportable Only if the Officer Takes Additional Specified Actions</p>
+            
+            <ol id="l64">
+                <li style="padding-top: 5pt;padding-left: 24pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">Interactions that take place during the following circumstances shall only be reported if the person is detained based upon individualized suspicion or personal characteristics and/or</p>
+                    <p style="padding-top: 3pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
+                        the officer engages in any of the actions described in the data values set forth in section 999.226, subdivision (a)(12)(A), excluding “None”:
+                    </p>
+                    
+                    <ol id="l65">
+                        <li style="padding-top: 5pt;padding-left: 23pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Traffic control of vehicles due to a traffic accident or emergency situation that requires that vehicles are stopped for public safety purposes.</p>
+                            
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 23pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Any type of crowd control in which pedestrians are made to remain in a location or routed to a different location for public safety purposes.</p>
+                           
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 23pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Interactions during which persons are detained at a residence only so that officers may check for proof of age for purposes of investigating underage drinking.</p>
+                            
+                            <ol id="l66">
+                                <li style="padding-top: 5pt;padding-left: 41pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">
+                                        Example: An officer is dispatched to a residence to investigate a noise complaint. Upon arrival, the officer suspects that some of the persons at the house party are engaged in underage drinking and he or she detains the persons to request identification to verify proof of age. Because the only action the officer takes is to detain the persons for the sole purpose of verifying proof of age, these interactions are not reportable
+                                        <b>.</b>
+                                    </p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 41pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Example: At that same party, the officer, in addition to detaining a person to question him/her, also asks to search the person. Regardless of whether the person consents to the search or is actually searched, that interaction is reportable because asking for consent to search and/or conducting a search are data values under section 999.226, subdivision (a)(12)(A) that trigger reporting of stop data in these settings.</p>
+                                   
+                                </li>
+                            </ol>
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 23pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Checkpoints or roadblocks in which an officer detains a person as the result of a blanket regulatory activity or neutral formula that is not based on individualized suspicion or personal characteristics.</p>
+                           
+                            <ol id="l67">
+                                <li style="padding-top: 5pt;padding-left: 41pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Example: A checkpoint or roadblock, including a DUI sobriety checkpoint, that stops all vehicles or stops randomly selected vehicles using a neutral formula, i.e., not based on individualized suspicion or personal characteristics, is not subject to the reporting requirements of this chapter.</p>
+                                   
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>
+                </li>
+                <li style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">Interactions that take place with a person in his or her residence who is the subject of a warrant or search condition are not subject to the reporting requirements of this chapter. A peace officer shall, however, report any interactions with persons in the home who are not the subject of the warrant or search condition, if the officer takes any of the following actions: handcuffs or flex cuffs the person; arrests the person; points a firearm at the person; discharges or uses a firearm, electronic control device, impact projectile, baton or other impact weapon, or chemical spray on the person; or if a canine bit/held the person.</p>
+                    
+                </li>
+                <li style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">Interactions that take place with a person in his or her residence who is the subject of home detention or house arrest while an officer is on home detention or house arrest assignment, are not subject to the reporting requirements of this chapter. A peace officer shall, however, report any interactions with persons in the home who are not the subject of the home detention or house arrest, if the officer takes any of the following actions:</p>
+                    <p style="padding-top: 3pt;padding-left: 23pt;text-indent: 0pt;text-align: left;">
+                       handcuffs or flex cuffs the person; arrests the person; points a firearm at the person; discharges or uses a firearm, electronic control device, impact projectile, baton or other impact weapon, or chemical spray on the person; or if a canine bit/held the person.
+                    </p>
+                    
+                </li>
+            </ol>
+        </li>
+        <li style="padding-top: 5pt;padding-left: 21pt;text-indent: -16pt;text-align: left;">
+            <p style="display: inline;">Reporting Requirements for Stops of Students at a K-12 Public School.</p>
+           
+            <ol id="l68">
+                <li style="padding-top: 5pt;padding-left: 23pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">Stops of persons who are not students are subject to the reporting requirements set forth in section 999.227, subdivision (a) – (d), even if the stop takes place at a K-12 Public School.</p>
+                 
+                </li>
+                <li style="padding-top: 5pt;padding-left: 23pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">The exceptions to reporting set forth at section 999.227, subdivision (b), (c), and (d) shall apply to stops in K-12 Public School, regardless of whether the stops are of students or non- students.</p>
+                   
+                </li>
+                <li style="padding-top: 5pt;padding-left: 23pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">In addition, in a K-12 Public School, an officer shall report only the following interactions with students as stops:</p>
+                   
+                    <ol id="l69">
+                        <li style="padding-top: 5pt;padding-left: 41pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Any interaction that results in a temporary custody under Welfare and Institutions Code section 625, citation, arrest, permanent seizure of property as evidence of a criminal offense, or referral to a school administrator because of suspected criminal activity.</p>
+                           
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 41pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Any interaction in which the student is questioned for the purpose of investigating whether the student committed a violation of law, including violations of Education Code sections 48900, 48900.2, 48900.3, 48900.4, and 48900.7, or to determine whether the student is truant.</p>
+                           
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 41pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">Any interaction in which an officer engages in one or more of the data values set forth in section 999.226, subdivision (a)(12)(A), excluding “None.” This does not include a detention or search that is conducted of all persons as part of a neutrally applied formula that is not based upon personal characteristics. This includes searches conducted at the entries and exits of school facilities by screening devices, and secondary screenings that result from that initial screening.</p>
+                         
+                            <ol id="l70">
+                                <li style="padding-top: 5pt;padding-left: 77pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Example: All students entering a school are required to pass through a metal detector. A school police officer searches a student’s person or belongings because a metal detector is activated. The interaction shall not be reported.</p>
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 77pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Example: An officer searches a student’s backpack because he or she suspects the backpack contains narcotics. The interaction is reportable.</p>
+                                    
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>
+                </li>
+                <li style="padding-top: 5pt;padding-left: 23pt;text-indent: 0pt;text-align: left;">
+                    <p style="display: inline;">In reporting interactions with students at a K-12 Public School, the officer shall utilize the data elements and corresponding data values set forth in section 999.226, with the addition of the following data values, which the officer shall select if applicable:</p>
+                   
+                    <ol id="l71">
+                        <li style="padding-top: 5pt;padding-left: 36pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">“Location of Stop.” In addition to reporting the data values in section 999.226, subdivision (a)(3)(A) and (B) above, the officer shall provide the name of the school where the stop took place. To ensure uniformity, the Department of Justice shall provide a list of the names of K-12 Public Schools, using information obtained from the Department of Education. The officer shall also indicate that the stop is of a student.</p>
+                        </li>
+                        <li style="padding-top: 3pt;padding-left: 41pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">
+                                “Perceived or Known Disability.” If the stop of a student takes place at a K-12 Public School, in addition to selecting all applicable data values in section 999.226, subdivision (a)(9) above, the officer shall also select the following data value if applicable:
+                            </p>
+                           
+                            <ol id="l72">
+                                <li style="padding-top: 5pt;padding-left: 71pt;text-indent: -12pt;text-align: left;">
+                                    <p style="display: inline;">Disability related to hyperactivity or impulsive behavior</p>
+                                    
+                                </li>
+                            </ol>
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 41pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">“Reason for Stop.” When reporting this data element, the officer shall select the primary reason for the stop from among the data values in section 999.226, subdivision (a)(10) as well as the additional data values provided below. “Student violated school policy” should only be selected if other options related to violations of law (e.g., Penal Code or Education Code) do not apply.</p>
+                            
+                            <ol id="l73">
+                                <li style="padding-top: 5pt;padding-left: 59pt;text-indent: 0pt;text-align: left;">
+                                    <p style="display: inline;">Possible conduct warranting discipline under Education Code sections 48900, 48900.2, 48900.3, 48900.4, and 48900.7. When selecting this data value, the officer shall identify the primary code section and subdivision from the following options: 48900(a) through 48900(r); 48900.2; 48900.3; 48900.4; and 48900.7(a).</p>
+                                    
+                                </li>
+                                <li style="padding-top: 5pt;padding-left: 71pt;text-indent: -12pt;text-align: left;">
+                                    <p style="display: inline;">Determine whether the student violated school policy</p>
+                                </li>
+                            </ol>
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 41pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">“Actions Taken by Officer During Stop.” When reporting this data element, in addition to selecting the applicable data values in section 999.226, subdivision (a)(12)(A) above, the officer shall also select the following data value if applicable:</p>
+                            
+                            <ol id="l74">
+                                <li style="padding-top: 5pt;padding-left: 71pt;text-indent: -12pt;text-align: left;">
+                                    <p style="display: inline;">Admission or written statement obtained from student</p>
+                                   
+                                </li>
+                            </ol>
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 41pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">“Basis for Search.” When reporting this data element, in addition to selecting the applicable data values in section 999.226, subdivision (a)(12)(B) above, the officer shall also select the following data value if applicable:</p>
+                           
+                            <ol id="l75">
+                                <li style="padding-top: 5pt;padding-left: 71pt;text-indent: -12pt;text-align: left;">
+                                    <p style="display: inline;">Suspected violation of school policy</p>
+                                    
+                                </li>
+                            </ol>
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 41pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">“Basis for Property Seizure.” When reporting this data element, in addition to selecting the applicable data values in section 999.226, subdivision (a)(12)(D)1 above, the officer shall also select the following data value if applicable:</p>
+                            
+                            <ol id="l76">
+                                <li style="padding-top: 5pt;padding-left: 71pt;text-indent: -12pt;text-align: left;">
+                                    <p style="display: inline;">
+                                       Suspected violation of school policy
+                                    </p>
+                                    
+                                </li>
+                            </ol>
+                        </li>
+                        <li style="padding-top: 5pt;padding-left: 41pt;text-indent: 0pt;text-align: left;">
+                            <p style="display: inline;">“Result of Stop.” When reporting this data element, in addition to selecting the applicable data values in section 999.226, subdivision (a)(13) above, the officer shall also select the following data values if applicable:</p>
+                            
+                            <ol id="l77">
+                                <li style="padding-top: 5pt;padding-left: 71pt;text-indent: -12pt;text-align: left;">
+                                    <p style="display: inline;">Referral to school administrator</p>
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>
+                </li>
+            </ol>
+        </li>
+    </ol>
+    <p style="padding-top: 5pt;padding-left: 59pt;text-indent: 0pt;text-align: left;">1. Referral to school counselor or other support staff</p>
+    <p style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">Note: Authority: Section 12525.5, Government Code. Reference: Section 12525.5, Government Code.</p>
+    <h1 style="padding-top: 10pt;padding-left: 5pt;text-indent: 0pt;">
+       Article 5. Technical Specifications and Uniform Reporting Practices
+    </h1>
+    
+    <h1 style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;">§ 999.228</h1>
+    
+    <ol id="l78">
+        <li style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
+            <p style="display: inline;">
+                Electronic System. The system developed by the Department shall require the electronic submission of data from reporting agencies.
+            </p>
+           
+        </li>
+        <li style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
+            <p style="display: inline;">Submission of Data. Reporting agencies shall be provided with the following options to submit their stop data to the Department: (1) a web-browser based application, which shall include mobile capabilities for agencies that choose to use the Department’s developed and hosted solution to submit stop data; (2) a system-to-system web service for agencies that elect to collect the data in a local system and then submit the data to the Department; and (3) a secured file transfer protocol for agencies that elect to collect the data in a local repository and then submit the data to the Department. Agencies that select option 3 shall be permitted to submit batch uploads of stop data in Excel spreadsheets and other delimited text formats of electronic documentation that complies with the Department’s interface specifications.</p>
+           
+        </li>
+        <li style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
+            <p style="display: inline;">Reporting Schedule. Nothing in this section prohibits a reporting agency from submitting this data more frequently than required under Government Code section 12525.5, subdivision (a)(1). Due to the volume of the data, it is recommended that reporting agencies submit stop data on a monthly or quarterly basis. The Department shall accept data submitted on a more frequent basis, including data submitted daily.</p>
+           
+        </li>
+        <li style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
+            <p style="display: inline;">Reporting Responsibilities. Law enforcement agencies are solely responsible to ensure that neither personally identifiable information of the person stopped, nor any other information that is exempt from disclosure pursuant to Government Code section 12525.5, subdivision (d), is transmitted to the Department in the data element entitled “Location of Stop” required by section 999.226, subdivision (a)(3) and the explanatory fields required by section 999.226, subdivisions (a)(10)(B) and (12)(B)2. Unless otherwise provided, all information submitted in the stop data report, including the information entered into the data element entitled “Location of Stop” required by section 999.226, subdivision (a)(3) and the explanatory fields required by section 999.226, subdivisions (a)(10)(B) and (12)(B)2, is subject to public disclosure consistent with Government Code section 12525.5, subdivision (d).</p>
+           
+        </li>
+        <li style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
+            <p style="display: inline;">System Security. The Department shall design its system to be easily accessible for authorized users, confidential, and accurate. The system will provide role-based authorization services. Reporting agencies will be required to authorize and remove users to the system as necessary. Automated systems handling stop data and the information derived therein shall be secure from unauthorized access, alteration, deletion or release.</p>
+            
+        </li>
+        <li style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
+            <p style="display: inline;">Data Standards. The Department shall publish a data dictionary and interface specifications to ensure uniform and complete reporting of stop data. These documents will define each required data element and acceptable data values. These data standards shall be consistent with the definitions and technical specifications set forth in this chapter.</p>
+           
+        </li>
+        <li style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
+            <p style="display: inline;">Data Publication. Data submitted to the Department will be published, at the discretion of the Attorney General and consistent with Government Code section 12525.5, on the Department’s OpenJustice website. The data published shall include disaggregated statistical data for each</p>
+            <p style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
+               reporting agency. The Department shall not release to the public the Officer’s I.D. Number or Unique Identifying Information. Nothing in this section prohibits the Department from confidentially disclosing all stop data reported to the Department to advance public policy through scientific study and pursuant to the Department’s data security protocols, which will ensure that the publication of any data, analyses, or research will not result in the disclosure of an individual officer’s identity.
+            </p>
+            
+        </li>
+        <li style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
+            <p style="display: inline;">Retention Period. The Department shall retain the stop data collected indefinitely. Each reporting agency shall keep a record of its source data for a minimum of three years, and shall make this data available for inspection by the Department should any issues arise regarding the transfer of data to the Department. If a reporting agency elects to use the Department’s web- browser based application, the Department shall host the data for the agency for the requisite retention period of three years or transfer this data back to the agency for storage, at the agency’s election.</p>
+        </li>
+    </ol>
+   
+    <p style="padding-top: 0pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">Note: Authority cited: Section 12525.5, Government Code. Reference: Section 12525.5, Government Code.</p>
+   
+    <h1 style="padding-top: 10pt;padding-left: 5pt;text-indent: 0pt;">
+       Article 6. Audits and Validation
+    </h1>
+    <h1 style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;">§ 999.229</h1>  
+    <ol id="l79">
+        <li style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
+            <p style="display: inline;">
+                The Department shall keep an audit log of incoming and outgoing transactions for each agency’s submission of stop data. The Department shall retain this audit log for a minimum of three years.
+            </p>            
+        </li>
+        <li style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
+            <p style="display: inline;">
+                The Department shall perform data validation on stop data submitted to ensure data integrity and quality assurance. Each reporting agency shall be responsible for ensuring that all data elements, data values, and narrative explanatory fields conform to these regulations and for correcting any errors in the data submission process, and shall do so through the Department’s error resolution process.
+            </p>           
+        </li>
+        <li style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
+            <p style="display: inline;">Agencies submitting records via the system-to-system web service or the secure file transfer protocol shall include a unique stop record number for each stop. The Department will use this record number to relay information on errors when necessary.</p>
+        </li>
+    </ol>   
+    <p style="padding-left: 5pt;text-indent: 0pt;text-align: left;padding-bottom:20pt;">Note: Authority cited: Section 12525.5, Government Code. Reference: Section 12525.5, Government Code.</p>
+</div>

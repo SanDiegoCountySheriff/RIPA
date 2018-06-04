@@ -31,7 +31,7 @@ namespace RIPASTOP.Controllers
             {
                 return db.schools
                .Where(x => x.Status == "Active")
-               .Where(x => x.County.Contains(type))
+               .Where(x => x.County.Contains(type) || x.CDS_Code == "ZZZZZZZZZZZZZZ")
                .Select(x => new DTOschools()
                {
                    Code = x.CDS_Code,
@@ -43,7 +43,7 @@ namespace RIPASTOP.Controllers
             {
                 return db.schools
                 .Where(x => x.Status == "Active")
-                .Where(x => x.County.Contains(type))
+                .Where(x => x.County.Contains(type) || x.CDS_Code == "ZZZZZZZZZZZZZZ")
                 .Select(x => new DTOschools()
                 {
                     Code = x.CDS_Code,

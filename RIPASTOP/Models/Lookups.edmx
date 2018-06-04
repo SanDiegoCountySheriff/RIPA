@@ -5,14 +5,21 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="JSON_SIA_TESTModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Beats">
+          <Key>
+            <PropertyRef Name="Beat" />
+          </Key>
+          <Property Name="Beat" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="Community" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="Command" Type="varchar" MaxLength="128" Nullable="false" />
+        </EntityType>
         <EntityType Name="Cities">
           <Key>
             <PropertyRef Name="City" />
           </Key>
           <Property Name="State" Type="varchar" MaxLength="2" />
           <Property Name="City" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="City_Inactive_Date" Type="varchar" MaxLength="10" />
-          <Property Name="City_AddTime" Type="varchar" MaxLength="10" />
+          <Property Name="County" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="CJISOffenseCodes">
           <Key>
@@ -50,6 +57,7 @@
           <Property Name="sc_Longitude" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityContainer Name="JSON_SIA_TESTModelStoreContainer">
+          <EntitySet Name="Beats" EntityType="Self.Beats" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CJISOffenseCodes" EntityType="Self.CJISOffenseCodes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="schools" EntityType="Self.schools" Schema="dbo" store:Type="Tables" />
@@ -60,8 +68,9 @@
       <Schema Namespace="JSON_SIA_TESTModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true" >
           <EntitySet Name="CJISOffenseCodes" EntityType="JSON_SIA_TESTModel.CJISOffenseCodes" />
-          <EntitySet Name="Cities" EntityType="JSON_SIA_TESTModel.Cities" />
           <EntitySet Name="schools" EntityType="JSON_SIA_TESTModel.schools" />
+          <EntitySet Name="Cities" EntityType="JSON_SIA_TESTModel.Cities" />
+          <EntitySet Name="Beats" EntityType="JSON_SIA_TESTModel.Beats" />
         </EntityContainer>
         <EntityType Name="CJISOffenseCodes">
           <Key>
@@ -83,15 +92,6 @@
           <Property Name="ALPS_Cognizant_CD" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="Add_Date_Time" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="Cities">
-          <Key>
-            <PropertyRef Name="City" />
-          </Key>
-          <Property Name="State" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
-          <Property Name="City" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="City_Inactive_Date" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="City_AddTime" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="schools">
           <Key>
             <PropertyRef Name="CDS_Code" />
@@ -106,6 +106,22 @@
           <Property Name="Schooltype" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="sc_Latitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="sc_Longitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Cities">
+          <Key>
+            <PropertyRef Name="City" />
+          </Key>
+          <Property Name="State" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="County" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Beats">
+          <Key>
+            <PropertyRef Name="Beat" />
+          </Key>
+          <Property Name="Beat" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="Community" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="Command" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -134,16 +150,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Cities">
-            <EntityTypeMapping TypeName="JSON_SIA_TESTModel.Cities">
-              <MappingFragment StoreEntitySet="Cities">
-                <ScalarProperty Name="City_AddTime" ColumnName="City_AddTime" />
-                <ScalarProperty Name="City_Inactive_Date" ColumnName="City_Inactive_Date" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="State" ColumnName="State" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="schools">
             <EntityTypeMapping TypeName="JSON_SIA_TESTModel.schools">
               <MappingFragment StoreEntitySet="schools">
@@ -157,6 +163,24 @@
                 <ScalarProperty Name="County" ColumnName="County" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="CDS_Code" ColumnName="CDS_Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cities">
+            <EntityTypeMapping TypeName="JSON_SIA_TESTModel.Cities">
+              <MappingFragment StoreEntitySet="Cities">
+                <ScalarProperty Name="County" ColumnName="County" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Beats">
+            <EntityTypeMapping TypeName="JSON_SIA_TESTModel.Beats">
+              <MappingFragment StoreEntitySet="Beats">
+                <ScalarProperty Name="Command" ColumnName="Command" />
+                <ScalarProperty Name="Community" ColumnName="Community" />
+                <ScalarProperty Name="Beat" ColumnName="Beat" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
