@@ -1,13 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="JSON_SIA_TESTModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Beats">
+    <Key>
+      <PropertyRef Name="Beat" />
+    </Key>
+    <Property Name="Beat" Type="varchar" MaxLength="3" Nullable="false" />
+    <Property Name="Community" Type="varchar" MaxLength="128" Nullable="false" />
+    <Property Name="Command" Type="varchar" MaxLength="128" Nullable="false" />
+  </EntityType>
   <EntityType Name="Cities">
     <Key>
       <PropertyRef Name="City" />
     </Key>
     <Property Name="State" Type="varchar" MaxLength="2" />
     <Property Name="City" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="City_Inactive_Date" Type="varchar" MaxLength="10" />
-    <Property Name="City_AddTime" Type="varchar" MaxLength="10" />
+    <Property Name="County" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="CJISOffenseCodes">
     <Key>
@@ -45,6 +52,7 @@
     <Property Name="sc_Longitude" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityContainer Name="JSON_SIA_TESTModelStoreContainer">
+    <EntitySet Name="Beats" EntityType="Self.Beats" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CJISOffenseCodes" EntityType="Self.CJISOffenseCodes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="schools" EntityType="Self.schools" Schema="dbo" store:Type="Tables" />

@@ -13,7 +13,7 @@
       
         @Html.ValidationSummary(true, "", new { @class = "error-alert" })
        
-            @Html.LabelFor(model => model.Agency, htmlAttributes: new { @class = "list-item" })
+            @*@Html.LabelFor(model => model.Agency, htmlAttributes: new { @class = "list-item" })
           
                 @Html.EditorFor(model => model.Agency, new { htmlAttributes = new { @class = "list-item", @Value = ViewBag.agency, Readonly = "readonly" } })
                 @Html.ValidationMessageFor(model => model.Agency, "", new { @class = "error-alert" })
@@ -21,7 +21,7 @@
             @Html.LabelFor(model => model.ORI, htmlAttributes: new { @class = "list-item" })
            
                 @Html.EditorFor(model => model.ORI, new { htmlAttributes = new { @class = "list-item", @Value = ViewBag.ori, Readonly = "readonly" } })
-                @Html.ValidationMessageFor(model => model.ORI, "", new { @class = "error-alert" })
+                @Html.ValidationMessageFor(model => model.ORI, "", new { @class = "error-alert" })*@
          
      
             @Html.LabelFor(model => model.Years, htmlAttributes: new { @class = "list-item" })

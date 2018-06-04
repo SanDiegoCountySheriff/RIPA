@@ -22,16 +22,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Cities">
-      <EntityTypeMapping TypeName="JSON_SIA_TESTModel.Cities">
-        <MappingFragment StoreEntitySet="Cities">
-          <ScalarProperty Name="City_AddTime" ColumnName="City_AddTime" />
-          <ScalarProperty Name="City_Inactive_Date" ColumnName="City_Inactive_Date" />
-          <ScalarProperty Name="City" ColumnName="City" />
-          <ScalarProperty Name="State" ColumnName="State" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="schools">
       <EntityTypeMapping TypeName="JSON_SIA_TESTModel.schools">
         <MappingFragment StoreEntitySet="schools">
@@ -45,6 +35,24 @@
           <ScalarProperty Name="County" ColumnName="County" />
           <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="CDS_Code" ColumnName="CDS_Code" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Cities">
+      <EntityTypeMapping TypeName="JSON_SIA_TESTModel.Cities">
+        <MappingFragment StoreEntitySet="Cities">
+          <ScalarProperty Name="County" ColumnName="County" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="State" ColumnName="State" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Beats">
+      <EntityTypeMapping TypeName="JSON_SIA_TESTModel.Beats">
+        <MappingFragment StoreEntitySet="Beats">
+          <ScalarProperty Name="Command" ColumnName="Command" />
+          <ScalarProperty Name="Community" ColumnName="Community" />
+          <ScalarProperty Name="Beat" ColumnName="Beat" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

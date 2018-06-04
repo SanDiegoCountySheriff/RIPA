@@ -21,6 +21,9 @@ class Form extends React.Component {
                     city: {
                          codes: []
                     },
+                    beat: {
+                        codes: []
+                    },
                     school: false,
                     schoolName: {
                          codes: []
@@ -29,7 +32,7 @@ class Form extends React.Component {
                 stopDuration: '',
                 stopInResponseToCFS: false,
                 Person_Stopped: {
-                    PID: '',
+                    PID: '1',
                     Is_Stud: false, // Y/N
                     //Perc: {
                         perceivedRace: [],
@@ -56,7 +59,9 @@ class Form extends React.Component {
             },
             latitude: null,
             longitude: null, 
-            beat: null,
+            //beat: null,
+            forceCacheUpdate: false,
+            allowedBackDateHours: '24',
             debug: false,
             toggleJson: false,
             toggleOfficerOptions: false,
@@ -68,7 +73,7 @@ class Form extends React.Component {
             templates: {
                 motor: {
                     Person_Stopped: {
-                        PID: '',
+                        PID: '1',
                         Is_Stud: false, // Y/N
                         //Perc: {
                         perceivedRace: [],
@@ -95,7 +100,7 @@ class Form extends React.Component {
                         basisForPropertySeizure: [],
                         typeOfPropertySeized: [],
                         resultOfStop: [{
-                            result: "Citation or infraction",
+                            result: "Citation for infraction",
                             codes: [{ code: "65002", text: "65002 ZZ - LOCAL ORDINANCE VIOL (I) 65002" }],
                             key: 3
                         }]
@@ -103,7 +108,7 @@ class Form extends React.Component {
                 },
                 probation: {
                     Person_Stopped: {
-                        PID: '',
+                        PID: '1',
                         Is_Stud: false, // Y/N
                         //Perc: {
                         perceivedRace: [],
@@ -161,7 +166,8 @@ class Form extends React.Component {
         this.checkBoxSelection = this.checkBoxSelection.bind(this);
         this.radioNestedCheckBoxSelection = this.radioNestedCheckBoxSelection.bind(this);
         this.radioNestedRadioSelection = this.radioNestedRadioSelection.bind(this);
-        this.updateBoolCheckBox = this.updateBoolCheckBox.bind(this);   
+        this.updateBoolCheckBox = this.updateBoolCheckBox.bind(this);  
+        this.handleBlockChange = this.handleBlockChange.bind(this);
         this.updateLocation = this.updateLocation.bind(this);
         this.useLastLocation = this.useLastLocation.bind(this);
         this.updateDateTime = this.updateDateTime.bind(this);
@@ -351,7 +357,13 @@ class Form extends React.Component {
         }
         this.setState({ Person_Stopped: newStop });
     }
-    
+    handleBlockChange(event) {
+        var newStop = this.state.stop;
+        var newLocation = this.state.stop.location;
+        newLocation.blockNumber = event.target.value;
+        this.setState({ stop: newStop });
+    }
+
     updateLocation(e) {
         var newStop = this.state.stop;
         
@@ -499,10 +511,15 @@ class Form extends React.Component {
     }
 
     floorInteger(n) {
-        var len = n.length - 1;
-        var order = Math.pow(10, len);
-        var block = Math.floor(n / order); 
-        return block * order;
+        //var len = n.length - 2;
+        //var order = Math.pow(10, len);
+        //var block = Math.floor(n / order); 
+        //return block * order;
+
+        if (n.length >= 3) n = n - (n % 100);
+        return n;
+        
+        
     }
 
     geoSuccess(position) {                        
@@ -561,7 +578,7 @@ class Form extends React.Component {
 
             //newStop.ListPerson_Stopped.push(person);
             newStop.Person_Stopped = {
-                PID: '',
+                PID: count + 1,
                 Is_Stud: '',
                 //Perc: {
                 perceivedRace: [],
@@ -809,13 +826,13 @@ class Form extends React.Component {
         } else { msg.time = '' }
         if (this.validateDate(this.state.stop.date) && this.validateTime(this.state.stop.time)) {
             var dateTime = this.state.stop.date + ' ' + this.state.stop.time;
-            var yesterday = moment().subtract(24, 'hours');
+            var yesterday = moment().subtract(this.state.allowedBackDateHours, 'hours');
             if (moment(dateTime, 'YYYY-MM-DD HH:mm').isAfter()) {
                 msg.datetime = '*Please enter a date & time in the past'
                 msg.errorFlag = true;
             }
             else if (moment(dateTime, 'YYYY-MM-DD HH:mm').isBefore(yesterday)) {
-                msg.datetime = '*Please enter a date & time within the past 24 hrs'
+                msg.datetime = '*Please enter a date & time within the past ' + this.state.allowedBackDateHours + ' hrs'
                 msg.errorFlag = true;
             } else {
                 msg.datetime = '';
@@ -876,6 +893,13 @@ class Form extends React.Component {
                     msg.errorFlag = true;
                 } else { msg.city = ''; }
 
+                if (this.state.useBeats > 1) {
+                    if (this.state.stop.location.beat.codes.length < 1) {
+                        msg.beat = '*Please enter a Beat'
+                        msg.errorFlag = true;
+                        } else { msg.beat = ''; }
+                }
+
                 if (!this.state.stop.ExpYears) {
                     msg.years = 'Please make a selection for Officer Years Of Experience'
                     msg.errorFlag = true;
@@ -891,20 +915,39 @@ class Form extends React.Component {
                     msg.errorFlag = true;
                 } else { msg.assignment = '' } 
 
-                this.validateDate(this.state.stop.date) &&
-                    this.validateTime(this.state.stop.time) &&
-                    this.validateDuration(this.state.stop.stopDuration) &&
-                    ((this.state.stop.location.streetName &&
-                    this.state.stop.location.blockNumber) ||
-                    this.state.stop.location.intersection ||
-                    this.state.stop.location.highwayExit ||
-                    this.state.stop.location.landMark) &&
-                    this.state.stop.location.city.codes.length == 1 &&
-                    !msg.school &&
-                    !msg.assignment &&
-                    !msg.years &&
-                    !msg.datetime
-                    ? msg.errorFlag = false : null;
+                if (this.state.useBeats > 1) {
+                    this.validateDate(this.state.stop.date) &&
+                        this.validateTime(this.state.stop.time) &&
+                        this.validateDuration(this.state.stop.stopDuration) &&
+                        ((this.state.stop.location.streetName &&
+                            this.state.stop.location.blockNumber) ||
+                            this.state.stop.location.intersection ||
+                            this.state.stop.location.highwayExit ||
+                            this.state.stop.location.landMark) &&
+                        this.state.stop.location.city.codes.length == 1 &&
+                        this.state.stop.location.beat.codes.length == 1 &&
+                        !msg.school &&
+                        !msg.assignment &&
+                        !msg.years &&
+                        !msg.datetime
+                        ? msg.errorFlag = false : null;
+                } else {
+                    this.validateDate(this.state.stop.date) &&
+                        this.validateTime(this.state.stop.time) &&
+                        this.validateDuration(this.state.stop.stopDuration) &&
+                        ((this.state.stop.location.streetName &&
+                            this.state.stop.location.blockNumber) ||
+                            this.state.stop.location.intersection ||
+                            this.state.stop.location.highwayExit ||
+                            this.state.stop.location.landMark) &&
+                        this.state.stop.location.city.codes.length == 1 &&
+                        !msg.school &&
+                        !msg.assignment &&
+                        !msg.years &&
+                        !msg.datetime
+                        ? msg.errorFlag = false : null;
+                }
+                
                 break;
             case '2':
                 if (!this.state.stop.Person_Stopped.perceivedGender && !this.state.stop.Person_Stopped.genderNonconforming) {
@@ -1103,6 +1146,11 @@ class Form extends React.Component {
         
     }
     componentWillMount() {
+
+        var forceCacheUpdate = document.getElementById('forceCacheUpdate').innerHTML;
+        if (forceCacheUpdate == 'true') {
+            this.clearStore();
+        }
         
         //Defer load?
         //this.fetchCodes('/api/', 'CJISOffenseCodes','&type=PC&sectype=HS', 'PC'); //combine HS & PC
@@ -1111,8 +1159,9 @@ class Form extends React.Component {
         this.fetchCodes('/api/', 'Schools', '&type=San Diego', 'Schools');
 
         //load on mount
-        this.fetchCodes('/api/', 'Cities', '', 'Cities')
-        
+        this.fetchCodes('/api/', 'Cities', '', 'Cities');
+        this.fetchCodes('/api/', 'Beats', '', 'Beats');       
+
         //load education subdivisions
         var codenode = this.state.codes;
         codenode['EC'] = EC_Subdivision;
@@ -1224,6 +1273,7 @@ class Form extends React.Component {
         var latitude = this.state.latitude;
         var longitude = this.state.longitude;
         var beat = this.state.beat;
+        
 
         // check if active cache exists, if so, mount the cache
         //if (store.get('stopInProgress')) {
@@ -1237,21 +1287,38 @@ class Form extends React.Component {
         //    beat = store.get('stopInProgress').beat;
         if (localStorage.getItem('stopInProgress')) {
             var stopInProgress = JSON.parse(localStorage.getItem('stopInProgress'));
-            stop = stopInProgress.stop;
-            instrumentation = stopInProgress.instrumentation;
-            instrumentation.cacheFlag = true;
-            instrumentation.server = document.getElementById('server').innerHTML;
-            formPartFilter = stopInProgress.formPartFilter;
-            progress = stopInProgress.progress;
-            latitude = stopInProgress.latitude;
-            longitude = stopInProgress.longitude;
-            beat = stopInProgress.beat;
-            var userProfileUpdate = document.getElementById('userProfileUpdate').innerHTML;
-            if (userProfileUpdate == "True") {
+            var yesterday = moment().subtract(24, 'hours');
+            // check age of stopInProgress
+            if (moment(stopInProgress.stop.date + ' ' + stopInProgress.stop.time, 'YYYY-MM-DD HH:mm').isAfter(yesterday)) {
+                stop = stopInProgress.stop;
+                instrumentation = stopInProgress.instrumentation;
+                instrumentation.cacheFlag = true;
+                instrumentation.server = document.getElementById('server').innerHTML;
+                formPartFilter = stopInProgress.formPartFilter;
+                progress = stopInProgress.progress;
+                latitude = stopInProgress.latitude;
+                longitude = stopInProgress.longitude;
+                beat = stopInProgress.beat;
+                var userProfileUpdate = document.getElementById('userProfileUpdate').innerHTML;
+                if (userProfileUpdate == "True") {
+                    stop.ExpYears = document.getElementById('officerYearsExperience').innerHTML;
+                    stop.officerAssignment.type = document.getElementById('officerAssignment').innerHTML;
+                    stop.officerAssignment.key = document.getElementById('officerAssignmentKey').innerHTML;
+                    stop.officerAssignment.otherType = document.getElementById('officerAssignmentOther').innerHTML;
+                }
+            } else {
+                // delete stopInProgress
+                localStorage.removeItem('stopInProgress')
+                stop.date = moment().format('YYYY-MM-DD');
+                stop.time = moment().format('HH:mm:ss');
+                stop.ori = document.getElementById('ori').innerHTML;
+                stop.agency = document.getElementById('agency').innerHTML;
+                stop.officerID = document.getElementById('officerID').innerHTML;
                 stop.ExpYears = document.getElementById('officerYearsExperience').innerHTML;
                 stop.officerAssignment.type = document.getElementById('officerAssignment').innerHTML;
                 stop.officerAssignment.key = document.getElementById('officerAssignmentKey').innerHTML;
                 stop.officerAssignment.otherType = document.getElementById('officerAssignmentOther').innerHTML;
+                instrumentation.server = document.getElementById('server').innerHTML;
             }
         } else {
             stop.date = moment().format('YYYY-MM-DD');
@@ -1274,6 +1341,9 @@ class Form extends React.Component {
             latitude: latitude,
             longitude: longitude,
             beat: beat,
+            forceCacheUpdate: document.getElementById('forceCacheUpdate').innerHTML,
+            allowedBackDateHours: document.getElementById('allowedBackDateHours').innerHTML,
+            useBeats: document.getElementById('useBeats').innerHTML,
             debug: document.getElementById('debug').innerHTML,
             reverseGeoURI: document.getElementById('reverseGeoURI').innerText
         });        
@@ -1296,7 +1366,7 @@ class Form extends React.Component {
         //    var arr = this.state.stop.Person_Stopped[node2].slice();
         //}
 
-         if (node == 'schoolName' || node == 'city'){
+        if (node == 'schoolName' || node == 'city' || node == 'beat'){
              var arr = this.state.stop.location[node][node2].slice();
              arr.splice(e, 1);
         } else if (node == 'reasonForStop'){
@@ -1312,7 +1382,7 @@ class Form extends React.Component {
         //var i = arr.map(function (x) { return x[node3]; }).indexOf(node3v);
         
        
-        if (node == 'schoolName' || node == 'city') {
+        if (node == 'schoolName' || node == 'city' || node == 'beat') {
             var newStop = this.state.stop.location;
             newStop[node][node2] = arr;
             
@@ -1340,7 +1410,7 @@ class Form extends React.Component {
     handleCodeAdd(tag, node, type, node2, node3, node3v) {
 
         //get current node (i.e. reasonForStop)
-        if (node == 'schoolName' || node == 'city'){
+        if (node == 'schoolName' || node == 'city' || node == 'beat'){
             var arr = this.state.stop.location[node];
             var ii = arr['codes'].map(function (x) { return x['text']; }).indexOf(tag);
 
@@ -1360,7 +1430,7 @@ class Form extends React.Component {
 
         // Does input match any of the existing codes
         if (t >= 0 && ii == -1) {
-            if (node == 'reasonForStop' || node == 'schoolName' ) {
+            if (node == 'reasonForStop' || node == 'schoolName' || node == 'beat') {
                 if (arr['codes'].length < 1) { 
                     arr['codes'].push({
                         code: tag.split(' ').pop(),
@@ -1384,7 +1454,7 @@ class Form extends React.Component {
                 }
             }
 
-            if (node == 'schoolName' || node == 'city') {
+            if (node == 'schoolName' || node == 'city' || node == 'beat') {
                 var newStop = this.state.stop.location;
                 newStop[node] = arr;
                 this.setState({ location: newStop });
@@ -1418,6 +1488,11 @@ class Form extends React.Component {
     render() {
         return (
             <form >
+                {this.state.forceCacheUpdate == 'true' &&
+                    <div className="button-container">
+                    <span className='required'>Caching is currently disabled due to lookup updates.</span>
+                    </div>
+                }
                 {this.state.formPartFilter === "0" &&
                     <div className="list-section">
                     <h3>RIPA STOP APP</h3>  
@@ -1508,8 +1583,7 @@ class Form extends React.Component {
                         </div>
                         {this.state.validationErrorMsg.block && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.block}</div>}
                         {this.state.validationErrorMsg.locationLength && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.locationLength}</div>}
-                        <TextInput type="number" pattern="\d*" min="0" stateValue={this.state.stop.location.blockNumber} name="blockNumber" className="list-item" label="Block Number:" onChange={this.updateLocation} />
-                        {this.state.validationErrorMsg.streetName && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.streetName}</div>}
+                    <TextInput type="number" pattern="\d*" min="0" stateValue={this.state.stop.location.blockNumber} name="blockNumber" className="list-item" label="Block Number:" onChange={this.handleBlockChange} onBlur={this.updateLocation} />                        {this.state.validationErrorMsg.streetName && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.streetName}</div>}
                         <TextInput type="text" stateValue={this.state.stop.location.streetName} name="streetName" className="list-item" label="Street Name:" onChange={this.updateLocation} />
                         <p><strong> - or - </strong></p>
                         <TextInput type="text" stateValue={this.state.stop.location.intersection} name="intersection" className="list-item" label="Closest Intersection:" onChange={this.updateLocation} />
@@ -1542,6 +1616,25 @@ class Form extends React.Component {
                                 handleDelete={(e) => this.handleCodeDelete(e, 'city', 'codes')}
                                 handleAddition={(e) => this.handleCodeAdd(e, 'city', 'Cities')} />
                         </div>
+
+                        {this.state.useBeats > 0 &&
+                        <div>
+                            {this.state.validationErrorMsg.beat && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.beat}</div>}
+
+                            <div className="text-field-view" >
+                                <label className="list-item" >Beat:</label>
+                                <Tags tags={this.state.stop.location.beat.codes} className='list-item'
+                                suggestions={this.state.codes.Beats}
+                                autofocus={false}
+                                allowDeleteFromEmptyInput={false}
+                                    handleFilterSuggestions={this.handleFilterSuggestions}
+                                    classNames={{ tags: 'ReactTags__tags_unnested' }}
+                                    placeholder='Add Beat'
+                                    handleDelete={(e) => this.handleCodeDelete(e, 'beat', 'codes')}
+                                    handleAddition={(e) => this.handleCodeAdd(e, 'beat', 'Beats')} />
+                            </div>
+                        </div>
+                        }
                         {this.state.validationErrorMsg.errorFlag && <div className="error-summary error-flip-margin ">Oops, you may have missed something! Please review your selections above.</div>}
                         <div className="button-container">
                         <a href="" className="button-left button-cancel" title="Cancel" name="" onClick={(e) => this.cancelStopInProgress(e)} > Cancel </a> 
@@ -1864,10 +1957,10 @@ class Form extends React.Component {
                                 <label className="list-item-nested"> Select Code (up to 5)</label>
                             </div>
                         }
-                                <CheckBox2 key="Citation or infraction" className="list-item" checked={this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("Citation or infraction") > -1} value="Citation or infraction" name="Citation or infraction" onClick={(e) => this.checkBoxSelection(e, 'resultOfStop', 'result', '', 3)} />
-                                {this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("Citation or infraction") > -1 &&
+                                <CheckBox2 key="Citation for infraction" className="list-item" checked={this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("Citation for infraction") > -1} value="Citation for infraction" name="Citation for infraction" onClick={(e) => this.checkBoxSelection(e, 'resultOfStop', 'result', '', 3)} />
+                                {this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("Citation for infraction") > -1 &&
                             <div>
-                                <Tags tags={this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (y) { return y.result }).indexOf("Citation or infraction")].codes}
+                                <Tags tags={this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (y) { return y.result }).indexOf("Citation for infraction")].codes}
                                 
                                 placeholder='Add Code'
                                 autofocus={false}
@@ -2103,11 +2196,12 @@ class TextInput extends React.Component {
         return (
             <div className="text-field-view">
                 <label htmlFor="id" className={this.props.className} >{this.props.label}</label>
-                <input value={this.props.stateValue} type={this.props.type} min={this.props.min} max={this.props.max} name={this.props.name} className={this.props.className} pattern={this.props.pattern} onChange={this.props.onChange}  />
+                <input value={this.props.stateValue} type={this.props.type} min={this.props.min} max={this.props.max} name={this.props.name} className={this.props.className} pattern={this.props.pattern} onChange={this.props.onChange} onBlur={this.props.onBlur} />
             </div>
         );
     }
 }
+
 class LookupInput extends React.Component {
     render(props) {
         return (
