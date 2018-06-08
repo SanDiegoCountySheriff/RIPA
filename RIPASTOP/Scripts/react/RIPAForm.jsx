@@ -379,13 +379,12 @@ class Form extends React.Component {
                 newLocation.streetName = e.address.Street.substr(e.address.Street.indexOf(' ') + 1);
             }
 
-            //newLocation.blockNumber = this.floorInteger(e.address.AddNum);
-            //newLocation.streetName = e.address.Address.substr(e.address.Address.indexOf(' ') + 1);
-            //newLocation.city = e.address.City == 'SD' ? 'SAN DIEGO' : e.address.City;
-            var city = e.address.City == 'SD' ? 'SAN DIEGO' : e.address.City;
-            city = city == 'SM' ? 'SAN MARCOS' : city;
-            city = city == 'VS' ? 'VISTA' : city;
-            city = city == 'ES' ? 'ESCONDIDO' : city;
+            // check if e.address.City is in this.state.codes.cities 
+            var city = "";
+            if (this.state.codes.Cities.includes(e.address.City)) {
+                city = e.address.City
+            } 
+
             if (city != 'CN') {
                 if (newLocation.city.codes.length > 0) {
                     newLocation.city.codes.pop();
@@ -516,9 +515,13 @@ class Form extends React.Component {
         //var block = Math.floor(n / order); 
         //return block * order;
 
-        if (n.length >= 3) n = n - (n % 100);
-        return n;
-        
+        if (n.length >= 3) {
+            n = n - (n % 100)
+        }
+        else {
+            n = 0
+        };
+        return n;       
         
     }
 
@@ -1777,7 +1780,7 @@ class Form extends React.Component {
                             suggestions={this.state.codes.AllCodes}
                             autofocus={false}
                             allowDeleteFromEmptyInput={false}
-                                        placeholder='Add Vehicle Code'
+                                        placeholder='Add Code'
                                         handleDelete={(e) => this.handleCodeDelete(e, 'reasonForStop', 'codes')}
                                         handleAddition={(e) => this.handleCodeAdd(e, 'reasonForStop', 'AllCodes')}
                                         handleFilterSuggestions={this.handleFilterSuggestions} />
@@ -1794,7 +1797,7 @@ class Form extends React.Component {
 
                                 <Tags tags={this.state.stop.Person_Stopped.reasonForStop.codes}
                             suggestions={this.state.codes.AllCodes}
-                            placeholder='Add Penal Code'
+                            placeholder='Add Code'
                             autofocus={false}
                             allowDeleteFromEmptyInput={false}
                                     handleDelete={(e) => this.handleCodeDelete(e, 'reasonForStop', 'codes')}
