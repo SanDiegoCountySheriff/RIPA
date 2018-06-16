@@ -56,5 +56,15 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="StopOfficerIDDateTime_JSON_vw">
+      <EntityTypeMapping TypeName="JSON_SIA_TESTModel.StopOfficerIDDateTime_JSON_vw">
+        <MappingFragment StoreEntitySet="StopOfficerIDDateTime_JSON_vw">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="StopTime" ColumnName="StopTime" />
+          <ScalarProperty Name="stopDate" ColumnName="stopDate" />
+          <ScalarProperty Name="officerID" ColumnName="officerID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

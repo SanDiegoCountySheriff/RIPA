@@ -51,10 +51,29 @@
     <Property Name="sc_Latitude" Type="varchar" MaxLength="50" />
     <Property Name="sc_Longitude" Type="varchar" MaxLength="50" />
   </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'JASON_SIA_DEV.dbo.StopOfficerIDDateTime_JSON_vw' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="StopOfficerIDDateTime_JSON_vw">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="officerID" Type="nvarchar" MaxLength="4000" />
+    <Property Name="stopDate" Type="nvarchar" MaxLength="4000" />
+    <Property Name="StopTime" Type="nvarchar" MaxLength="4000" />
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
   <EntityContainer Name="JSON_SIA_TESTModelStoreContainer">
     <EntitySet Name="Beats" EntityType="Self.Beats" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CJISOffenseCodes" EntityType="Self.CJISOffenseCodes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="schools" EntityType="Self.schools" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StopOfficerIDDateTime_JSON_vw" EntityType="Self.StopOfficerIDDateTime_JSON_vw" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [StopOfficerIDDateTime_JSON_vw].[officerID] AS [officerID], 
+    [StopOfficerIDDateTime_JSON_vw].[stopDate] AS [stopDate], 
+    [StopOfficerIDDateTime_JSON_vw].[StopTime] AS [StopTime], 
+    [StopOfficerIDDateTime_JSON_vw].[ID] AS [ID]
+    FROM [dbo].[StopOfficerIDDateTime_JSON_vw] AS [StopOfficerIDDateTime_JSON_vw]</DefiningQuery>
+    </EntitySet>
   </EntityContainer>
 </Schema>

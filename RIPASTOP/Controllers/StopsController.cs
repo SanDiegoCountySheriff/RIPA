@@ -19,6 +19,7 @@ namespace RIPASTOP.Controllers
     public class StopsController : Controller
     {
         private RIPASTOPContext db = new RIPASTOPContext();
+        private Entities db_lookup = new Entities();
 
         // GET: Stops
         public async Task<ActionResult> Index()
@@ -79,32 +80,62 @@ namespace RIPASTOP.Controllers
             stop.Beat = string.IsNullOrEmpty(stop.Beat) ? null : stop.Beat;
             stop.UserProfileID = uid.UserProfileID;
 
-            //Todo: Map JsonStop to DojStop 
-            //stop.JsonDojStop = dojTransform(stop.JsonStop);
+            //Todo: extract info from JsonStop
+            string[] OfficerIDDateTime = getOfficerIDDateTime(stop.JsonStop);
 
-            db.Stop.Add(stop);
+            //Todo: Check for existing before proceeding. Using only OfficerID & Date/Time per DOJ service validation. Comparing the 
+            // whole json payload would potentially introduce duplicate OfficerID & Date/Time combinations.
+            string officerID = OfficerIDDateTime[0];
+            string stopDate = OfficerIDDateTime[1];
+            string StopTime = OfficerIDDateTime[2];
+            bool exist = db_lookup.StopOfficerIDDateTime_JSON_vw
+                .Any(x => x.officerID == officerID && x.stopDate == stopDate && x.StopTime == StopTime);            
 
-            //await db.SaveChangesAsync();
-            //return RedirectToAction("Index");
+            if (!exist)
+            {
+                db.Stop.Add(stop);
            
-            try
-            {
-                db.SaveChanges();
-                //return RedirectToAction("Index");
-                string dojJson = dojTransform(stop);
-                stop.JsonDojStop = dojJson;
-                db.Entry(stop).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                try
+                {
+                    db.SaveChanges();
+                    //return RedirectToAction("Index");
+                    string dojJson = dojTransform(stop);
+                    stop.JsonDojStop = dojJson;
+                    db.Entry(stop).State = EntityState.Modified;
+                    await db.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
-            }
+                return new HttpStatusCodeResult(HttpStatusCode.Conflict);
+            }                  
 
         }
 
-        public string dojTransform(Stop stop)
+        private string[] getOfficerIDDateTime(string JsonStop)
+        {
+            string[] array = new string[3];
+            ExtractJNode eJson;
+            JObject o = JObject.Parse(JsonStop);
+
+            eJson = new ExtractJNode("officerID", o);
+            array[0] = eJson.traverseNode();
+
+            eJson = new ExtractJNode("date", o);
+            array[1] = eJson.traverseNode();
+
+            eJson = new ExtractJNode("time", o);
+            array[2] = eJson.traverseNode();
+            
+            return array;
+        }
+
+        private string dojTransform(Stop stop)
         {
             ExtractJNode eJson, deJson;
 
@@ -118,7 +149,23 @@ namespace RIPASTOP.Controllers
                 string ori = eJson.traverseNode();
                 eJson = new ExtractJNode("date", o);
                 string date = eJson.traverseNode();
-                date = DateTime.Parse(date).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
+
+                //date = DateTime.Parse(date).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
+
+                DateTime dateValue;
+                if (DateTime.TryParseExact(date, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue))
+                {
+                    date = dateValue.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
+                }
+                else if (DateTime.TryParseExact(date, "yy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue))
+                {
+                    date = dateValue.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
+                }
+                else
+                {
+                    //throw Exception;
+                }
+
                 eJson = new ExtractJNode("time", o);
                 string time = eJson.traverseNode();
                 eJson = new ExtractJNode("stopDuration", o);

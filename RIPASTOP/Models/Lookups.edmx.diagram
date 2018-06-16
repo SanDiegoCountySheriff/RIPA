@@ -9,6 +9,7 @@
         <EntityTypeShape EntityType="JSON_SIA_TESTModel.schools" Width="1.5" PointX="3.625" PointY="4.125" />
         <EntityTypeShape EntityType="JSON_SIA_TESTModel.Cities" Width="1.5" PointX="3.375" PointY="0.75" />
         <EntityTypeShape EntityType="JSON_SIA_TESTModel.Beats" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="JSON_SIA_TESTModel.StopOfficerIDDateTime_JSON_vw" Width="2.625" PointX="6.25" PointY="4" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -22,5 +22,6 @@ namespace RIPASTOP.Models
         public System.Data.Entity.DbSet<RIPASTOP.Models.UserProfile> UserProfiles { get; set; }
         public System.Data.Entity.DbSet<RIPASTOP.Models.UserProfile_Conf> UserProfile_Conf { get; set; }
         public System.Data.Entity.DbSet<RIPASTOP.Models.Stop> Stop { get; set; }
+        //public System.Data.Entity.DbSet<RIPASTOP.Models.StopOfficerIDDateTime_JSON_vw> StopOfficerIDDateTime_JSON_vw { get; set; }
     }
 }
