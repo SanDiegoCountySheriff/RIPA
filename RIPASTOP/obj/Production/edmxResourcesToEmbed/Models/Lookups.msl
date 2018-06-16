@@ -47,5 +47,24 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Beats">
+      <EntityTypeMapping TypeName="JSON_SIA_TESTModel.Beats">
+        <MappingFragment StoreEntitySet="Beats">
+          <ScalarProperty Name="Command" ColumnName="Command" />
+          <ScalarProperty Name="Community" ColumnName="Community" />
+          <ScalarProperty Name="Beat" ColumnName="Beat" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StopOfficerIDDateTime_JSON_vw">
+      <EntityTypeMapping TypeName="JSON_SIA_TESTModel.StopOfficerIDDateTime_JSON_vw">
+        <MappingFragment StoreEntitySet="StopOfficerIDDateTime_JSON_vw">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="StopTime" ColumnName="StopTime" />
+          <ScalarProperty Name="stopDate" ColumnName="stopDate" />
+          <ScalarProperty Name="officerID" ColumnName="officerID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

@@ -385,7 +385,7 @@ class Form extends React.Component {
                 city = e.address.City
             } 
 
-            if (city != 'CN') {
+            if (city != 'CN' && city != "") {
                 if (newLocation.city.codes.length > 0) {
                     newLocation.city.codes.pop();
                 }
@@ -393,6 +393,10 @@ class Form extends React.Component {
                     code: city,
                     text: city
                 });
+            } else {
+                newLocation.city = {
+                    codes: []
+                }
             }
         } else if (e.error) {
             alert(e.error.details);
@@ -706,7 +710,10 @@ class Form extends React.Component {
                         thiss.setState({ formPartFilter: '6', progress: progress, instrumentation: instrumentation });
                     }).catch(function (error) {
                         thiss.setState({ loader: false })
-                        alert('There has been a problem with your fetch operation: ' + error.message);
+                        if (error.message == 'Conflict') {
+                            error.message += '. This Stop has already posted. Please cancel to start a new Stop.'
+                        }
+                        alert('There has been a problem with your submission: ' + error.message);
                         throw error;
 
                     });
@@ -880,7 +887,12 @@ class Form extends React.Component {
                     this.state.stop.location.intersection = ''
                 }
 
-                var locationStr = this.state.stop.location.blockNumber.toString() + this.state.stop.location.streetName + this.state.stop.location.intersection + this.state.stop.location.highwayExit + this.state.stop.location.landMark;
+                var locationStr =
+                    this.state.stop.location.blockNumber.toString().trim() +
+                    this.state.stop.location.streetName.trim() +
+                    this.state.stop.location.intersection.trim() +
+                    this.state.stop.location.highwayExit.trim() +
+                    this.state.stop.location.landMark.trim();
                 if (locationStr.length < 5) {
                     msg.locationLength = '*Location of Stop must contain minimum of 5 characters'
                     msg.errorFlag = true;
@@ -926,9 +938,10 @@ class Form extends React.Component {
                             this.state.stop.location.blockNumber) ||
                             this.state.stop.location.intersection ||
                             this.state.stop.location.highwayExit ||
-                            this.state.stop.location.landMark) &&
+                            this.state.stop.location.landMark) &&                        
                         this.state.stop.location.city.codes.length == 1 &&
                         this.state.stop.location.beat.codes.length == 1 &&
+                        !msg.locationLength &&
                         !msg.school &&
                         !msg.assignment &&
                         !msg.years &&
@@ -944,6 +957,7 @@ class Form extends React.Component {
                             this.state.stop.location.highwayExit ||
                             this.state.stop.location.landMark) &&
                         this.state.stop.location.city.codes.length == 1 &&
+                        !msg.locationLength &&
                         !msg.school &&
                         !msg.assignment &&
                         !msg.years &&
@@ -1045,7 +1059,7 @@ class Form extends React.Component {
 
                             if (this.state.stop.Person_Stopped.basisForSearch.map(function (x) { return x.key; }).indexOf(1) > -1) {
 
-                                if (this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.key; }).indexOf('17,N') > -1 &&
+                                if (this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.key; }).indexOf('17,N') > -1 ||
                                     this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.key; }).indexOf('19,N') > -1) {
                                     msg.searchBasis = '*"Basis for Search" indicates "Consent Given" but Person/Property search consent has not been selected'
                                     msg.errorFlag = true;
@@ -1059,7 +1073,6 @@ class Form extends React.Component {
                                 } else { msg.searchBasis = '' }
                             }
                         }
-                  
                         
                         else {
                             msg.searchBrief = '';
@@ -1094,32 +1107,25 @@ class Form extends React.Component {
                         if (this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(2)].codes.length < 1) {
                             msg.result = '*Please add Code section'
                             msg.errorFlag = true;
-                        } else { msg.result = ''; }
+                        } 
                     }
-                }
-                
-                if (this.state.stop.Person_Stopped.resultOfStop.length > 0) {
                     if (this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(3) > -1) {
                         if (this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(3)].codes.length < 1) {
                             msg.result = '*Please add Code section'
                             msg.errorFlag = true;
-                        } else { msg.result = ''; }
+                        } 
                     }
-                }
-                if (this.state.stop.Person_Stopped.resultOfStop.length > 0) {
                     if (this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(4) > -1) {
                         if (this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(4)].codes.length < 1) {
                             msg.result = '*Please add Code section'
                             msg.errorFlag = true;
-                        } else { msg.result = ''; }
+                        }
                     }
-                }
-                if (this.state.stop.Person_Stopped.resultOfStop.length > 0) {
-                    if (this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(6) > -1) {
+                   if (this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(6) > -1) {
                         if (this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.key; }).indexOf(6)].codes.length < 1) {
                             msg.result = '*Please add Code section'
                             msg.errorFlag = true;
-                        } else { msg.result = ''; }
+                        } 
                     }
                 }
 
@@ -1730,7 +1736,7 @@ class Form extends React.Component {
                             </div>
                            
                         }
-                        <h3>Reasons For Stop</h3>
+                        <h3>Reason For Stop</h3>
                         <span className='required'>required</span><a className="required regref" target="_blank" href="/regulation#999-226-a-10">§999.226(a)(10)</a>
                     
                         {/*<Codes codes={this.state.codes.VC} />
@@ -2293,6 +2299,7 @@ const reasonsForStop_2 = [
         { key: 7, value: "Actions indicative of drug transaction", className: "list-item-nested", onClick: "" },
         { key: 8, value: "Actions indicative of engaging in violent crime", className: "list-item-nested", onClick: "" },
         { key: 9, value: "Other Reasonable Suspicion of a crime", className: "list-item-nested", onClick: "" }
+       // { key: 10, value: "New Community Caretaking option (TBD)", className: "list-item-nested", onClick: "" }
     ];
 const reasonsForStop_3 = [
     { key: 3, value: "Known to be on Parole / Probation / PRCS / Mandatory Supervision", className: "list-item", onClick: "" },

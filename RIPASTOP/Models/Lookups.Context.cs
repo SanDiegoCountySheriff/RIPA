@@ -29,5 +29,6 @@ namespace RIPASTOP.Models
         public virtual DbSet<schools> schools { get; set; }
         public virtual DbSet<Cities> Cities { get; set; }
         public virtual DbSet<Beats> Beats { get; set; }
+        public virtual DbSet<StopOfficerIDDateTime_JSON_vw> StopOfficerIDDateTime_JSON_vw { get; set; }
     }
 }

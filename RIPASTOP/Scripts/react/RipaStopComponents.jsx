@@ -55,7 +55,7 @@
             }
             {s.Status &&
                 <div>
-                    <label>Status: <pre>{s.Status} {s.StatusMessage}</pre></label>
+                    <label>Status: <pre>{s.Status}</pre></label>
                 </div>
             }
         </div>
