@@ -145,6 +145,7 @@ class Form extends React.Component {
             instrumentation: {
                 template: null,
                 cacheFlag: false,
+                lookupCacheDate: '',
                 server: '',
                 temporalTrace: {
                     startDate: moment().format('YYYY-MM-DD'), //componentDidMount
@@ -415,13 +416,6 @@ class Form extends React.Component {
 
         
         newStop.location = newLocation;       
-        //var location = this.state.stop.location;
-        //if (!store.enabled) {
-        //if (localStorage.storageAvailable()) {
-        //    alert('Local storage is not supported by your browser. Please disable "Private Mode", or upgrade to a modern browser.')
-        //    return
-        //}
-        //store.set('LastLocation', newLocation);
        
 
         localStorage.setItem('LastLocation', JSON.stringify(newLocation));
@@ -629,6 +623,12 @@ class Form extends React.Component {
             var lastPerson = this.state.stop.ListPerson_Stopped[0];
             var newStop = this.state.stop;
             var newPerson = this.state.stop.Person_Stopped;
+
+            //disable pulling forward students since students have downstream options that are only available with the student selection in previous step.
+            if (lastPerson.Is_Stud) {
+                alert('Cannot pull forward students.');
+                return;
+            }
 
             newPerson.reasonForStop = lastPerson.reasonForStop;
             newPerson.reasonForStopExplanation = lastPerson.reasonForStopExplanation;
@@ -1156,14 +1156,22 @@ class Form extends React.Component {
     }
     componentWillMount() {
 
+        // if lookup cache update is forced
         var forceCacheUpdate = document.getElementById('forceCacheUpdate').innerHTML;
         if (forceCacheUpdate == 'true') {
             this.clearStore();
         }
-        
+
+        // if lookup cache is older than a certain age, expire it
+        var lookupCacheDate = localStorage.getItem('lookupCacheDate');   
+        var expireCacheDays = document.getElementById('expireCacheDays').innerHTML;
+        var limit = moment().subtract(expireCacheDays, 'days');
+        if (moment(lookupCacheDate).isBefore(limit)) {
+            this.clearStore();
+            alert('Your cache has been refreshed.');
+        }
+                
         //Defer load?
-        //this.fetchCodes('/api/', 'CJISOffenseCodes','&type=PC&sectype=HS', 'PC'); //combine HS & PC
-        //this.fetchCodes('/api/', 'CJISOffenseCodes', '&type=VC&sectype=', 'VC');
         this.fetchCodes('/api/', 'CJISOffenseCodes', '', 'AllCodes');
         this.fetchCodes('/api/', 'Schools', '&type=San Diego', 'Schools');
 
@@ -1220,29 +1228,18 @@ class Form extends React.Component {
     }
     handleCodes(json, label) {
         var codenode = this.state.codes;
+        var instrumentation = this.state.instrumentation;
         codenode[label] = json;
-        this.setState({ codes: codenode });
-        //alert(JSON.stringify(json));
-        //if (!store.enabled) {
-        //if (!localStorage.storageAvailable()) {
-        //    alert('Local storage is not supported by your browser. Please disable "Private Mode", or upgrade to a modern browser.')
-        //    return
-        //}        
-        //store.set(label, this.state.codes[label]);
+        
         localStorage.setItem(label, JSON.stringify(this.state.codes[label]));
+        localStorage.setItem("lookupCacheDate", moment().format('YYYY-MM-DD HH:mm:ss')); //set cache creation date so it can be expired at some point
+
+        instrumentation.lookupCacheDate = moment().format('YYYY-MM-DD HH:mm:ss');
+
+        this.setState({ codes: codenode, instrumentation: instrumentation });
     }
     setStopInProgress() {
         localStorage.removeItem('stopInProgress');
-        //store.remove('stopInProgress');
-        //store.set('stopInProgress', {
-        //    stop: this.state.stop,
-        //    instrumentation: this.state.instrumentation,
-        //    formPartFilter: this.state.formPartFilter,
-        //    progress: this.state.progress,
-        //    latitude: this.state.latitude,
-        //    longitude: this.state.longitude,
-        //    beat: this.state.beat
-        //})
         localStorage.setItem('stopInProgress', JSON.stringify({
             stop: this.state.stop,
             instrumentation: this.state.instrumentation,
@@ -1252,13 +1249,9 @@ class Form extends React.Component {
             longitude: this.state.longitude,
             beat: this.state.beat
         }));
-       // console.log(store.get('stopInProgress'));
-       // console.log(localStorage.getItem('stopInProgress'));
-       // e.preventDefault();
     }
     cancelStopInProgress(e) {
         if (confirm('Are you sure you want to cancel this Stop?')) {
-            ///store.remove('stopInProgress');
             localStorage.removeItem('stopInProgress')
         }
     };
@@ -1267,7 +1260,6 @@ class Form extends React.Component {
         if (this.state.formPartFilter < '6' && this.state.formPartFilter > '0') {
             this.setStopInProgress();
         } else {
-            //store.remove('stopInProgress');
             localStorage.removeItem('stopInProgress')
         }
     };
@@ -1281,23 +1273,12 @@ class Form extends React.Component {
         var progress = this.state.progress;
         var latitude = this.state.latitude;
         var longitude = this.state.longitude;
-        var beat = this.state.beat;
+        var beat = this.state.beat;        
         
-
-        // check if active cache exists, if so, mount the cache
-        //if (store.get('stopInProgress')) {
-        //    stop = store.get('stopInProgress').stop;
-        //    instrumentation = store.get('stopInProgress').instrumentation;
-        //    instrumentation.cacheFlag = true;
-        //    formPartFilter = store.get('stopInProgress').formPartFilter;
-        //    progress = store.get('stopInProgress').progress;
-        //    latitude = store.get('stopInProgress').latitude;
-        //    longitude = store.get('stopInProgress').longitude;
-        //    beat = store.get('stopInProgress').beat;
         if (localStorage.getItem('stopInProgress')) {
             var stopInProgress = JSON.parse(localStorage.getItem('stopInProgress'));
             var yesterday = moment().subtract(24, 'hours');
-            // check age of stopInProgress
+            // check age of stopInProgress 
             if (moment(stopInProgress.stop.date + ' ' + stopInProgress.stop.time, 'YYYY-MM-DD HH:mm').isAfter(yesterday)) {
                 stop = stopInProgress.stop;
                 instrumentation = stopInProgress.instrumentation;
@@ -1341,6 +1322,10 @@ class Form extends React.Component {
             stop.officerAssignment.otherType = document.getElementById('officerAssignmentOther').innerHTML;
             instrumentation.server = document.getElementById('server').innerHTML;
         }
+        if (!localStorage.getItem('lookupCacheDate')) {
+            localStorage.setItem('lookupCacheDate', moment().format('YYYY-MM-DD HH:mm:ss'));
+        }
+        instrumentation.lookupCacheDate = localStorage.getItem('lookupCacheDate');
 
         this.setState({
             stop: stop,
@@ -1518,10 +1503,13 @@ class Form extends React.Component {
                         <p>
                             The AG’s Office has adopted <a href="/regulation" target='_blank'>these regulations</a> on November 7, 2017. For more information please see the <a href='https://oag.ca.gov/ab953/regulations' target='_blank'> AG's Website</a>.
                         </p>
-                        <div className="button-container">
-                        <a href="" className="button-left button-cancel" title="" name="" onClick={this.clearStore} >Refresh Cache</a>
-                        
+                        <div className="button-container">                        
+                        <a href="" className="button-left button-cancel" title="" name="" onClick={this.clearStore} >
+                            Refresh Cache                                                    
+                        </a>                        
                         </div>
+                        <div className="button-container"> 
+                        <p><small>Cache Updated: {this.state.instrumentation.lookupCacheDate}</small></p> </div>
                     </div>
                 }
                 {this.state.formPartFilter === "1" &&
@@ -1732,7 +1720,7 @@ class Form extends React.Component {
                         </p>
                         {this.state.personCount > 1 && 
                             <div className="button-container">
-                                <a href="" className="button-right" title="Next >>" name="2" onClick={(e) => this.pullForwardPerson(e)} ><span> Pull forward from previous Person</span> </a>                                
+                                <a href="" className="button-right" title="Next >>" name="2" onClick={(e) => this.pullForwardPerson(e)} ><span> Pull forward from first Person</span> </a>                                
                             </div>
                            
                         }
