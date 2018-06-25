@@ -41,6 +41,7 @@ The SQL folder also has a script for the lookup tables, along with sample data. 
 * `<add key="ori" value="CA0000000"/>`
 * `<add key="forceCacheUpdate" value="false" />`
 * `<add key="allowedBackDateHours" value="24" />`
+* `<add key="expireCacheDays" value="14" />`
 * `<add key="useBeats" value="0" />` 0 = Don't use beats, 1 = Show beats, 2 = Make beats mandatory
 
 
