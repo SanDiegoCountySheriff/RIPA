@@ -72,6 +72,7 @@ namespace RIPASTOP.Controllers
 
 
                 ViewBag.forceCacheUpdate = ConfigurationManager.AppSettings["forceCacheUpdate"];
+                ViewBag.expireCacheDays = ConfigurationManager.AppSettings["expireCacheDays"];
                 ViewBag.allowedBackDateHours = ConfigurationManager.AppSettings["allowedBackDateHours"];
                 ViewBag.useBeats = ConfigurationManager.AppSettings["useBeats"];
 
