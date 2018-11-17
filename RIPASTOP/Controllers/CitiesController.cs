@@ -24,32 +24,34 @@ namespace RIPASTOP.Controllers
         }
 
         // GET: api/Cities
-        public IQueryable<DTOCities> GetCities(string fragment)
+        public IQueryable<DTOCities> GetCities(string fragment, string county, bool ooc)
         {
+            IQueryable<Cities> cities = db.Cities;          
 
-            if (String.IsNullOrEmpty(fragment))
+            // filter by city name fragment
+            if (!String.IsNullOrEmpty(fragment))
             {
-                return db.Cities
-                    .Select(x => new DTOCities()
-                    {
-                        Code = x.City,
-                        Description = x.City
-                    }
-                );
-            }
-            else
+                cities = cities.Where(x => x.City.Contains(fragment));  
+            }  
+            
+            //get everything that is not within county
+            if (ooc)
             {
-                return db.Cities
-                    .Where(x => x.City.Contains(fragment))
-                    .Select(x => new DTOCities()
-                    {
-                        Code = x.City,
-                        Description = x.City
-                    }
-                );
+                cities = cities.Where(x => !x.County.Contains(county));
             }
+            //get everything that is within county
+            else if (!String.IsNullOrEmpty(county))
+            {
+                cities = cities.Where(x => x.County.Contains(county));
+            }
+
+            return cities.Select(x => new DTOCities()
+            {
+                Code = x.City,
+                Description = x.City
+            });
         }
-        
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

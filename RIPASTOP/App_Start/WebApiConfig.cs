@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Routing;
 
 namespace RIPASTOP
 {
@@ -19,6 +22,17 @@ namespace RIPASTOP
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            config.Routes.MapHttpRoute("DefaultApiPost", "Api/{controller}", new { action = "Post" }, new { httpMethod = new HttpMethodConstraint(HttpMethod.Post) });
+
+
+            config.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
+
+            config.Formatters.JsonFormatter.SerializerSettings.Formatting
+                = Newtonsoft.Json.Formatting.Indented;
+
+            //config.Formatters.JsonFormatter.SerializerSettings.ContractResolver
+            //    = new CamelCasePropertyNamesContractResolver();
         }
     }
 }

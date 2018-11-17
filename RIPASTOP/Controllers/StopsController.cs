@@ -12,6 +12,8 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Web.Script.Serialization;
 using System.Globalization;
+using System.Configuration;
+using System.Text.RegularExpressions;
 
 namespace RIPASTOP.Controllers
 {
@@ -22,40 +24,59 @@ namespace RIPASTOP.Controllers
         private Entities db_lookup = new Entities();
 
         // GET: Stops
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            UserProfile_Conf uid = db.UserProfile_Conf.SingleOrDefault(x => x.NTUserName == User.Identity.Name.ToString());
-            ViewBag.UserProfileID = uid.UserProfileID;
-            List<Stop> Stops = await db.Stop.Where(x => x.UserProfileID == uid.UserProfileID).OrderByDescending(x => x.Time).ToListAsync();
-            foreach(Stop st in Stops)
+            if (ConfigurationManager.AppSettings["requireGroupMembership"] == "true")
             {
-                st.JsonStop = JValue.Parse(st.JsonStop).ToString(Formatting.Indented);
+                HomeController.UserAuth user = new HomeController.UserAuth();
+                user = HomeController.AuthorizeUser(User.Identity.Name.ToString());
+                ViewBag.admin = user.authorizedAdmin;
+
+                if (!user.authorized && !user.authorizedAdmin)
+                {
+                    //return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                    return RedirectToAction("Unauthorized", "Home");
+                }
             }
+
+            //UserProfile_Conf uid = db.UserProfile_Conf.SingleOrDefault(x => x.NTUserName == User.Identity.Name.ToString());
+            //ViewBag.UserProfileID = uid.UserProfileID;
+            //ViewBag.test = ConfigurationManager.AppSettings["test"];
+            //List<Stop> Stops = await db.Stop.Where(x => x.UserProfileID == uid.UserProfileID).OrderByDescending(x => x.Time).ToListAsync();
+            //foreach(Stop st in Stops)
+            //{
+            //    if(st.JsonStop != null)
+            //    {
+            //        st.JsonStop = JValue.Parse(st.JsonStop).ToString(Formatting.Indented);
+            //    }
+                
+            //}
 
             // web.config debug setting
             ViewBag.debug = HttpContext.IsDebuggingEnabled;
 
-            return View(Stops);
+            //return View(Stops);
+            return View();
         }
 
         // GET: Stops/Details/5
-        public async Task<ActionResult> Details(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Stop stop = await db.Stop.FindAsync(id);
-            if (stop == null)
-            {
-                return HttpNotFound();
-            }
+        //public async Task<ActionResult> Details(Guid? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Stop stop = await db.Stop.FindAsync(id);
+        //    if (stop == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
 
-            // web.config debug setting
-            ViewBag.debug = HttpContext.IsDebuggingEnabled;
+        //    // web.config debug setting
+        //    ViewBag.debug = HttpContext.IsDebuggingEnabled;
 
-            return View(stop);
-        }
+        //    return View(stop);
+        //}
 
         // GET: Stops/Create
         public ActionResult Create()
@@ -73,6 +94,18 @@ namespace RIPASTOP.Controllers
         {
             UserProfile_Conf uid = db.UserProfile_Conf.SingleOrDefault(x => x.NTUserName == User.Identity.Name.ToString());
 
+            if (ConfigurationManager.AppSettings["requireGroupMembership"] == "true")
+            {
+                HomeController.UserAuth user = new HomeController.UserAuth();
+                user = HomeController.AuthorizeUser(User.Identity.Name.ToString());
+
+                if (!user.authorized && !user.authorizedAdmin)
+                {
+                    //return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                    return RedirectToAction("Unauthorized", "Home");
+                }
+            }
+
             //stop.ID = Guid.NewGuid();
             stop.Time = DateTime.Now;
             stop.Latitude = string.IsNullOrEmpty(stop.Latitude) ? null : stop.Latitude;
@@ -80,26 +113,29 @@ namespace RIPASTOP.Controllers
             stop.Beat = string.IsNullOrEmpty(stop.Beat) ? null : stop.Beat;
             stop.UserProfileID = uid.UserProfileID;
 
-            //Todo: extract info from JsonStop
-            string[] OfficerIDDateTime = getOfficerIDDateTime(stop.JsonStop);
+            stop.JsonStop = Regex.Replace(stop.JsonStop, @"\p{Cs}", ""); // remove emojies
 
-            //Todo: Check for existing before proceeding. Using only OfficerID & Date/Time per DOJ service validation. Comparing the 
+            //Todo: extract info from JsonStop
+            CommonRoutines cr = new CommonRoutines();
+            string[] OfficerIDDateTime = cr.getOfficerIDDateTime(stop.JsonStop);
+
+            // Dedupe. Check for existing before proceeding. Using only OfficerID & Date/Time per DOJ service validation. Comparing the 
             // whole json payload would potentially introduce duplicate OfficerID & Date/Time combinations.
             string officerID = OfficerIDDateTime[0];
             string stopDate = OfficerIDDateTime[1];
             string StopTime = OfficerIDDateTime[2];
             bool exist = db_lookup.StopOfficerIDDateTime_JSON_vw
-                .Any(x => x.officerID == officerID && x.stopDate == stopDate && x.StopTime == StopTime);            
+                .Any(x => x.officerID == officerID && x.stopDate == stopDate && x.StopTime == StopTime);
 
             if (!exist)
             {
                 db.Stop.Add(stop);
-           
+
                 try
                 {
                     db.SaveChanges();
                     //return RedirectToAction("Index");
-                    string dojJson = dojTransform(stop);
+                    string dojJson = cr.dojTransform(stop, "I");
                     stop.JsonDojStop = dojJson;
                     db.Entry(stop).State = EntityState.Modified;
                     await db.SaveChangesAsync();
@@ -113,26 +149,7 @@ namespace RIPASTOP.Controllers
             else
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Conflict);
-            }                  
-
-        }
-
-        private string[] getOfficerIDDateTime(string JsonStop)
-        {
-            string[] array = new string[3];
-            ExtractJNode eJson;
-            JObject o = JObject.Parse(JsonStop);
-
-            eJson = new ExtractJNode("officerID", o);
-            array[0] = eJson.traverseNode();
-
-            eJson = new ExtractJNode("date", o);
-            array[1] = eJson.traverseNode();
-
-            eJson = new ExtractJNode("time", o);
-            array[2] = eJson.traverseNode();
-            
-            return array;
+            }
         }
 
         private string dojTransform(Stop stop)

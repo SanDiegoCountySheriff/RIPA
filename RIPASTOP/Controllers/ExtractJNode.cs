@@ -41,10 +41,7 @@ namespace RIPASTOP.Controllers
                     if (objType.Name == "JProperty")
                     {
                         JProperty content = (JProperty)item;
-                        //foreach (JProperty prop in content.Properties())
-                        //{
                         name = content.Name;
-                        //}
                     }
 
                     foreach (var subItem in TraversTree(item))
