@@ -46,10 +46,12 @@ RIPALogs Directory setup for logging DOJ Submissions
   *	Alias: RIPALogs
   *	Physical path: D:\RIPALogs or C:\RIPALogs
 3. In Web.config:
-  `<appSettings>`
-    `<add key="LogFilePath1" value="\\server01\RIPALogs />`
-    `<add key="LogFilePath2" value="\\server02\RIPALogs />`
-  `</appSettings>`
+  ``` xml
+  <appSettings>
+    <add key="LogFilePath1" value="\\server01\RIPALogs />
+    <add key="LogFilePath2" value="\\server02\RIPALogs />
+  </appSettings>
+  ```
   Or if you don't have a second server just leave the value for LogFilePath2 empty:
   `<appSettings>`
     `<add key="LogFilePath1" value="\\server01\RIPALogs />`
