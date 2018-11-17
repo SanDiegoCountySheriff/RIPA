@@ -39,22 +39,22 @@ The SQL folder also has a script for the lookup tables, along with sample data. 
 
 RIPALogs Directory setup for logging DOJ Submissions
    If you have 2 servers, the following steps should be done on both.
-*	Create RIPALogs directory under C: or D: drive.
+1.	Create RIPALogs directory under C: or D: drive.
   *	Right click on the directory and get to Properties.
   *	Under Security tab, click on Edit and add your service account and give it full access to this directory.
-*	In IIS "Add Virtual Directory" under your RIPA website.
+2.	In IIS "Add Virtual Directory" under your RIPA website.
   *	Alias: RIPALogs
   *	Physical path: D:\RIPALogs or C:\RIPALogs
-  * In Web.config:
-   `<appSettings>`
-                    `<add key="LogFilePath1" value="\\server01\RIPALogs />`
-                    `<add key="LogFilePath2" value="\\server02\RIPALogs />`
-      `</appSettings>`
-      Or if you don't have a second server just leave the value for LogFilePath2 empty:
-      `<appSettings>`
-                  `<add key="LogFilePath1" value="\\server01\RIPALogs />`
-                  `<add key="LogFilePath2" value="" />`
-      `</appSettings>`
+3. In Web.config:
+  `<appSettings>`
+    `<add key="LogFilePath1" value="\\server01\RIPALogs />`
+    `<add key="LogFilePath2" value="\\server02\RIPALogs />`
+  `</appSettings>`
+  Or if you don't have a second server just leave the value for LogFilePath2 empty:
+  `<appSettings>`
+    `<add key="LogFilePath1" value="\\server01\RIPALogs />`
+    `<add key="LogFilePath2" value="" />`
+  `</appSettings>`
 
 **Update Web.config** - Make sure you update the app settings in Web.config with your agency specific information.
 * `<add key="reverseGeoURI" value="https://www.mysite.us/arcgis/rest/....."/>`
