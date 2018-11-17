@@ -213,12 +213,16 @@
     <Compile Include="Controllers\BeatsController.cs" />
     <Compile Include="Controllers\CitiesController.cs" />
     <Compile Include="Controllers\CJISOffenseCodesController.cs" />
+    <Compile Include="Controllers\CommonRoutines.cs" />
+    <Compile Include="Controllers\DOJSubmitController.cs" />
     <Compile Include="Controllers\ExtractJNode.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RegulationController.cs" />
     <Compile Include="Controllers\SchoolsController.cs" />
+    <Compile Include="Controllers\StopsEditController.cs" />
     <Compile Include="Controllers\StopsAPIController.cs" />
     <Compile Include="Controllers\StopsController.cs" />
+    <Compile Include="Controllers\StopsSubmissionController.cs" />
     <Compile Include="Controllers\UserProfilesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -226,6 +230,18 @@
     <Compile Include="Migrations\201803161838178_init.cs" />
     <Compile Include="Migrations\201803161838178_init.Designer.cs">
       <DependentUpon>201803161838178_init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809251808150_submissionId.cs" />
+    <Compile Include="Migrations\201809251808150_submissionId.Designer.cs">
+      <DependentUpon>201809251808150_submissionId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809252303346_foreignKey.cs" />
+    <Compile Include="Migrations\201809252303346_foreignKey.Designer.cs">
+      <DependentUpon>201809252303346_foreignKey.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810051650538_removeForeignKey.cs" />
+    <Compile Include="Migrations\201810051650538_removeForeignKey.Designer.cs">
+      <DependentUpon>201810051650538_removeForeignKey.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Beats.cs">
@@ -256,6 +272,19 @@
     <Compile Include="Models\schools.cs">
       <DependentUpon>Lookups.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\StatusMessage_JSON_vw.cs">
+      <DependentUpon>Lookups.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StopChangeAudits.cs">
+      <DependentUpon>Lookups.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StopOfficerIDDateTime_JSON_vw.cs">
+      <DependentUpon>Lookups.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Submissions.cs">
+      <DependentUpon>Lookups.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Submissions_Validation.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -265,43 +294,43 @@
     <Content Include="bin\ClearScript.dll" />
     <Content Include="bin\EntityFramework.dll" />
     <Content Include="bin\EntityFramework.SqlServer.dll" />
-    <Content Include="bin\EntityFramework.SqlServer.xml" />
-    <Content Include="bin\EntityFramework.xml" />
+    <!--    <Content Include="bin\EntityFramework.SqlServer.xml" />
+    <Content Include="bin\EntityFramework.xml" />-->
     <Content Include="bin\JavaScriptEngineSwitcher.ChakraCore.dll" />
-    <Content Include="bin\JavaScriptEngineSwitcher.ChakraCore.xml" />
+    <!--    <Content Include="bin\JavaScriptEngineSwitcher.ChakraCore.xml" />-->
     <Content Include="bin\JavaScriptEngineSwitcher.Core.dll" />
-    <Content Include="bin\JavaScriptEngineSwitcher.Core.xml" />
+    <!--    <Content Include="bin\JavaScriptEngineSwitcher.Core.xml" />-->
     <Content Include="bin\JavaScriptEngineSwitcher.Msie.dll" />
-    <Content Include="bin\JavaScriptEngineSwitcher.Msie.xml" />
+    <!--    <Content Include="bin\JavaScriptEngineSwitcher.Msie.xml" />-->
     <Content Include="bin\JavaScriptEngineSwitcher.V8.dll" />
-    <Content Include="bin\JavaScriptEngineSwitcher.V8.xml" />
+    <!--    <Content Include="bin\JavaScriptEngineSwitcher.V8.xml" />-->
     <Content Include="bin\JSPool.dll" />
-    <Content Include="bin\JSPool.xml" />
+    <!--    <Content Include="bin\JSPool.xml" />-->
     <Content Include="bin\Microsoft.AI.Agent.Intercept.dll" />
     <Content Include="bin\Microsoft.AI.DependencyCollector.dll" />
-    <Content Include="bin\Microsoft.AI.DependencyCollector.xml" />
+    <!--    <Content Include="bin\Microsoft.AI.DependencyCollector.xml" />-->
     <Content Include="bin\Microsoft.AI.PerfCounterCollector.dll" />
     <Content Include="bin\Microsoft.AI.ServerTelemetryChannel.dll" />
-    <Content Include="bin\Microsoft.AI.ServerTelemetryChannel.xml" />
+    <!--    <Content Include="bin\Microsoft.AI.ServerTelemetryChannel.xml" />-->
     <Content Include="bin\Microsoft.AI.Web.dll" />
-    <Content Include="bin\Microsoft.AI.Web.xml" />
+    <!--    <Content Include="bin\Microsoft.AI.Web.xml" />-->
     <Content Include="bin\Microsoft.AI.WindowsServer.dll" />
-    <Content Include="bin\Microsoft.AI.WindowsServer.xml" />
+    <!--    <Content Include="bin\Microsoft.AI.WindowsServer.xml" />-->
     <Content Include="bin\Microsoft.ApplicationInsights.dll" />
-    <Content Include="bin\Microsoft.ApplicationInsights.xml" />
+    <!--    <Content Include="bin\Microsoft.ApplicationInsights.xml" />-->
     <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll" />
-    <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml" />
+    <!--    <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml" />-->
     <Content Include="bin\Microsoft.Web.Infrastructure.dll" />
     <Content Include="bin\MsieJavaScriptEngine.dll" />
-    <Content Include="bin\MsieJavaScriptEngine.xml" />
+    <!--    <Content Include="bin\MsieJavaScriptEngine.xml" />-->
     <Content Include="bin\Newtonsoft.Json.dll" />
-    <Content Include="bin\Newtonsoft.Json.xml" />
+    <!--    <Content Include="bin\Newtonsoft.Json.xml" />-->
     <Content Include="bin\React.Core.dll" />
-    <Content Include="bin\React.Core.xml" />
+    <!--   <Content Include="bin\React.Core.xml" />-->
     <Content Include="bin\React.Web.dll" />
     <Content Include="bin\React.Web.Mvc4.dll" />
-    <Content Include="bin\React.Web.Mvc4.xml" />
-    <Content Include="bin\React.Web.xml" />
+    <!--    <Content Include="bin\React.Web.Mvc4.xml" />
+    <Content Include="bin\React.Web.xml" />-->
     <Content Include="bin\RIPASTOP.dll" />
     <Content Include="bin\RIPASTOP.pdb" />
     <Content Include="bin\roslyn\csc.exe" />
@@ -327,27 +356,27 @@
     <Content Include="bin\ru-ru\JavaScriptEngineSwitcher.V8.resources.dll" />
     <Content Include="bin\ru-ru\MsieJavaScriptEngine.resources.dll" />
     <Content Include="bin\System.Net.Http.Formatting.dll" />
-    <Content Include="bin\System.Net.Http.Formatting.xml" />
+    <!--    <Content Include="bin\System.Net.Http.Formatting.xml" />-->
     <Content Include="bin\System.Web.Helpers.dll" />
-    <Content Include="bin\System.Web.Helpers.xml" />
+    <!--    <Content Include="bin\System.Web.Helpers.xml" />-->
     <Content Include="bin\System.Web.Http.dll" />
     <Content Include="bin\System.Web.Http.WebHost.dll" />
-    <Content Include="bin\System.Web.Http.WebHost.xml" />
-    <Content Include="bin\System.Web.Http.xml" />
+    <!--    <Content Include="bin\System.Web.Http.WebHost.xml" />
+    <Content Include="bin\System.Web.Http.xml" />-->
     <Content Include="bin\System.Web.Mvc.dll" />
-    <Content Include="bin\System.Web.Mvc.xml" />
+    <!--    <Content Include="bin\System.Web.Mvc.xml" />-->
     <Content Include="bin\System.Web.Optimization.dll" />
-    <Content Include="bin\System.Web.Optimization.xml" />
+    <!--    <Content Include="bin\System.Web.Optimization.xml" />-->
     <Content Include="bin\System.Web.Razor.dll" />
-    <Content Include="bin\System.Web.Razor.xml" />
+    <!--    <Content Include="bin\System.Web.Razor.xml" />-->
     <Content Include="bin\System.Web.WebPages.Deployment.dll" />
-    <Content Include="bin\System.Web.WebPages.Deployment.xml" />
+    <!--    <Content Include="bin\System.Web.WebPages.Deployment.xml" />-->
     <Content Include="bin\System.Web.WebPages.dll" />
     <Content Include="bin\System.Web.WebPages.Razor.dll" />
-    <Content Include="bin\System.Web.WebPages.Razor.xml" />
-    <Content Include="bin\System.Web.WebPages.xml" />
+    <!--    <Content Include="bin\System.Web.WebPages.Razor.xml" />
+    <Content Include="bin\System.Web.WebPages.xml" />-->
     <Content Include="bin\VroomJs.dll" />
-    <Content Include="bin\VroomJs.xml" />
+    <!--    <Content Include="bin\VroomJs.xml" />-->
     <Content Include="bin\WebActivatorEx.dll" />
     <Content Include="bin\WebGrease.dll" />
     <Content Include="Content\dark.css" />
@@ -385,8 +414,10 @@
     <Content Include="Scripts\react\RIPAForm.jsx" />
     <Content Include="Scripts\react\RIPAStop.jsx" />
     <Content Include="Scripts\react\RipaStopComponents.jsx" />
+    <Content Include="Scripts\react\submissionCounter.jsx" />
     <Content Include="Scripts\react\Theme.jsx" />
     <Content Include="Scripts\store.everything.min.js" />
+    <Content Include="Views\StopsSubmission\Index.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -402,6 +433,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="bin\Release\PublishOutput\" />
+    <Folder Include="Log\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -423,7 +455,9 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\RIPASTOP.dll.config" />
+    <Content Include="bin\RIPASTOP.dll.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="bin\roslyn\csc.exe.config" />
     <Content Include="bin\roslyn\csc.rsp" />
     <Content Include="bin\roslyn\csi.rsp" />
@@ -436,16 +470,31 @@
   <ItemGroup>
     <None Include="Properties\PublishProfiles\Production.pubxml" />
     <None Include="Properties\PublishProfiles\Test.pubxml" />
+    <Content Include="Views\Home\Unauthorized.cshtml" />
+    <Content Include="Views\StopsEdit\Edit.cshtml" />
+    <Content Include="Views\StopsEdit\Index.cshtml" />
+    <Content Include="Views\Stops\Details.cshtml" />
+    <Content Include="Views\StopsSubmission\SubmissionStatusGet.cshtml" />
     <None Include="Web.Production.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="Web.Test.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201803161838178_init.resx">
       <DependentUpon>201803161838178_init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809251808150_submissionId.resx">
+      <DependentUpon>201809251808150_submissionId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809252303346_foreignKey.resx">
+      <DependentUpon>201809252303346_foreignKey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810051650538_removeForeignKey.resx">
+      <DependentUpon>201810051650538_removeForeignKey.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

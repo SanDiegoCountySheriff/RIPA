@@ -66,6 +66,8 @@ namespace RIPASTOP.Models
         public string StatusMessage { get; set; }
         //public Guid UserProfileID { get; set; } //fk
         public int UserProfileID { get; set; } //fk
+        public int? SubmissionsID { get; set; } //fk
+        public string JsonSubmissions { get; set; }
     }
 
 }

@@ -3,6 +3,8 @@
   <EntityType Name="Beats">
     <Key>
       <PropertyRef Name="Beat" />
+      <PropertyRef Name="Community" />
+      <PropertyRef Name="Command" />
     </Key>
     <Property Name="Beat" Type="varchar" MaxLength="3" Nullable="false" />
     <Property Name="Community" Type="varchar" MaxLength="128" Nullable="false" />
@@ -51,6 +53,48 @@
     <Property Name="sc_Latitude" Type="varchar" MaxLength="50" />
     <Property Name="sc_Longitude" Type="varchar" MaxLength="50" />
   </EntityType>
+  <EntityType Name="StopChangeAudits">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OrigJsonStop" Type="nvarchar(max)" />
+    <Property Name="ModJsonStop" Type="nvarchar(max)" />
+    <Property Name="Reason" Type="nvarchar(max)" />
+    <Property Name="NTUserName" Type="nvarchar(max)" />
+    <Property Name="Time" Type="datetime" />
+    <Property Name="StopID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Submissions">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StartDate" Type="datetime" Nullable="false" />
+    <Property Name="Status" Type="nvarchar(max)" />
+    <Property Name="LogFile" Type="nvarchar(max)" />
+    <Property Name="TotalProcessed" Type="int" />
+    <Property Name="TotalSuccess" Type="int" />
+    <Property Name="TotalRejected" Type="int" />
+    <Property Name="TotalWithErrors" Type="int" />
+    <Property Name="TotalHTTPErrors" Type="int" />
+    <Property Name="DateSubmitted" Type="datetime" />
+    <Property Name="EndDate" Type="datetime" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'JASON_SIA_DEV.dbo.StatusMessage_JSON_vw' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="StatusMessage_JSON_vw">
+    <Key>
+      <PropertyRef Name="nid" />
+    </Key>
+    <Property Name="nid" Type="bigint" Nullable="false" />
+    <Property Name="StopID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StopStatus" Type="nvarchar(max)" />
+    <Property Name="code" Type="nvarchar(max)" />
+    <Property Name="msg" Type="nvarchar(max)" />
+    <Property Name="submissionID" Type="int" />
+    <Property Name="edited" Type="bit" />
+  </EntityType>
   <!--Errors Found During Generation:
 warning 6002: The table/view 'JASON_SIA_DEV.dbo.StopOfficerIDDateTime_JSON_vw' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="StopOfficerIDDateTime_JSON_vw">
@@ -67,6 +111,19 @@ warning 6002: The table/view 'JASON_SIA_DEV.dbo.StopOfficerIDDateTime_JSON_vw' d
     <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CJISOffenseCodes" EntityType="Self.CJISOffenseCodes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="schools" EntityType="Self.schools" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StopChangeAudits" EntityType="Self.StopChangeAudits" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Submissions" EntityType="Self.Submissions" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StatusMessage_JSON_vw" EntityType="Self.StatusMessage_JSON_vw" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [StatusMessage_JSON_vw].[nid] AS [nid], 
+    [StatusMessage_JSON_vw].[StopID] AS [StopID], 
+    [StatusMessage_JSON_vw].[StopStatus] AS [StopStatus], 
+    [StatusMessage_JSON_vw].[code] AS [code], 
+    [StatusMessage_JSON_vw].[msg] AS [msg], 
+    [StatusMessage_JSON_vw].[submissionID] AS [submissionID], 
+    [StatusMessage_JSON_vw].[edited] AS [edited]
+    FROM [dbo].[StatusMessage_JSON_vw] AS [StatusMessage_JSON_vw]</DefiningQuery>
+    </EntitySet>
     <EntitySet Name="StopOfficerIDDateTime_JSON_vw" EntityType="Self.StopOfficerIDDateTime_JSON_vw" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 
     [StopOfficerIDDateTime_JSON_vw].[officerID] AS [officerID], 
