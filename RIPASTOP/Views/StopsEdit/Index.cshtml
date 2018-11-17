@@ -1,0 +1,43 @@
+﻿@model RIPASTOP.Models.StopChangeAudits
+
+@{
+    ViewBag.Title = "Audit Page";
+}
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*@using (Html.BeginForm("Index", "StopsEdit", new { id = Model.StopID, submissionID = @ViewBag.submissionID, submissionEndDate = @ViewBag.submissionEndDate }, FormMethod.Post))*@
+@using (Html.BeginForm())
+{
+
+    @Html.AntiForgeryToken()
+    <div class="list-section">
+        <h3>Edit Stop</h3>
+        <p>Please enter a Stop ID to edit.</p>
+        @Html.ValidationSummary(false, "", new { @class = "error-alert" })
+
+        @Html.EditorFor(model => model.StopID, new { htmlAttributes = new { @class = "list-item", @onclick = "this.select()" } })
+
+        <div class="button-container">
+            <input type="submit" value="Submit" class="button-right" />
+        </div>
+        @if (@ViewBag.personCount != 0)
+        {
+            <h3>Stop ID #@Html.DisplayFor(model => model.StopID)</h3>
+            <p>Please select the person you would like to edit. For general stop info updates, select any person.</p>
+        }
+        <div class="list-item-select">
+
+
+            @for (int i = 0; i < @ViewBag.personCount; i++)
+            {
+                var personNum = i + 1;
+                <a href="@Url.Action("Edit", "StopsEdit", new { stopid = @ViewBag.stopID, pid = @personNum, pidCount = @ViewBag.personCount, submissionId = @ViewBag.submissionID, submissionEndDate = @ViewBag.submissionEndDate})" class="button-left">Person @personNum</a>
+            }
+
+        </div>
+    </div>
+
+}

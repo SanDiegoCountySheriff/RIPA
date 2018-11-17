@@ -1,6 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="JSON_SIA_TESTModelStoreContainer" CdmEntityContainer="Entities">
+    <EntitySetMapping Name="Beats">
+      <EntityTypeMapping TypeName="JSON_SIA_TESTModel.Beats">
+        <MappingFragment StoreEntitySet="Beats">
+          <ScalarProperty Name="Command" ColumnName="Command" />
+          <ScalarProperty Name="Community" ColumnName="Community" />
+          <ScalarProperty Name="Beat" ColumnName="Beat" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Cities">
+      <EntityTypeMapping TypeName="JSON_SIA_TESTModel.Cities">
+        <MappingFragment StoreEntitySet="Cities">
+          <ScalarProperty Name="County" ColumnName="County" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="State" ColumnName="State" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="CJISOffenseCodes">
       <EntityTypeMapping TypeName="JSON_SIA_TESTModel.CJISOffenseCodes">
         <MappingFragment StoreEntitySet="CJISOffenseCodes">
@@ -38,24 +56,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Cities">
-      <EntityTypeMapping TypeName="JSON_SIA_TESTModel.Cities">
-        <MappingFragment StoreEntitySet="Cities">
-          <ScalarProperty Name="County" ColumnName="County" />
-          <ScalarProperty Name="City" ColumnName="City" />
-          <ScalarProperty Name="State" ColumnName="State" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Beats">
-      <EntityTypeMapping TypeName="JSON_SIA_TESTModel.Beats">
-        <MappingFragment StoreEntitySet="Beats">
-          <ScalarProperty Name="Command" ColumnName="Command" />
-          <ScalarProperty Name="Community" ColumnName="Community" />
-          <ScalarProperty Name="Beat" ColumnName="Beat" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="StopOfficerIDDateTime_JSON_vw">
       <EntityTypeMapping TypeName="JSON_SIA_TESTModel.StopOfficerIDDateTime_JSON_vw">
         <MappingFragment StoreEntitySet="StopOfficerIDDateTime_JSON_vw">
@@ -63,6 +63,49 @@
           <ScalarProperty Name="StopTime" ColumnName="StopTime" />
           <ScalarProperty Name="stopDate" ColumnName="stopDate" />
           <ScalarProperty Name="officerID" ColumnName="officerID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StopChangeAudits">
+      <EntityTypeMapping TypeName="JSON_SIA_TESTModel.StopChangeAudits">
+        <MappingFragment StoreEntitySet="StopChangeAudits">
+          <ScalarProperty Name="StopID" ColumnName="StopID" />
+          <ScalarProperty Name="Time" ColumnName="Time" />
+          <ScalarProperty Name="NTUserName" ColumnName="NTUserName" />
+          <ScalarProperty Name="Reason" ColumnName="Reason" />
+          <ScalarProperty Name="ModJsonStop" ColumnName="ModJsonStop" />
+          <ScalarProperty Name="OrigJsonStop" ColumnName="OrigJsonStop" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Submissions">
+      <EntityTypeMapping TypeName="JSON_SIA_TESTModel.Submissions">
+        <MappingFragment StoreEntitySet="Submissions">
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="DateSubmitted" ColumnName="DateSubmitted" />
+          <ScalarProperty Name="TotalHTTPErrors" ColumnName="TotalHTTPErrors" />
+          <ScalarProperty Name="TotalWithErrors" ColumnName="TotalWithErrors" />
+          <ScalarProperty Name="TotalRejected" ColumnName="TotalRejected" />
+          <ScalarProperty Name="TotalSuccess" ColumnName="TotalSuccess" />
+          <ScalarProperty Name="TotalProcessed" ColumnName="TotalProcessed" />
+          <ScalarProperty Name="LogFile" ColumnName="LogFile" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StatusMessage_JSON_vw">
+      <EntityTypeMapping TypeName="JSON_SIA_TESTModel.StatusMessage_JSON_vw">
+        <MappingFragment StoreEntitySet="StatusMessage_JSON_vw">
+          <ScalarProperty Name="edited" ColumnName="edited" />
+          <ScalarProperty Name="submissionID" ColumnName="submissionID" />
+          <ScalarProperty Name="msg" ColumnName="msg" />
+          <ScalarProperty Name="code" ColumnName="code" />
+          <ScalarProperty Name="StopStatus" ColumnName="StopStatus" />
+          <ScalarProperty Name="StopID" ColumnName="StopID" />
+          <ScalarProperty Name="nid" ColumnName="nid" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

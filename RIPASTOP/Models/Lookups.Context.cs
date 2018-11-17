@@ -25,10 +25,13 @@ namespace RIPASTOP.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Beats> Beats { get; set; }
+        public virtual DbSet<Cities> Cities { get; set; }
         public virtual DbSet<CJISOffenseCodes> CJISOffenseCodes { get; set; }
         public virtual DbSet<schools> schools { get; set; }
-        public virtual DbSet<Cities> Cities { get; set; }
-        public virtual DbSet<Beats> Beats { get; set; }
         public virtual DbSet<StopOfficerIDDateTime_JSON_vw> StopOfficerIDDateTime_JSON_vw { get; set; }
+        public virtual DbSet<StopChangeAudits> StopChangeAudits { get; set; }
+        public virtual DbSet<Submissions> Submissions { get; set; }
+        public virtual DbSet<StatusMessage_JSON_vw> StatusMessage_JSON_vw { get; set; }
     }
 }

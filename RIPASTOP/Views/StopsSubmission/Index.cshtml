@@ -1,0 +1,90 @@
+﻿@model RIPASTOP.Models.Submissions
+
+@{
+    ViewBag.Title = "Admin Page";
+    var idNum = 0;
+    var subGrid = new WebGrid(source: Model.subList, canPage: true);
+    subGrid.Pager(WebGridPagerModes.All);
+}
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/moment.js"></script>
+
+@using (Html.BeginForm("SubmissionStats", "StopsSubmission", new { sid = Model.ID, startDate = Model.StartDate, endDate = Model.EndDate }, FormMethod.Post))
+{
+
+    @Html.AntiForgeryToken()
+<div class="list-section">
+    <h3>Submit Stops To Department Of Justice</h3>
+    @Html.ValidationSummary(false, "", new { @class = "error-alert" })
+
+    <label class="list-item" for="StartDate">Start Date</label>
+    <p id="startDate">@Html.DisplayFor(model => model.StartDate)</p>
+
+    <label class="list-item" for="EndDate">End Date</label>
+    @*@Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "list-item date-picker", @type = "date", @onblur = "alert()" } })*@
+    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "list-item date-picker", @type = "date" } })
+    @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "error-alert" })
+
+    <div class="button-container">
+        <input type="submit" value="Submit" class="button-right" />
+    </div>
+
+    <div class="stops-detail">
+        <div id="count"></div>
+    </div>
+    <a href="/StopsSubmission?sid=0">Update Stats</a>
+    <h4>Submission History</h4>
+    <div id="content" class="overflow-table">
+        @subGrid.GetHtml(
+               tableStyle: "webgrid-table",
+               headerStyle: "webgrid-header",
+               footerStyle: "webgrid-footer",
+               alternatingRowStyle: "webgrid-alternating-row",
+               rowStyle: "webgrid-row-style",
+               columns: subGrid.Columns(
+                    subGrid.Column(header: "ID", format: (item) =>
+                    {
+                        idNum = @item.ID;
+                        if (@item.Status == "Resubmit" || @item.Status == "Finished")
+                        {
+                            //return Html.Raw(string.Format("<a href='/StopsSubmission/SubmissionStatusGet?sid={0}' class='button-right disabled'>{0}</a>", @item.ID));
+                            return Html.Raw(@item.ID);
+                        }
+                        else {
+                            return Html.Raw(string.Format("<a href='/StopsSubmission/SubmissionStatusGet?sid={0}' class='button-right'>{0}</a>", @item.ID));
+                        }
+                    }),
+                    subGrid.Column(header: "Dates", format: @<text>@(item.StartDate.ToString("MM/dd/yyyy")) @(item.EndDate.ToString("MM/dd/yyyy"))</text>),
+                         subGrid.Column(header: "Start", format: @<text>@(item.DateSubmitted)</text>, canSort: true),
+                            @*subGrid.Column(header: "Status", format: @<text>@(item.Status)</text>, canSort: true),*@
+                            subGrid.Column(header: "Status", format: (x) =>
+                            {
+                                if (@x.Status == "In Progress" || @x.Status == "Pending Fixes")
+                                {
+                                    return Html.Raw(string.Format("<a href='/StopsSubmission/SubmissionStatusGet?sid={0}'>{1}</a>", idNum, x.Status));
+                                }
+                                else
+                                {
+                                    return Html.Raw(@x.Status);
+                                }
+                            }),
+                            subGrid.Column(header: "Total", format: @<text>@(item.TotalProcessed)</text>),
+                                 subGrid.Column(header: "Success", format: @<text>@(item.TotalSuccess)</text>),
+                                     subGrid.Column(header: "Fatal", format: @<text>@(item.TotalRejected)</text>),
+                                         subGrid.Column(header: "Errors", format: @<text>@(item.TotalWithErrors)</text>),
+                                             subGrid.Column(header: "Service Errors", format: @<text>@(item.TotalHTTPErrors)</text>)
+
+                                                                 ))
+    </div>
+</div>
+    <div id="dom-info">
+        <span id="submissionID">@Model.ID</span>
+    </div>
+    @*<script src="@Url.Content("~/Scripts/react/submissionTotalNotify.jsx")"></script>*@
+    <script src="@Url.Content("~/Scripts/react/submissionCounter.jsx")"></script>
+
+}

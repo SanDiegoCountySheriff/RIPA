@@ -95,6 +95,51 @@ a, a:visited{
     left:0;
     margin-right: 10px;
 }
+
+
+.dropdown {
+    float: left;
+    overflow: hidden;
+}
+
+    .dropdown .dropbtn {
+        font-size: 16px;
+        border: none;
+        outline: none;
+        color: white;
+        /*padding: 14px 16px;*/
+        background-color: inherit;
+        font-family: inherit;
+        margin: 0;
+    }
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #333;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+    background-color: #6b6868;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
 .themetoggle {
     height: 25px !important;
     position: relative !important;
@@ -115,6 +160,9 @@ a, a:visited{
     box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.25);
     min-width: 200px;
     max-width: 640px;
+}
+.edit-mode .list-section {
+    box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);
 }
 
 /* list pattern */
@@ -310,6 +358,11 @@ label {
     text-decoration: none !important;
 }
 
+.disabled {
+    pointer-events: none;
+    opacity: 0.65;
+}
+
 .hidden{ display: none; }
 
 .error-alert {
@@ -425,3 +478,88 @@ div.ReactTags__suggestions {
         background: #333;
         cursor: pointer;
     }
+
+.webgrid-table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+    font-size: 0.8em;
+    border-collapse: collapse;
+    box-sizing: border-box;
+}
+
+    .webgrid-table td, th {
+        padding: .4rem;
+        vertical-align: central;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .webgrid-table .button-right {
+        /*float: right;*/
+        padding: 4px;
+        background-color: #03a9f4;
+        border: none;
+        border-radius: 3px;
+        text-align: center;
+        color: #fff !important;
+        cursor: pointer;
+        text-decoration: none !important;
+        margin: 0;
+    }
+
+/*.webgrid-header {
+}*/
+
+/*.webgrid-footer {
+}*/
+
+/*.webgrid-row-style {
+}*/
+
+.webgrid-alternating-row {
+    background-color: rgba(0,0,0,.05);
+}
+
+.statuspill {
+    font-size: .6em;
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #f2dede;
+    padding: 3px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    /*margin-top: 4px;*/
+    margin-right: 4px;
+    position: relative;
+    top: -2px;
+    text-align: center;
+}
+
+.blue {
+    background-color: #dcebf2;
+    color: #0284bf !important;
+}
+
+.green {
+    background-color: #D4EFDF;
+    color: #1a6350 !important;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-label {
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 150px;
+}
+
+.indent {
+    margin-left: 25px;
+}
+
+.overflow-table {
+    overflow-x: auto;
+}

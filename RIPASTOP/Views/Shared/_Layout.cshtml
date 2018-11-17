@@ -13,7 +13,7 @@
     @*@Scripts.Render("~/bundles/modernizr")*@
 
     <script>
-        // IE Polyfill for .includes() method in ECMAScript 2015 
+        // IE Polyfill for .includes() method in ECMAScript 2015
         if (!String.prototype.includes) {
             String.prototype.includes = function (search, start) {
                 'use strict';
@@ -29,35 +29,53 @@
             };
         }
     </script>
-    
+
     <script src="~/Scripts/react/react.js"></script>
     <script src="~/Scripts/react/react-dom.js"></script>
-   @* <script src="~/Scripts/store.everything.min.js"></script>*@
-   
+    @* <script src="~/Scripts/store.everything.min.js"></script>*@
+
 </head>
 <body>
     <div class="navbar">
-        <ul>
+        <ul id="navigation">
             <li><img src="~/Content/RIPAdark.png" /></li>
             <li>@Html.ActionLink("Home", "Index", "Home", null, null)</li>
             @if (@ViewBag.UserProfileID != null)
             {
                 <li>@Html.ActionLink("User", "Edit", "UserProfiles", new { id = @ViewBag.UserProfileID }, null)</li>
                 <li>@Html.ActionLink("Stops", "Index", "Stops", null, null)</li>
+
+                if (@ViewBag.admin)
+                {
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Admin</a>
+                    <div class="dropdown-content">
+                        @Html.ActionLink("Edit Stop", "Index", "StopsEdit", new { stopid = 0, submissionId = 0, submissionEndDate = "" }, null)
+                        @Html.ActionLink("Submit Stops to DOJ ", "Index", "StopsSubmission", new { sid = 0 }, null)
+                    </div>
+                </li>
+                }
             }
             <li><div id="theme"></div></li>
-            <li> 
-                @if (@ViewBag.test == "true") {
+            <li>
+                @if (@ViewBag.test == "true")
+                {
                     <span style="top:-2px;" class='required'>test</span>
                 }
-                @if (@ViewBag.debug){
+                @if (@ViewBag.debug)
+                {
                     <span style="top:-2px;" class='required'>dev</span>
                 }
-             </li>
+            </li>
         </ul>
     </div>
+   
     <script src="@Url.Content("~/Scripts/react/Theme.jsx")"></script>
-    <div class="body-content">        
+    <div class="body-content">
+        @if (@ViewBag.test == "true")
+        {
+            <div class="error-summary">ATTENTION!! THIS IS A TEST SYSTEM ONLY! DO NOT SUBMIT REAL STOPS!!</div>
+        }
         @RenderBody()
     </div>
     <footer>

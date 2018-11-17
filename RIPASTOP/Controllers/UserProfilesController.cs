@@ -43,12 +43,25 @@ namespace RIPASTOP.Controllers
         // GET: UserProfiles/Create
         public ActionResult Create()
         {
+            HomeController.UserAuth user = new HomeController.UserAuth();
+            if (ConfigurationManager.AppSettings["requireGroupMembership"] == "true")
+            {
+                user = HomeController.AuthorizeUser(User.Identity.Name.ToString());
+
+                if (!user.authorized && !user.authorizedAdmin)
+                {
+                    //return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                    return RedirectToAction("Unauthorized", "Home");
+                }
+            }
+
             UserProfile_Conf UserProfile_Conf = db.UserProfile_Conf.SingleOrDefault(x => x.NTUserName == User.Identity.Name.ToString());
 
             // web.config debug setting
             ViewBag.debug = HttpContext.IsDebuggingEnabled;
             ViewBag.agency = ConfigurationManager.AppSettings["agency"];
-            ViewBag.ori = ConfigurationManager.AppSettings["ori"];           
+            ViewBag.ori = ConfigurationManager.AppSettings["ori"];
+            ViewBag.admin = user.authorizedAdmin;
 
 
             if (User.Identity.IsAuthenticated && UserProfile_Conf == null)
@@ -68,8 +81,20 @@ namespace RIPASTOP.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,Agency,ORI,Years,Assignment,AssignmentOther")] UserProfile userProfile)
         {
+            HomeController.UserAuth user = new HomeController.UserAuth();
+            if (ConfigurationManager.AppSettings["requireGroupMembership"] == "true")
+            {
+                user = HomeController.AuthorizeUser(User.Identity.Name.ToString());
+
+                if (!user.authorized && !user.authorizedAdmin)
+                {
+                    //return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                    return RedirectToAction("Unauthorized", "Home");
+                }
+            }   
             // web.config debug setting
             ViewBag.debug = HttpContext.IsDebuggingEnabled;
+            ViewBag.admin = user.authorizedAdmin;
 
             if (ModelState.IsValid && User.Identity.IsAuthenticated)
             {
@@ -121,6 +146,17 @@ namespace RIPASTOP.Controllers
         // GET: UserProfiles/Edit/5
         public ActionResult Edit(int? id)
         {
+            HomeController.UserAuth user = new HomeController.UserAuth();
+            if (ConfigurationManager.AppSettings["requireGroupMembership"] == "true")
+            {
+                user = HomeController.AuthorizeUser(User.Identity.Name.ToString());
+
+                if (!user.authorized && !user.authorizedAdmin)
+                {
+                    //return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                    return RedirectToAction("Unauthorized", "Home");
+                }
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -131,6 +167,7 @@ namespace RIPASTOP.Controllers
                 return HttpNotFound();
             }
             ViewBag.UserProfileID = userProfile.ID;
+            ViewBag.admin = user.authorizedAdmin;
 
             if (!string.IsNullOrEmpty(userProfile.Assignment))
             {
@@ -148,8 +185,20 @@ namespace RIPASTOP.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,Agency,ORI,Years,Assignment,AssignmentOther")] UserProfile userProfile)
         {
+            HomeController.UserAuth user = new HomeController.UserAuth();
+            if (ConfigurationManager.AppSettings["requireGroupMembership"] == "true")
+            {
+                user = HomeController.AuthorizeUser(User.Identity.Name.ToString());
+
+                if (!user.authorized && !user.authorizedAdmin)
+                {
+                    //return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                    return RedirectToAction("Unauthorized", "Home");
+                }
+            }
             // web.config debug setting
             ViewBag.debug = HttpContext.IsDebuggingEnabled;
+            ViewBag.admin = user.authorizedAdmin;
             if (ModelState.IsValid)
             {
                 if (!string.IsNullOrEmpty(userProfile.Assignment)) {

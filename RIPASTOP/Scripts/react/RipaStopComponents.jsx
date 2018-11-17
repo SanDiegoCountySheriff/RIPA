@@ -23,8 +23,11 @@
                         {JSON.parse(s.JsonStop).location.streetName &&
                             <ListValue className="" labelValue="Street" stateValue={JSON.parse(s.JsonStop).location.streetName} />
                         }
-                        {JSON.parse(s.JsonStop).location.city &&
+                        {JSON.parse(s.JsonStop).location.city.codes[0] &&
                             <ListValue className="" labelValue="City" stateValue={JSON.parse(s.JsonStop).location.city.codes[0].text} />
+                        }
+                        {JSON.parse(s.JsonStop).location.beat.codes[0] &&
+                            <ListValue className="" labelValue="Beat" stateValue={JSON.parse(s.JsonStop).location.beat.codes[0].text} />
                         }
                         {JSON.parse(s.JsonStop).location.landMark &&
                             <ListValue className="" labelValue="Landmark" stateValue={JSON.parse(s.JsonStop).location.landMark} />
@@ -65,6 +68,26 @@
     );
 }
 
+function ListChanges(props) {
+    const changesL = props.changes;
+    const changList = changesL.map(function (p) {
+        if (p.nodeName === "schoolName" || p.nodeName === "beat") {
+            return (
+                <ChangeListValue className="" labelValue={p.nodeName} stateValue={p.nodeValue.codes} nodeType={p.changeType} />
+            )
+        }
+        else {
+            //{p.nodeName !== "schoolName" && p.nodeName !== "beat" &&
+            return (
+                <ChangeListValue className="" labelValue={p.nodeName} stateValue={p.nodeValue} nodeType={p.changeType} />
+            )
+        }
+    });
+    return (
+        <ul>{changList}</ul>
+    );
+}
+
 function ListPerson(props) {
     const personsL = props.persons;
     const pList = personsL.map((p) =>
@@ -73,6 +96,9 @@ function ListPerson(props) {
                 {/*<ListValue className="" labelValue="PID" stateValue={p.PID} />*/}
                 {p.Is_Stud &&
                     <ListValue className="" labelValue="Is Student" stateValue={JSON.stringify(p.Is_Stud, null, 2)} />
+                }
+                {p.raceKnown &&
+                     <ListValue className="" labelValue="Race was known before Stop" stateValue={p.raceKnown} />
                 }
                 <li>
                     Perceived Race
@@ -85,6 +111,7 @@ function ListPerson(props) {
                 {p.perceivedLimitedEnglish &&
                     <ListValue className="" labelValue="Limited English" stateValue={JSON.stringify(p.perceivedLimitedEnglish, null, 2)} />
                 }
+
                 <li>
                     Perceived Disability
                     <ListArray list={p.perceivedOrKnownDisability} param1="disability" />
@@ -215,6 +242,28 @@ class ListValue extends React.Component {
         }
     }
 }
+class ChangeListValue extends React.Component {
+    render(props) {
+        if ((typeof this.props.stateValue) === "string" || (typeof this.props.stateValue) === "number") {
+            return (
+                <li>
+                    <span>{this.props.labelValue} ({this.props.nodeType})</span>
+                    <pre>{this.props.stateValue}</pre>
+                </li>
+            );
+        }
+        else {
+            return (
+                <li>
+                    <span>{this.props.labelValue} </span>
+                    <ListArray list={this.props.stateValue} param1="text" />
+                </li>
+            );
+        }
+    }
+}
+
+
 
 class ListBoolean extends React.Component {
     render(props) {
