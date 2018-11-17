@@ -17,7 +17,7 @@ The RIPA App is a mobile first web application for phones and MDCs to capture st
 * Dark Mode
 * Regulation reference links
 * JSON documents
-* CA DOJ Submission tool with error correction capability
+* **CA DOJ Submission tool with error correction capability**
 * Tabular views for JSON data
 
 ## Requirements
