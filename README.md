@@ -53,28 +53,32 @@ RIPALogs Directory setup for logging DOJ Submissions
   </appSettings>
   ```
   Or if you don't have a second server just leave the value for LogFilePath2 empty:
-  `<appSettings>`
-    `<add key="LogFilePath1" value="\\server01\RIPALogs />`
-    `<add key="LogFilePath2" value="" />`
-  `</appSettings>`
+  ``` xml
+  <appSettings>
+    <add key="LogFilePath1" value="\\server01\RIPALogs />
+    <add key="LogFilePath2" value="" />
+  </appSettings>
+  ```
 
 **Update Web.config** - Make sure you update the app settings in Web.config with your agency specific information.
-* `<add key="reverseGeoURI" value="https://www.mysite.us/arcgis/rest/....."/>`
-* `<add key="reverseBeatURI" value="https://myReverseBeatGeocodingService" />`
-* `<add key="agency" value="AG"/>`
-* `<add key="ori" value="CA0000000"/>`
-* `<add key="test" value="false" />`
-* `<add key="forceCacheUpdate" value="false" />`
-* `<add key="allowedBackDateHours" value="24" />`
-* `<add key="expireCacheDays" value="14" />`
-* `<add key="domain" value="myDomain" />`
-* `<add key="requireGroupMembership" value="true" />`
-* `<add key="authorized" value="User AD Group" />`
-* `<add key="authorizedAdmin" value="Admin AD Group" />`
-* `<add key="useBeats" value="0" />` 0 = Don't use beats, 1 = Show beats, 2 = Make beats mandatory
-* `<add key="useAdditionalQuestions" value="0" />` 0 = Don't use, 1 = Use
-* `<add key="DOJWebApiUrl" value="https://dojTestSubmissionURL" />`
-* `<add key="LogFilePath1" value="" />`
-* `<add key="LogFilePath2" value="" />`
+``` xml
+<add key="reverseGeoURI" value="https://www.mysite.us/arcgis/rest/....."/>
+<add key="reverseBeatURI" value="https://myReverseBeatGeocodingService" />
+<add key="agency" value="AG"/>
+<add key="ori" value="CA0000000"/>
+<add key="test" value="false" />
+<add key="forceCacheUpdate" value="false" />
+<add key="allowedBackDateHours" value="24" />
+<add key="expireCacheDays" value="14" />
+<add key="domain" value="myDomain" />
+<add key="requireGroupMembership" value="true" />
+<add key="authorized" value="User AD Group" />
+<add key="authorizedAdmin" value="Admin AD Group" />
+<add key="useBeats" value="0" /> <!-- 0 = Don't use beats, 1 = Show beats, 2 = Make beats mandatory -->
+<add key="useAdditionalQuestions" value="0" /><!--  0 = Don't use, 1 = Use -->
+<add key="DOJWebApiUrl" value="https://dojTestSubmissionURL" />
+<add key="LogFilePath1" value="" />
+<add key="LogFilePath2" value="" />
+```
 
 
