@@ -17,6 +17,8 @@ The RIPA App is a mobile first web application for phones and MDCs to capture st
 * Dark Mode
 * Regulation reference links
 * JSON documents
+* **CA DOJ Submission tool with error correction capability**
+* Tabular views for JSON data
 
 ## Requirements
 
@@ -35,13 +37,48 @@ The SQL folder also has a script for the lookup tables, along with sample data. 
 
 **IIS Setup** - Set up a new web application, turn on Windows Authentication and set up your port 443/https bindings, a dev cert will suffice, unless you are setting up production. Make sure the application pool identity has read/write access to the database you set up in the previous step.
 
+RIPALogs Directory setup for logging DOJ Submissions
+   If you have 2 servers, the following steps should be done on both.
+1.	Create RIPALogs directory under C: or D: drive.
+  *	Right click on the directory and get to Properties.
+  *	Under Security tab, click on Edit and add your service account and give it full access to this directory.
+2.	In IIS "Add Virtual Directory" under your RIPA website.
+  *	Alias: RIPALogs
+  *	Physical path: D:\RIPALogs or C:\RIPALogs
+3. In Web.config:
+  ``` xml
+  <appSettings>
+    <add key="LogFilePath1" value="\\server01\RIPALogs />
+    <add key="LogFilePath2" value="\\server02\RIPALogs />
+  </appSettings>
+  ```
+  Or if you don't have a second server just leave the value for LogFilePath2 empty:
+  ``` xml
+  <appSettings>
+    <add key="LogFilePath1" value="\\server01\RIPALogs />
+    <add key="LogFilePath2" value="" />
+  </appSettings>
+  ```
+
 **Update Web.config** - Make sure you update the app settings in Web.config with your agency specific information.
-* `<add key="reverseGeoURI" value="https://www.mysite.us/arcgis/rest/....."/>`
-* `<add key="agency" value="AG"/>`
-* `<add key="ori" value="CA0000000"/>`
-* `<add key="forceCacheUpdate" value="false" />`
-* `<add key="allowedBackDateHours" value="24" />`
-* `<add key="expireCacheDays" value="14" />`
-* `<add key="useBeats" value="0" />` 0 = Don't use beats, 1 = Show beats, 2 = Make beats mandatory
+``` xml
+<add key="reverseGeoURI" value="https://www.mysite.us/arcgis/rest/....."/>
+<add key="reverseBeatURI" value="https://myReverseBeatGeocodingService" />
+<add key="agency" value="AG"/>
+<add key="ori" value="CA0000000"/>
+<add key="test" value="false" />
+<add key="forceCacheUpdate" value="false" />
+<add key="allowedBackDateHours" value="24" />
+<add key="expireCacheDays" value="14" />
+<add key="domain" value="myDomain" />
+<add key="requireGroupMembership" value="true" />
+<add key="authorized" value="User AD Group" />
+<add key="authorizedAdmin" value="Admin AD Group" />
+<add key="useBeats" value="0" /> <!-- 0 = Don't use beats, 1 = Show beats, 2 = Make beats mandatory -->
+<add key="useAdditionalQuestions" value="0" /><!--  0 = Don't use, 1 = Use -->
+<add key="DOJWebApiUrl" value="https://dojTestSubmissionURL" />
+<add key="LogFilePath1" value="" />
+<add key="LogFilePath2" value="" />
+```
 
 
