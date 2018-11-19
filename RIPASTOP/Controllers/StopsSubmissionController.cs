@@ -134,7 +134,7 @@ namespace RIPASTOP.Controllers
             }
             submission.subList = entitiesdb.Submissions
                                     .OrderByDescending(x => x.StartDate)
-                                    .OrderByDescending(y => y.DateSubmitted).ToList();
+                                    .ThenByDescending(y => y.DateSubmitted).ToList();
 
             return View(submission);
         }
