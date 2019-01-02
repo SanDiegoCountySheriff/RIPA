@@ -865,11 +865,11 @@ class Form extends React.Component {
 
             if (editStop == 0) {
                 if (val == 2 && this.state.useBeats > 0 && dir !== '<< Back') {
-                    if (this.state.stop.location.beat.codes.length > 0) {
-                        if (!confirm('You selected beat ' + this.state.stop.location.beat.codes[0].text + '. Proceed with this beat?')) {
+                    if (this.state.stop.location.beat.codes.length == 0) {
+                        //if (!confirm('You selected beat ' + this.state.stop.location.beat.codes[0].text + '. Proceed with this beat?')) {
                             e.preventDefault();
                             return;
-                        }
+                        //}
                     }
                 }
             }
