@@ -7,7 +7,7 @@ The RIPA App is a mobile first web application for phones and MDCs to capture st
 
 ## Demo Site
 
-You can try out the application here: [(RIPA Demo Site)](https://ripademo.azurewebsites.net)
+You can try out the application here: [RIPA Demo Site](https://ripademo.azurewebsites.net)
 
 ## Feature Highlight
 
