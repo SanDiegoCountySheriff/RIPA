@@ -59,7 +59,7 @@
                         }
                     }),
                     subGrid.Column(header: "Dates", format: @<text>@(item.StartDate.ToString("MM/dd/yyyy")) @(item.EndDate.ToString("MM/dd/yyyy"))</text>),
-                         subGrid.Column(header: "Start", format: @<text>@(item.DateSubmitted)</text>, canSort: true),
+                         subGrid.Column(header: "Start", format: @<text>@(item.DateSubmitted)</text>),
                             @*subGrid.Column(header: "Status", format: @<text>@(item.Status)</text>, canSort: true),*@
                             subGrid.Column(header: "Status", format: (x) =>
                             {
@@ -81,9 +81,11 @@
                                                                  ))
     </div>
 </div>
-    <div id="dom-info">
-        <span id="submissionID">@Model.ID</span>
-    </div>
+<div id="dom-info">
+    <span id="submissionID">@Model.ID</span>
+    <span id="server">@ViewBag.server</span>
+
+</div>
     @*<script src="@Url.Content("~/Scripts/react/submissionTotalNotify.jsx")"></script>*@
     <script src="@Url.Content("~/Scripts/react/submissionCounter.jsx")"></script>
 

@@ -20,6 +20,7 @@ namespace RIPASTOP.Controllers
     {
         private Entities db = new Entities();
         private RIPASTOPContext dbr = new RIPASTOPContext();
+        private EntityState state;
 
 
         // GET: StopsEdit
@@ -71,7 +72,15 @@ namespace RIPASTOP.Controllers
                 }
                 else
                 {
-                    if (stop.Status == "success")
+                    ViewBag.postSubRedact = stopChangeAudit.postSubRedact;
+                    //if (stopChangeAudit.postSubRedact)
+                    //{
+                    //    stop.Status = "postSubRedact";
+                    //    state = dbr.Entry(stop).State;
+                    //    dbr.SaveChanges();
+                    //}
+
+                    if (stop.Status == "success" && !stopChangeAudit.postSubRedact)
                     {
                         ModelState.AddModelError(string.Empty, "The Stop ID #" + stopChangeAudit.StopID + " has been successfully submitted to DOJ. It cannot be modified.");
                     }
@@ -94,7 +103,7 @@ namespace RIPASTOP.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         //[HttpPost]
         //[ValidateAntiForgeryToken]
-        public ActionResult Edit(int? stopid, int pid, int pidCount, int submissionId, string submissionEndDate)
+        public ActionResult Edit(int? stopid, int pid, int pidCount, int submissionId, string submissionEndDate, bool postSubRedact)
         {
             HomeController.UserAuth user = new HomeController.UserAuth();
             if (ConfigurationManager.AppSettings["requireGroupMembership"] == "true")
@@ -138,9 +147,35 @@ namespace RIPASTOP.Controllers
             ViewBag.test = ConfigurationManager.AppSettings["test"];
             ViewBag.useAdditionalQuestions = ConfigurationManager.AppSettings["useAdditionalQuestions"];
             ViewBag.editStop = 1;
+            ViewBag.postSubRedact = postSubRedact;
 
             return View();
         }
+
+        //[HttpPost]
+        //public ActionResult postSubRedaction(int StopId, bool postSubRedact)
+        //{
+        //    if (postSubRedact)
+        //    {
+        //        DateTime fromDate = Convert.ToDateTime("2018-07-01");
+        //        Stop stop = dbr.Stop
+        //            .Where(x => x.ID == StopId && x.Time >= fromDate)
+        //            .Select(x => x).FirstOrDefault();
+
+        //        if (stop == null)
+        //        {
+        //            ModelState.AddModelError(string.Empty, "The Stop ID you entered does not exists or is older than July 1st 2018!");
+        //        }
+        //        else
+        //        {
+        //            stop.Status = "postSubRedact";
+        //            state = dbr.Entry(stop).State;
+        //            dbr.SaveChanges();
+        //        }
+        //    }
+        //    return View();
+        //}
+
 
         protected override void Dispose(bool disposing)
         {

@@ -60,6 +60,7 @@ namespace RIPASTOP.Controllers
         {
             
             UserAuth user = new UserAuth();
+            ViewBag.server = System.Environment.MachineName;
 
             user = AuthorizeUser(User.Identity.Name.ToString());
 
@@ -143,6 +144,7 @@ namespace RIPASTOP.Controllers
         public ActionResult SubmissionStatusGet(int? sid, DateTime? endDate)
         {
             UserAuth user = new UserAuth();
+            ViewBag.server = System.Environment.MachineName;
 
             user = AuthorizeUser(User.Identity.Name.ToString());
 
@@ -173,7 +175,7 @@ namespace RIPASTOP.Controllers
             else
             {
                     submission.statusMsgs = entitiesdb.StatusMessage_JSON_vw
-                            .Where(x => x.submissionID == sid && x.StopStatus != "success")
+                            .Where(x => x.submissionID == sid && x.StopStatus != "success" && x.StopStatus != "postSubRedact")
                             .ToList();
                     submission.subList = entitiesdb.Submissions
                                     .Where(x => x.StartDate == submission.StartDate &&
@@ -317,7 +319,7 @@ namespace RIPASTOP.Controllers
                     {
                         submission.Status = "Pending Fixes";
                         submission.statusMsgs = entitiesdb.StatusMessage_JSON_vw
-                                .Where(x => x.submissionID == submission.ID && x.StopStatus != "success")
+                                .Where(x => x.submissionID == submission.ID && x.StopStatus != "success" && x.StopStatus != "postSubRedact")
                                 .ToList();
                         submission.subList = entitiesdb.Submissions.ToList();
 

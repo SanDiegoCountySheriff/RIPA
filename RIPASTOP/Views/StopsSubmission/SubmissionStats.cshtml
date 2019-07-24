@@ -1,0 +1,157 @@
+﻿@model RIPASTOP.Models.Submissions
+@{
+    ViewBag.Title = "SubmissionStats";
+    var grid = new WebGrid(source: Model.statusMsgs, canPage: true);
+    var sId = 0;
+    grid.Pager(WebGridPagerModes.All);
+    var subGrid = new WebGrid(source: Model.subList, canPage: true);
+    subGrid.Pager(WebGridPagerModes.All);
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<meta name="viewport" content="width=device-width" />
+<title>Submission Status</title>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+
+    <div class="list-section">
+        <h2>DOJ Submission Results</h2>
+        @Html.ValidationSummary(true, "", new { @class = "error-alert" })
+
+        <div class="stops-detail">
+            @*<div class="list-item button-container">
+            <div class="button-left">
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        </div>*@
+            <h4>
+                <span>Submission Range:</span>
+                <pre>@Html.DisplayFor(model => model.StartDate)</pre>
+                <pre>@Html.DisplayFor(model => model.EndDate)</pre>
+            </h4>
+
+            <h4>
+                <span>@Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })</span>
+                <pre>@Html.DisplayFor(model => model.Status)</pre>
+            </h4>
+
+            <div class="list-item-select">
+                @*<span>@Html.LabelFor(model => model.TotalProcessed, htmlAttributes: new { @class = "control-label col-md-3" })</span>*@
+                <label for="TotalProcessed">Processed</label>
+                <pre>@Html.DisplayFor(model => model.TotalProcessed)</pre>
+
+                @*                <span>@Html.LabelFor(model => model.TotalSuccess, htmlAttributes: new { @class = "control-label col-md-3" })</span>*@
+                <label for="TotalProcessed">Succeeded</label>
+                <pre>@Html.DisplayFor(model => model.TotalSuccess)</pre>
+
+                @*                <span>@Html.LabelFor(model => model.TotalRejected, htmlAttributes: new { @class = "control-label col-md-3" })</span>*@
+                <label for="TotalProcessed">Rejected</label>
+                <pre>@Html.DisplayFor(model => model.TotalRejected)</pre>
+            </div>
+            <div class="list-item-select">
+
+                @*<span>@Html.LabelFor(model => model.TotalWithErrors, htmlAttributes: new { @class = "control-label col-md-3" })</span>*@
+                <label for="TotalProcessed">Errors</label>
+                <pre>@Html.DisplayFor(model => model.TotalWithErrors)</pre>
+
+                @*<span>@Html.LabelFor(model => model.TotalHTTPErrors, htmlAttributes: new { @class = "control-label col-md-3" })</span>*@
+                <label for="TotalProcessed">HTTPErrors</label>
+                <pre>@Html.DisplayFor(model => model.TotalHTTPErrors)</pre>
+            </div>
+            <div class="button-container">
+                @*        <span>@Html.LabelFor(model => model.LogFile, htmlAttributes: new { @class = "control-label col-md-2" })</span>*@
+                <a href="~/Log/@Html.DisplayFor(model => model.LogFile)" class="button-right">Log File</a>
+            </div>
+
+            <h4>Stops with Error</h4>
+            <div id="content">
+                @grid.GetHtml(
+                tableStyle:"webgrid-table",
+                headerStyle:"webgrid-header",
+                footerStyle:"webgrid-footer",
+                alternatingRowStyle:"webgrid-alternating-row",
+                rowStyle:"webgrid-row-style",
+                columns:grid.Columns(
+                    grid.Column(header:"Stop ID", format:@<text><div>@(item.StopID)</div></text>, canSort: true),
+                        grid.Column(columnName: "StopStatus", header: "Status", canSort: true),
+                        grid.Column(columnName: "code", header: "Error Code", canSort: true),
+                        grid.Column(columnName: "msg", header: "Error Message"),
+                       //grid.Column(header: "", format:@<text><a href="@Url.Action("Index", "StopsEdit", new { stopid = @item.StopID })" class="button-right">Edit</a></text>),
+                       grid.Column(header: "", format: (item) =>
+                       {
+                           if (sId != @item.StopID)
+                           {
+                               return Html.Raw(string.Format("<a href='/StopsEdit/Index?stopid={0}&submissionID={1}&submissionEndDate={2}' class='button-right'>Edit</a>", @item.StopID, Model.ID, @ViewBag.submissionEndDate));
+                           }
+                           else
+                           {
+                               return Html.Raw(string.Format("<div></div>"));
+                           }
+                       }),
+                       grid.Column(header: "Fixed", format: (item) =>
+                       {
+                           if (sId != @item.StopID)
+                           {
+                               sId = item.StopID;
+                          //return Html.Raw(string.Format("Edited={0}",@item.edited));
+                          if (@item.edited)
+                               {
+                                   return Html.Raw(string.Format("<text><input type='checkbox' checked disabled='disabled' /></text>"));
+                               }
+                               else
+                               {
+                                   return Html.Raw(string.Format("<text><input type='checkbox' disabled='disabled' /></text>"));
+                               }
+
+                           }
+                           else
+                           {
+                               return Html.Raw(string.Format("<div></div>"));
+                          //return Html.Raw(string.Format("<div>sId = {0}, @item.StopID = {1}</div>", sId, @item.StopID));
+                      }
+                       })))
+            </div>
+
+            <div class="button-container">
+                @if (@ViewBag.fixedFlag)
+                {
+                    <input type="submit" value="Resubmit" class="button-right">
+                }
+                else
+                {
+                    <input type="submit" value="Resubmit" class="button-right disabled">
+                }
+            </div>
+                    <h4>Submission History</h4>
+            <div id="content">
+                @subGrid.GetHtml(
+                       tableStyle: "webgrid-table",
+                       headerStyle: "webgrid-header",
+                       footerStyle: "webgrid-footer",
+                       alternatingRowStyle: "webgrid-alternating-row",
+                       rowStyle: "webgrid-row-style",
+                       columns: subGrid.Columns(
+                            subGrid.Column(header: "ID", format: @<text>@(item.ID)</text>),
+                            subGrid.Column(header: "Dates", format: @<text>@(item.StartDate.ToString("dd/MM/yyyy")) @(item.EndDate.ToString("dd/MM/yyyy"))</text>),
+                            subGrid.Column(header: "Start", format: @<text>@(item.DateSubmitted)</text>, canSort: true),
+                            subGrid.Column(header: "Status", format: @<text>@(item.Status)</text>, canSort: true),
+                            subGrid.Column(header: "Total", format: @<text>@(item.TotalProcessed)</text>),
+                            subGrid.Column(header: "Success", format: @<text>@(item.TotalSuccess)</text>),
+                            subGrid.Column(header: "Rejected", format: @<text>@(item.TotalRejected)</text>),
+                            subGrid.Column(header: "Errors", format: @<text>@(item.TotalWithErrors)</text>),
+                            subGrid.Column(header: "Service Errors", format: @<text>@(item.TotalHTTPErrors)</text>),
+                            subGrid.Column(header: "Log File", format: (item) =>
+                            {
+                                return Html.Raw(string.Format("<a href='../log/{0}' class='button-right'>Log</a>", @item.LogFile));
+                            }
+                     )))
+            </div>
+        </div>
+
+    </div>
+}
+
