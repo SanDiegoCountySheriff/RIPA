@@ -17,6 +17,7 @@
 <title>Submission Status</title>
 <div id="dom-info">
     <span id="submissionID">@Model.ID</span>
+    <span id="server">@ViewBag.server</span>
 </div>
 
 @using (Html.BeginForm("SubmissionStats", "StopsSubmission", new {sid = Model.ID, startDate = Model.StartDate, endDate = Model.EndDate }, FormMethod.Post))
@@ -38,7 +39,8 @@
     </p>
     <p class="flex">
         <label class="flex-label">Date Range:</label>
-        <span>@Html.DisplayFor(model => model.StartDate) - @Html.DisplayFor(model => model.EndDate)</span>
+@*        <span>@Model.StartDate.ToString("MM/dd/yyy") - @Convert.ToDateTime(@Model.EndDate).ToString("MM/dd/yyy")</span>*@
+        <span>@Convert.ToDateTime(@Model.StartDate).ToString("MM/dd/yyy") - @Convert.ToDateTime(@Model.EndDate).ToString("MM/dd/yyy")</span>
     </p>
     <p class="flex">
         <label class="flex-label">Start:</label>

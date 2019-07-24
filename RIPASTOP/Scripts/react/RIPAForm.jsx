@@ -155,6 +155,7 @@ class Form extends React.Component {
             //nightMode: false,
             instrumentation: {
                 template: null,
+                pullFromReasonCode: false,
                 cacheFlag: false,
                 lookupCacheDate: '',
                 server: '',
@@ -188,6 +189,7 @@ class Form extends React.Component {
         this.updatePersonInput = this.updatePersonInput.bind(this);
         this.addPerson = this.addPerson.bind(this);
         this.pullForwardPerson = this.pullForwardPerson.bind(this);
+        this.pullReasonCode = this.pullReasonCode.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleFormSectionFilter = this.handleFormSectionFilter.bind(this);
         this.geoFindMe = this.geoFindMe.bind(this);
@@ -742,7 +744,19 @@ class Form extends React.Component {
         }
         e.preventDefault();
     }
-   
+
+    pullReasonCode(e, node, type, node2, node3, node3v) {
+        var instrumentation = this.state.instrumentation;     
+
+        if (this.state.stop.Person_Stopped.reasonForStop.codes.length > 0) {
+            var reason = this.state.stop.Person_Stopped.reasonForStop.codes[0].text;
+            this.handleCodeAdd(reason, node, type, node2, node3, node3v)
+            instrumentation.pullFromReasonCode = true;
+            this.setState({ instrumentation: instrumentation });
+        }
+        // Prevents the page from refreshing
+        e.preventDefault();
+    }   
     handleSubmit(e) { 
         //this.geoFindMe(e);
         var _fetchURL;
@@ -778,9 +792,10 @@ class Form extends React.Component {
                     );
                     const editStop = document.getElementById('editStop').innerHTML;
                     var submissionEdit = document.getElementById('submissionEdit').innerText;
+                    var postSubRedact = document.getElementById('postSubRedact').innerText;
                     if (editStop == 1) {
                         const stopid = document.getElementById('stopid').innerHTML;
-                        _fetchURL = '/api/StopsAPI?' + thiss.state.stop + '&stopId=' + stopid + '&changeAuditReason=' + thiss.state.changeAuditReason + '&submissionEdit=' + submissionEdit;
+                        _fetchURL = '/api/StopsAPI?' + thiss.state.stop + '&stopId=' + stopid + '&changeAuditReason=' + thiss.state.changeAuditReason + '&submissionEdit=' + submissionEdit + '&postSubRedact=' + postSubRedact;
                         _method = 'PUT';
                     }
                     else {
@@ -961,11 +976,66 @@ class Form extends React.Component {
             return duration <= 1440 && duration > 0 ? true : false;
         } else { return false; }
     }
+    //validateDate(date) {
+    //    return /^(19|20)?[0-9]{2}[-](0?[1-9]|1[012])[-](0?[1-9]|[12][0-9]|3[01])$/.test(date);
+    //}
+
     validateDate(date) {
-        return /^(19|20)?[0-9]{2}[-](0?[1-9]|1[012])[-](0?[1-9]|[12][0-9]|3[01])$/.test(date);
+        var stop = this.state.stop;
+        var alteredDate = '';
+        //var dateformat = /^(0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])[\/\-]\d{4}$/;
+        var dateformat = /^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/;
+    // Match the date format through regular expression
+        if (date.match(dateformat)) {
+            //document.form1.text1.focus();
+
+            // If '/' is used convert '/' or '-' 
+            alteredDate = date.replace(/\//g, "-");
+            stop.date = alteredDate;
+            this.setState({ stop: stop });
+            var opera = alteredDate.split('-');
+            lopera = opera.length;
+            // Extract the string into month, date and year
+
+            if (lopera > 1) {
+               var pdate = alteredDate.split('-');
+            }
+            var yy = parseInt(pdate[0]);
+            var mm = parseInt(pdate[1]);
+            var dd = parseInt(pdate[2]);
+            // Create list of days of a month [assume there is no leap year by default]
+            var ListofDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+            if (mm == 1 || mm > 2) {
+                if (dd > ListofDays[mm - 1]) {
+                    //alert('Invalid date format!');
+                    return false;
+                }
+            }
+            if (mm == 2) {
+                var lyear = false;
+                if ((!(yy % 4) && yy % 100) || !(yy % 400)) {
+                    lyear = true;
+                }
+                if ((lyear == false) && (dd >= 29)) {
+                    alert('Not a leap year!');
+                    return false;
+                }
+                if ((lyear == true) && (dd > 29)) {
+                    alert('leap year but day is wrong!');
+                    return false;
+                }
+            }
+            return true;
+        }
+        else {
+            //alert("Invalid date format!");
+            //document.form1.text1.focus();
+            return false;
+        }
     }
+   
     validateTime(time) {
-        return /^([0-2][0-9][:][0-5][0-9]([:][0-5][0-9])?)$/.test(time);
+        return /^(([01][0-9]|2[0-3])[:][0-5][0-9]([:][0-5][0-9])?)$/.test(time);
     }
     validateDateTime() {
         var msg = this.state.validationErrorMsg;
@@ -1193,10 +1263,11 @@ class Form extends React.Component {
                     }
                    
                 }
-                if (this.state.stop.Person_Stopped.reasonForStopExplanation.length < 5 || this.state.stop.Person_Stopped.reasonForStopExplanation.length > 250) {
+                if (this.state.stop.Person_Stopped.reasonForStopExplanation.trim().length < 5 || this.state.stop.Person_Stopped.reasonForStopExplanation.trim().length > 250) {
                     msg.reasonBrief = '*Please provide a brief explanation regarding the reason for the stop (at least 5 and less than 250 characters)'
                     msg.errorFlag = true;
                 } else { msg.reasonBrief = '' } 
+                stop.Person_Stopped.reasonForStopExplanation = this.state.stop.Person_Stopped.reasonForStopExplanation.trim();
 
                 this.state.stop.Person_Stopped.reasonForStop.reason &&
                     this.state.stop.Person_Stopped.reasonForStopExplanation &&
@@ -1218,10 +1289,11 @@ class Form extends React.Component {
                             msg.errorFlag = true;
                         }
                         else if (this.state.stop.Person_Stopped.basisForSearch.map(function (x) { return x.key; }).indexOf(4) == -1 || this.state.stop.Person_Stopped.basisForSearch.length > 1) {
-                            if (this.state.stop.Person_Stopped.basisForSearchBrief.length < 5 || this.state.stop.Person_Stopped.basisForSearchBrief.length > 250) {
+                            if (this.state.stop.Person_Stopped.basisForSearchBrief.trim().length < 5 || this.state.stop.Person_Stopped.basisForSearchBrief.trim().length > 250) {
                                 msg.searchBrief = '*Please provide a brief explanation regarding the reason for the stop (at least 5 and less than 250 characters)'
                                 msg.errorFlag = true;
                             } else { msg.searchBrief = '' }
+                            stop.Person_Stopped.basisForSearchBrief = this.state.stop.Person_Stopped.basisForSearchBrief.trim();
 
                             if (this.state.stop.Person_Stopped.basisForSearch.map(function (x) { return x.key; }).indexOf(1) > -1) {
 
@@ -1316,10 +1388,11 @@ class Form extends React.Component {
             case '5':
                 const editStop = document.getElementById('editStop').innerHTML;
                 if (editStop == 1) {
-                    if (this.state.changeAuditReason.length < 5 || this.state.changeAuditReason.length > 250) {
+                    if (this.state.changeAuditReason.trim().length < 5 || this.state.changeAuditReason.trim().length > 250) {
                         msg.changeAuditReason = '*Please provide a brief explanation regarding the reason for change (at least 5 and less than 250 characters)'
                         msg.errorFlag = true;
                     } else { msg.changeAuditReason = '' }
+                    stop.changeAuditReason = this.state.changeAuditReason.trim();
 
                     msg.changeAuditReason == "" ? msg.errorFlag = false : null;
                 }
@@ -2120,8 +2193,8 @@ class Form extends React.Component {
                         <RadioButtonListSection checked={this.state.stop.Person_Stopped.reasonForStop.reason} stateValue={this.state.stop.Person_Stopped.reasonForStop.reason} node="reasonForStop" node2="reason" node2b="details" itemList={reasonsForStop_3} function={this.radioSelection} />
                         <p><strong> - and - </strong></p>
                         {this.state.validationErrorMsg.reasonBrief && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.reasonBrief}</div>}
-                        <TextInput type="text" stateValue={this.state.stop.Person_Stopped.reasonForStopExplanation} className="list-item" label="Brief Explanation" name="reasonForStopExplanation" onChange={this.updatePersonInput} />
-                        <span className='required'>Important: Do not include personally identifying information, such as names, DOBs, addresses, ID numbers, etc.</span><br/><span>{250 - this.state.stop.Person_Stopped.reasonForStopExplanation.length} characters remaining</span>
+                    <TextInput type="text" stateValue={this.state.stop.Person_Stopped.reasonForStopExplanation} className="list-item" label="Brief Explanation" name="reasonForStopExplanation" onChange={this.updatePersonInput} />
+                    <span className='required'>Important: Do not include personally identifying information, such as names, DOBs, addresses, ID numbers, etc.</span><br /><span>{250 - this.state.stop.Person_Stopped.reasonForStopExplanation.length} characters remaining</span>
                         
                         {this.state.validationErrorMsg.errorFlag &&
                             <div className="error-summary error-flip-margin"> Oops, you may have missed something! Please review your selections above.</div>}
@@ -2211,8 +2284,8 @@ class Form extends React.Component {
                                 }
                                 {(this.state.stop.Person_Stopped.basisForSearch.map(function (x) { return x.key; }).indexOf(4) == -1 || this.state.stop.Person_Stopped.basisForSearch.length > 1) && 
                                 <div>
-                                    {this.state.validationErrorMsg.searchBrief && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.searchBrief}</div>}
-                                    <TextInput type="text" stateValue={this.state.stop.Person_Stopped.basisForSearchBrief} className="list-item-nested" label="Brief Explanation (250 characters)" name="basisForSearchBrief" onChange={this.updatePersonInput} />
+                                {this.state.validationErrorMsg.searchBrief && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.searchBrief}</div>}
+                                <TextInput type="text" stateValue={this.state.stop.Person_Stopped.basisForSearchBrief} className="list-item-nested" label="Brief Explanation (250 characters)" name="basisForSearchBrief" onChange={this.updatePersonInput} />
                                 <span className='required list-item-nested'>Important: Do not include personally identifying information, such as names, DOBs, addresses, ID numbers, etc.</span>
                                 <span className="indent">{250 - this.state.stop.Person_Stopped.basisForSearchBrief.length}  characters remaining</span>
                                 </div>
@@ -2269,6 +2342,12 @@ class Form extends React.Component {
                                 {this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("Warning (verbal or written)") > -1 &&
 
                             <div>
+                                {(this.state.stop.Person_Stopped.reasonForStop.codes.length > 0) &&
+                                    <div className="button-container">
+                                       <a href="" className="button-right" title="Pull Code" onClick={(e) => this.pullReasonCode(e, '', 'AllCodes', 'resultOfStop', 'result', 'Warning (verbal or written)')} ><span> Pull from Reason Code</span> </a>
+                                    </div>
+
+                                }
                             <Tags tags={this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (y) { return y.result }).indexOf("Warning (verbal or written)")].codes}
                                 suggestions={this.state.codes.AllCodes}
                                 placeholder='Add Code'
@@ -2281,9 +2360,15 @@ class Form extends React.Component {
                                 <label className="list-item-nested"> Select Code (up to 5)</label>
                             </div>
                         }
-                                <CheckBox2 key="Citation for infraction" className="list-item" checked={this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("Citation for infraction") > -1} value="Citation for infraction" name="Citation for infraction" onClick={(e) => this.checkBoxSelection(e, 'resultOfStop', 'result', '', 3)} />
+                        <CheckBox2 key="Citation for infraction" className="list-item" checked={this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("Citation for infraction") > -1} value="Citation for infraction" name="Citation for infraction" onClick={(e) => this.checkBoxSelection(e, 'resultOfStop', 'result', '', 3)} />
                                 {this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("Citation for infraction") > -1 &&
                             <div>
+                                {(this.state.stop.Person_Stopped.reasonForStop.codes.length > 0) &&
+                                    <div className="button-container">
+                                <a href="" className="button-right" title="Pull Code" onClick={(e) => this.pullReasonCode(e, '', 'AllCodes', 'resultOfStop', 'result', 'Citation for infraction')} ><span> Pull from Reason Code</span> </a>
+                                    </div>
+
+                                }
                                 <Tags tags={this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (y) { return y.result }).indexOf("Citation for infraction")].codes}
                                 suggestions={this.state.codes.AllCodes}
                                 placeholder='Add Code'
@@ -2299,6 +2384,12 @@ class Form extends React.Component {
                                 <CheckBox2 key="In-field cite and release" className="list-item" checked={this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("In-field cite and release") > -1} value="In-field cite and release" name="In-field cite and release" onClick={(e) => this.checkBoxSelection(e, 'resultOfStop', 'result', '', 4)} />
                                 {this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("In-field cite and release") > -1 &&
                             <div>
+                                {(this.state.stop.Person_Stopped.reasonForStop.codes.length > 0) &&
+                                    <div className="button-container">
+                                <a href="" className="button-right" title="Pull Code" name="2" onClick={(e) => this.pullReasonCode(e, '', 'AllCodes', 'resultOfStop', 'result', 'In-field cite and release')} ><span> Pull from Reason Code</span> </a>
+                                    </div>
+
+                                }
                             <Tags tags={this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (y) { return y.result }).indexOf("In-field cite and release")].codes}
                                 suggestions={this.state.codes.AllCodes}
                                 placeholder='Add Code'
@@ -2315,6 +2406,12 @@ class Form extends React.Component {
                                 <CheckBox2 key="Custodial Arrest without warrant" className="list-item" checked={this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("Custodial Arrest without warrant") > -1} value="Custodial Arrest without warrant" name="Custodial Arrest without warrant" onClick={(e) => this.checkBoxSelection(e, 'resultOfStop', 'result', '', 6)} />
                                 {this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("Custodial Arrest without warrant") > -1 &&
                             <div>
+                                {(this.state.stop.Person_Stopped.reasonForStop.codes.length > 0) &&
+                                    <div className="button-container">
+                                <a href="" className="button-right" title="Pull Code" name="2" onClick={(e) => this.pullReasonCode(e, '', 'AllCodes', 'resultOfStop', 'result', 'Custodial Arrest without warrant')} ><span> Pull from Reason Code</span> </a>
+                                    </div>
+
+                                }
                             <Tags tags={this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (y) { return y.result }).indexOf("Custodial Arrest without warrant")].codes}
                                 suggestions={this.state.codes.AllCodes}
                                 placeholder='Add Code'
@@ -2410,9 +2507,9 @@ class Form extends React.Component {
                             {this.state.editStop == 1 &&
                                 <div>
                                     {this.state.validationErrorMsg.changeAuditReason && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.changeAuditReason}</div>}
-                                    <div>
-                                        <TextInput type="text" stateValue={this.state.changeAuditReason} className="list-item" label="Please Add Reason for Change" name="changeAuditReason" onChange={(e) => this.updateChangeAuditReason(e)} />
-                                        <span>{250 - this.state.changeAuditReason.length} characters remaining</span>
+                            <div>
+                                <TextInput type="text" stateValue={this.state.changeAuditReason} className="list-item" label="Please Add Reason for Change" name="changeAuditReason" onChange={(e) => this.updateChangeAuditReason(e)} />
+                                <span>{250 - this.state.changeAuditReason.length} characters remaining</span>
                                     </div> 
                                 </div>
                             }

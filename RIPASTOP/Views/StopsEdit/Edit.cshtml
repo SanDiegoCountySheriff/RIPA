@@ -31,8 +31,9 @@
     <span id="editStop">@ViewBag.editStop</span>
     <span id="submissionEdit">@ViewBag.submissionEdit</span>
     <span id="submissionID">@ViewBag.submissionID</span>
-    <span id="submissionEndDate">@ViewBag.submissionEndDate</span>   
+    <span id="submissionEndDate">@ViewBag.submissionEndDate</span>
     <span id="useAdditionalQuestions">@ViewBag.useAdditionalQuestions</span>
+    <span id="postSubRedact">@ViewBag.postSubRedact</span>
 </div>
 <script src="~/Scripts/react/ReactDND.min.js"></script>
 <script src="~/Scripts/moment.js"></script>
@@ -62,11 +63,11 @@
             var personNum = i + 1;
             if (@personNum == ViewBag.pid)
             {
-                <a href="@Url.Action("Edit", "StopsEdit", new { stopid = @ViewBag.stopID, pid = @personNum, pidCount = @ViewBag.personCount, submissionId = @ViewBag.submissionID, submissionEndDate = @ViewBag.submissionEndDate })" class="button-left disabled">Person @personNum</a>
+                <a href="@Url.Action("Edit", "StopsEdit", new { stopid = @ViewBag.stopID, pid = @personNum, pidCount = @ViewBag.personCount, submissionId = @ViewBag.submissionID, submissionEndDate = @ViewBag.submissionEndDate,postSubRedact = @ViewBag.postSubRedact })" class="button-left disabled">Person @personNum</a>
             }
             else
             {
-                <a href="@Url.Action("Edit", "StopsEdit", new { stopid = @ViewBag.stopID, pid = @personNum, pidCount = @ViewBag.personCount, submissionId = @ViewBag.submissionID, submissionEndDate = @ViewBag.submissionEndDate })" class="button-left">Person @personNum</a>
+                <a href="@Url.Action("Edit", "StopsEdit", new { stopid = @ViewBag.stopID, pid = @personNum, pidCount = @ViewBag.personCount, submissionId = @ViewBag.submissionID, submissionEndDate = @ViewBag.submissionEndDate, postSubRedact = @ViewBag.postSubRedact })" class="button-left">Person @personNum</a>
             }
         }
     </div>

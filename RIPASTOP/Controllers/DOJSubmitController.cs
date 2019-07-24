@@ -268,12 +268,11 @@ namespace RIPASTOP.Controllers
 
             try
             {
-                logFilename = DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".txt";
-                submission.LogFile = logFilename;
-
                 entitiesdb.Submissions.Add(submission);
                 entitiesdb.SaveChanges();
                 int submissionID = submission.ID;
+                logFilename = submissionID + "-" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".txt";
+                submission.LogFile = logFilename;
 
                 // Writing logs on both servers
                 LogFilePath1 = ConfigurationManager.AppSettings["LogFilePath1"];
@@ -309,7 +308,7 @@ namespace RIPASTOP.Controllers
                 foreach (int stopId in stopsIDs)
                 {
                     Stop st = db.Stop
-                        .Where(x => x.ID == stopId && x.Status.Trim() != "success")
+                        .Where(x => x.ID == stopId && x.Status.Trim() != "success" && x.Status.Trim() != "postSubRedact")
                         .Select(x => x).FirstOrDefault();
 
                       if (st != null)
@@ -318,8 +317,9 @@ namespace RIPASTOP.Controllers
                         submission.TotalProcessed = jsonResult.processedCount;
                         DOJjson = st.JsonDojStop;
                         HTTP_PUT(Url: DOJWebApiUrl, Data: DOJjson, model: jsonResult);
-                        // the next 2 lines are for testing
+                        // the next lines are for testing
                         //jsonResult.Results = "{    \"MandatoryValidationFlag\": false,    \"Status\": \"failed\",    \"BatchID\": \"\",    \"LEARecordID\": \"63\",    \"ORI\": \"CA0370000\",    \"OfficerUID\": \"11\",    \"Proxy\": \"\",    \"StopDate\": \"06 / 05 / 2018\",    \"StopTime\": \"14:25:51\",    \"Messages\": [      {        \"Code\": \"DV007\",        \"Field\": \"UID\",        \"Message\": \"Officer Unique ID is invalid or missing, it must be 9 alphanumerical characters.\",        \"PersonNumber\": null      }    ]}";
+                        //jsonResult.Results = "{\"MandatoryValidationFlag\":false,\"Status\":\"failed\",\"BatchID\":\"\",\"LEARecordID\":\"14140\",\"ORI\":\"CA0370000\",\"OfficerUID\":\"111106405\",\"Proxy\":\"\",\"StopDate\":\"06 / 05 / 2018\",\"StopTime\":\"23:58:56\",\"Messages\":[{\"Code\":\"DV236\",\"Field\":\"Tx_type\",\"Message\":\"Duplicate record exists with the same ORI,  LEA record ID combination.\",\"PersonNumber\":null},{\"Code\":\"DV004\",\"Field\":\"sTime\",\"Message\":\"Duplicate record; a stop exists for this ORI, Officer UID, Date & Time.\",\"PersonNumber\":null}]}";
                         //jsonResult.IsSuccess = true;
                         if (jsonResult.IsSuccess)
                         {
@@ -374,16 +374,14 @@ namespace RIPASTOP.Controllers
                             }
 
                             st.StatusMessage = o.ToString();
+
+                            // The following section of code, saving messages in dojRes is not used at this point
                             if (st.Status != "success")
                             {
                                 eJson = new ExtractJNode("Messages.Message", o);
                                 string messages = eJson.traverseNode();
-                                messages = messages.Replace(',', '~');
-                                dojRes.SetMessages(messages.Split(','));
-                                foreach (string msg in dojRes.GetMessages())
-                                {
-                                    st.StatusMessage = st.StatusMessage + " " + msg.Replace('~', ',');
-                                }
+                                messages = messages.Replace(".,", "~");
+                                dojRes.SetMessages(messages.Split('~'));
                             }
 
                         }
@@ -453,20 +451,20 @@ namespace RIPASTOP.Controllers
             return allAggregates;
         }
 
-        // POST: api/DOJSubmit
-        [HttpPost]
-        public int POSTTotalStopsToSubmit(DateTime startDate, DateTime endDate)
-        {
-            //int stopsCount = entitiesdb.StopOfficerIDDateTime_JSON_vw.ToList()
-            //    .Where(x => startDate <= Convert.ToDateTime(x.stopDate) && Convert.ToDateTime(x.stopDate) <= endDate).Count();
-            int stopsCount = entitiesdb.StopOfficerIDDateTime_JSON_vw.ToList()
-                            .Join(db.Stop,
-                            j => j.ID,
-                            s => s.ID,
-                            (j,s) => new { StopOfficerIDDateTime_JSON_vw = j, Stop = s })
-                            .Where(x => startDate <= Convert.ToDateTime(x.StopOfficerIDDateTime_JSON_vw.stopDate) && Convert.ToDateTime(x.StopOfficerIDDateTime_JSON_vw.stopDate) <= endDate && x.Stop.Status != "success" ).Count();
-            //return string.Format("<h4>You are about to submit {0} stops.</h4>", stopsCount);
-            return stopsCount;
-        }
+        //// POST: api/DOJSubmit
+        //[HttpPost]
+        //public int POSTTotalStopsToSubmit(DateTime startDate, DateTime endDate)
+        //{
+        //    //int stopsCount = entitiesdb.StopOfficerIDDateTime_JSON_vw.ToList()
+        //    //    .Where(x => startDate <= Convert.ToDateTime(x.stopDate) && Convert.ToDateTime(x.stopDate) <= endDate).Count();
+        //    int stopsCount = entitiesdb.StopOfficerIDDateTime_JSON_vw.ToList()
+        //                    .Join(db.Stop,
+        //                    j => j.ID,
+        //                    s => s.ID,
+        //                    (j,s) => new { StopOfficerIDDateTime_JSON_vw = j, Stop = s })
+        //                    .Where(x => startDate <= Convert.ToDateTime(x.StopOfficerIDDateTime_JSON_vw.stopDate) && Convert.ToDateTime(x.StopOfficerIDDateTime_JSON_vw.stopDate) <= endDate && x.Stop.Status != "success" && x.Stop.Status != "postSubRedact").Count();
+        //    //return string.Format("<h4>You are about to submit {0} stops.</h4>", stopsCount);
+        //    return stopsCount;
+        //}
     }
 }
