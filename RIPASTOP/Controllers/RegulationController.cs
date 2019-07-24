@@ -50,6 +50,7 @@ namespace RIPASTOP.Controllers
         // GET: Regulation
         public ActionResult Index()
         {
+            UserProfile_Conf UserProfile_Conf;
             UserAuth user = new UserAuth();
             if (ConfigurationManager.AppSettings["requireGroupMembership"] == "true")
             {
@@ -60,10 +61,16 @@ namespace RIPASTOP.Controllers
                     //return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
                     return RedirectToAction("Unauthorized");
                 }
+                // Gotta grab the conf table because that is where the NTUserName can be matched.
+                UserProfile_Conf = db.UserProfile_Conf.SingleOrDefault(x => x.NTUserName == User.Identity.Name.ToString());
+            }
+            else
+            {
+                // Anonymous user without Authentication can still run this app
+                UserProfile_Conf = db.UserProfile_Conf.SingleOrDefault(x => x.NTUserName == "AnonymousUser");
             }
 
-            // Gotta grab the conf table because that is where the NTUserName can be matched.
-            UserProfile_Conf UserProfile_Conf = db.UserProfile_Conf.SingleOrDefault(x => x.NTUserName == User.Identity.Name.ToString());
+
 
             if (User.Identity.IsAuthenticated && UserProfile_Conf != null)
             {

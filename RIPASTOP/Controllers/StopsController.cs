@@ -22,13 +22,14 @@ namespace RIPASTOP.Controllers
     {
         private RIPASTOPContext db = new RIPASTOPContext();
         private Entities db_lookup = new Entities();
+        private UserProfile_Conf uid;
 
         // GET: Stops
         public ActionResult Index()
         {
+            HomeController.UserAuth user = new HomeController.UserAuth();
             if (ConfigurationManager.AppSettings["requireGroupMembership"] == "true")
             {
-                HomeController.UserAuth user = new HomeController.UserAuth();
                 user = HomeController.AuthorizeUser(User.Identity.Name.ToString());
                 ViewBag.admin = user.authorizedAdmin;
 
@@ -37,25 +38,31 @@ namespace RIPASTOP.Controllers
                     //return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
                     return RedirectToAction("Unauthorized", "Home");
                 }
+                uid = db.UserProfile_Conf.SingleOrDefault(x => x.NTUserName == User.Identity.Name.ToString());
+            }
+            else
+            {
+                // Anonymous user without Authentication can still run this app
+                uid = db.UserProfile_Conf.SingleOrDefault(x => x.NTUserName == "AnonymousUser");
             }
 
-            //UserProfile_Conf uid = db.UserProfile_Conf.SingleOrDefault(x => x.NTUserName == User.Identity.Name.ToString());
-            //ViewBag.UserProfileID = uid.UserProfileID;
-            //ViewBag.test = ConfigurationManager.AppSettings["test"];
-            //List<Stop> Stops = await db.Stop.Where(x => x.UserProfileID == uid.UserProfileID).OrderByDescending(x => x.Time).ToListAsync();
-            //foreach(Stop st in Stops)
-            //{
-            //    if(st.JsonStop != null)
-            //    {
-            //        st.JsonStop = JValue.Parse(st.JsonStop).ToString(Formatting.Indented);
-            //    }
-                
-            //}
+            ViewBag.admin = user.authorizedAdmin;
+            ViewBag.UserProfileID = uid.UserProfileID;
+            ViewBag.test = ConfigurationManager.AppSettings["test"];
+            List<Stop> Stops = db.Stop.Where(x => x.UserProfileID == uid.UserProfileID).OrderByDescending(x => x.Time).ToList();
+            foreach (Stop st in Stops)
+            {
+                if (st.JsonStop != null)
+                {
+                    st.JsonStop = JValue.Parse(st.JsonStop).ToString(Formatting.Indented);
+                }
+
+            }
 
             // web.config debug setting
             ViewBag.debug = HttpContext.IsDebuggingEnabled;
 
-            //return View(Stops);
+            //return View(Stops); some words here
             return View();
         }
 
@@ -92,7 +99,6 @@ namespace RIPASTOP.Controllers
         //[AllowAnonymous]
         public async Task<ActionResult> Create([Bind(Include = "ID,JsonStop,JsonInstrumentation,latitude,longitude,beat,UserProfileID,PersonCount")] Stop stop)
         {
-            UserProfile_Conf uid = db.UserProfile_Conf.SingleOrDefault(x => x.NTUserName == User.Identity.Name.ToString());
 
             if (ConfigurationManager.AppSettings["requireGroupMembership"] == "true")
             {
@@ -104,6 +110,11 @@ namespace RIPASTOP.Controllers
                     //return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
                     return RedirectToAction("Unauthorized", "Home");
                 }
+                uid = db.UserProfile_Conf.SingleOrDefault(x => x.NTUserName == User.Identity.Name.ToString());
+            }
+            else
+            {
+                uid = db.UserProfile_Conf.SingleOrDefault(x => x.NTUserName == "AnonymousUser");
             }
 
             //stop.ID = Guid.NewGuid();

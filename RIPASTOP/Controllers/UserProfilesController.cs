@@ -14,6 +14,7 @@ namespace RIPASTOP.Controllers
     public class UserProfilesController : Controller
     {
         private RIPASTOPContext db = new RIPASTOPContext();
+        bool proceed;
 
         // GET: UserProfiles
         public ActionResult Index()
@@ -43,7 +44,9 @@ namespace RIPASTOP.Controllers
         // GET: UserProfiles/Create
         public ActionResult Create()
         {
+            UserProfile_Conf UserProfile_Conf;
             HomeController.UserAuth user = new HomeController.UserAuth();
+
             if (ConfigurationManager.AppSettings["requireGroupMembership"] == "true")
             {
                 user = HomeController.AuthorizeUser(User.Identity.Name.ToString());
@@ -53,9 +56,23 @@ namespace RIPASTOP.Controllers
                     //return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
                     return RedirectToAction("Unauthorized", "Home");
                 }
+                if (User.Identity.IsAuthenticated)
+                {
+                    proceed = true;
+                }
+                else
+                {
+                    proceed = false;
+                }
+                UserProfile_Conf = db.UserProfile_Conf.SingleOrDefault(x => x.NTUserName == User.Identity.Name.ToString());
+            }
+            else
+            {
+                // Anonymous user without Authentication can still run this app
+                proceed = true;
+                UserProfile_Conf = db.UserProfile_Conf.SingleOrDefault(x => x.NTUserName == "AnonymousUser");
             }
 
-            UserProfile_Conf UserProfile_Conf = db.UserProfile_Conf.SingleOrDefault(x => x.NTUserName == User.Identity.Name.ToString());
 
             // web.config debug setting
             ViewBag.debug = HttpContext.IsDebuggingEnabled;
@@ -63,8 +80,7 @@ namespace RIPASTOP.Controllers
             ViewBag.ori = ConfigurationManager.AppSettings["ori"];
             ViewBag.admin = user.authorizedAdmin;
 
-
-            if (User.Identity.IsAuthenticated && UserProfile_Conf == null)
+            if (proceed && UserProfile_Conf == null)
             {
                 return View();
             }
@@ -81,6 +97,8 @@ namespace RIPASTOP.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,Agency,ORI,Years,Assignment,AssignmentOther")] UserProfile userProfile)
         {
+            string userName;
+
             HomeController.UserAuth user = new HomeController.UserAuth();
             if (ConfigurationManager.AppSettings["requireGroupMembership"] == "true")
             {
@@ -91,12 +109,26 @@ namespace RIPASTOP.Controllers
                     //return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
                     return RedirectToAction("Unauthorized", "Home");
                 }
-            }   
+                if (User.Identity.IsAuthenticated)
+                {
+                    proceed = true;
+                }
+                else
+                {
+                    proceed = false;
+                }
+                userName = User.Identity.Name;
+            }
+            else
+            {
+                proceed = true;
+                userName = "AnonymousUser";
+            }
             // web.config debug setting
             ViewBag.debug = HttpContext.IsDebuggingEnabled;
             ViewBag.admin = user.authorizedAdmin;
 
-            if (ModelState.IsValid && User.Identity.IsAuthenticated)
+            if (ModelState.IsValid && proceed)
             {
                 //userProfile.ID = Guid.NewGuid();
                 if (!string.IsNullOrEmpty(userProfile.Assignment))
@@ -130,7 +162,7 @@ namespace RIPASTOP.Controllers
                 db.UserProfiles.Add(userProfile);
                 db.UserProfile_Conf.Add(
                     new UserProfile_Conf() {
-                        NTUserName = User.Identity.Name,
+                        NTUserName = userName,
                         UserProfileID = userProfile.ID
                     }
                 );

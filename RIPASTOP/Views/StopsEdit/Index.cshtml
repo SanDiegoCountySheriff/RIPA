@@ -19,6 +19,11 @@
         @Html.ValidationSummary(false, "", new { @class = "error-alert" })
 
         @Html.EditorFor(model => model.StopID, new { htmlAttributes = new { @class = "list-item", @onclick = "this.select()" } })
+        <div class="list-item">
+            @*<input type='checkbox' id="postSubRedact" name="postSubRedact" /><label>Post Submission Redaction</label>*@
+            @Html.CheckBoxFor(x => x.postSubRedact)<label>Post DOJ Submission Edit</label>
+            @*<div id="postSubRedact"></div>*@
+        </div>
 
         <div class="button-container">
             <input type="submit" value="Submit" class="button-right" />
@@ -34,10 +39,20 @@
             @for (int i = 0; i < @ViewBag.personCount; i++)
             {
                 var personNum = i + 1;
-                <a href="@Url.Action("Edit", "StopsEdit", new { stopid = @ViewBag.stopID, pid = @personNum, pidCount = @ViewBag.personCount, submissionId = @ViewBag.submissionID, submissionEndDate = @ViewBag.submissionEndDate})" class="button-left">Person @personNum</a>
+                <a href="@Url.Action("Edit", "StopsEdit", new { stopid = @ViewBag.stopID, pid = @personNum, pidCount = @ViewBag.personCount, submissionId = @ViewBag.submissionID, submissionEndDate = @ViewBag.submissionEndDate, postSubRedact = Model.postSubRedact})" class="button-left">Person @personNum</a>
             }
 
         </div>
     </div>
+    @*<script>
+        $('#postSubRedact').change(function () {
+            var postSubRedact = this.val();
+            if (this.checked) {
+                $.post(
+                    '@Url.Action("postSubRedaction", "StopsEdit")', { StopId: @Model.StopID, postSubRedact: postSubRedact })
+            }
+        });
+        //# sourceURL=postSubRedact.js
+    </script>*@
 
 }

@@ -45,11 +45,6 @@
                     console.log(aggregate)
                     if (aggregate.submissionID != 0 && typeof aggregate.submissionID !== 'undefined') {
                         fetchURL = '/api/DOJSubmit/' + aggregate.submissionID;
-                        //interval = null;
-                        //interval = setInterval(fetch, 40000);
-                        //request.onreadystatechange = null;
-                        //request.abort = null;
-                        //request = null;
                     }
                     if (that.Total !== aggregate.processedCount) {
                         thiss.updateState(aggregate);

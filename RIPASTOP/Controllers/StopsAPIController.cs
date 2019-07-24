@@ -29,7 +29,16 @@ namespace RIPASTOP.Controllers
         [ResponseType(typeof(Stop))]
         public async Task<IHttpActionResult> GetStop()
         {
-            UserProfile_Conf uid = db.UserProfile_Conf.SingleOrDefault(x => x.NTUserName == User.Identity.Name.ToString());
+            UserProfile_Conf uid;
+            if (ConfigurationManager.AppSettings["requireGroupMembership"] == "true")
+            {
+                uid = db.UserProfile_Conf.SingleOrDefault(x => x.NTUserName == User.Identity.Name.ToString());
+            }
+            else
+            {
+                // Anonymous user without Authentication can still run this app
+                uid = db.UserProfile_Conf.SingleOrDefault(x => x.NTUserName == "AnonymousUser");
+            }
 
             List<Stop> Stops = await db.Stop.Where(x => x.UserProfileID == uid.UserProfileID).OrderByDescending(x => x.Time).Take(10).ToListAsync();
             return Ok(Stops);
@@ -39,7 +48,7 @@ namespace RIPASTOP.Controllers
         [ResponseType(typeof(Stop))]
         public async Task<IHttpActionResult> GetStop(int id)
         {
-            UserProfile_Conf uid = db.UserProfile_Conf.SingleOrDefault(x => x.NTUserName == User.Identity.Name.ToString());
+            //UserProfile_Conf uid = db.UserProfile_Conf.SingleOrDefault(x => x.NTUserName == User.Identity.Name.ToString());
 
             string stopJson = await db.Stop.Where(x => x.ID == id).Select(x => x.JsonStop).FirstOrDefaultAsync();
             return Ok(stopJson);
@@ -48,7 +57,7 @@ namespace RIPASTOP.Controllers
         // PUT: api/StopsAPI
         [HttpPut]
         //[ValidateAntiForgeryToken]
-        public IHttpActionResult PutStop(JObject jsonStop, int stopId, string changeAuditReason, int submissionEdit)
+        public IHttpActionResult PutStop(JObject jsonStop, int stopId, string changeAuditReason, int submissionEdit, bool postSubRedact)
         {
             HomeController.UserAuth user = new HomeController.UserAuth();
             if (ConfigurationManager.AppSettings["requireGroupMembership"] == "true")
@@ -65,6 +74,11 @@ namespace RIPASTOP.Controllers
             eJson = new ExtractJNode("JsonStop", jsonStop);
             string jsonStopStr = eJson.traverseNode();
             Stop stop = db.Stop.Find(stopId);
+
+            if(postSubRedact && stop.Status == "success")
+            {
+                stop.Status = "postSubRedact";
+            }
             string originalJson = stop.JsonStop;
             stop.JsonStop = Regex.Replace(jsonStopStr, @"\p{Cs}", ""); // remove emojis
 
@@ -98,7 +112,7 @@ namespace RIPASTOP.Controllers
                     if (stop.Status == "fail")
                         dojJson = cr.dojTransform(stop, "U");
 
-                    if (stop.Status == "fatal" || stop.Status == null)
+                    if (stop.Status == "fatal" || stop.Status == null || postSubRedact || stop.Status == "postSubRedact")
                         dojJson = cr.dojTransform(stop, "I");
 
                     stop.JsonDojStop = dojJson;

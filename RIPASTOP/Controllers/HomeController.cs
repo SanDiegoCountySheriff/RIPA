@@ -14,6 +14,7 @@ namespace RIPASTOP.Controllers
     public class HomeController : Controller
     {
         private RIPASTOPContext db = new RIPASTOPContext();
+        bool proceed;
 
         public partial class UserAuth
         {            
@@ -54,6 +55,7 @@ namespace RIPASTOP.Controllers
         {
 
             UserAuth user = new UserAuth();
+            UserProfile_Conf UserProfile_Conf;
             if (ConfigurationManager.AppSettings["requireGroupMembership"] == "true")
             {
                 user = AuthorizeUser(User.Identity.Name.ToString());
@@ -63,12 +65,26 @@ namespace RIPASTOP.Controllers
                     //return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
                     return RedirectToAction("Unauthorized");
                 }
-            }   
+
+                if (User.Identity.IsAuthenticated)
+                {
+                    proceed = true;
+                }
+                else
+                {
+                    proceed = false;
+                }
+                // Gotta grab the conf table because that is where the NTUserName can be matched.
+                UserProfile_Conf = db.UserProfile_Conf.SingleOrDefault(x => x.NTUserName == User.Identity.Name.ToString());
+            }
+            else{
+                // Anonymous user without Authentication can still run this app
+                proceed = true;
+                UserProfile_Conf = db.UserProfile_Conf.SingleOrDefault(x => x.NTUserName == "AnonymousUser");
+            }
+
             
-            // Gotta grab the conf table because that is where the NTUserName can be matched.
-            UserProfile_Conf UserProfile_Conf = db.UserProfile_Conf.SingleOrDefault(x => x.NTUserName == User.Identity.Name.ToString());            
-            
-            if (User.Identity.IsAuthenticated && UserProfile_Conf != null)
+            if (proceed && UserProfile_Conf != null)
             {
                 UserProfile UserProfile = db.UserProfiles.SingleOrDefault(x => x.ID == UserProfile_Conf.UserProfileID);
 
