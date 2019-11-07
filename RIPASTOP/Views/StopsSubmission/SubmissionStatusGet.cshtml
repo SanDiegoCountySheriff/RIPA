@@ -1,0 +1,169 @@
+﻿@model RIPASTOP.Models.Submissions
+@{
+    ViewBag.Title = "SubmissionStatusGet";
+    var grid = new WebGrid(source: Model.statusMsgs, canPage: true);
+    grid.Pager(WebGridPagerModes.All);
+    var subGrid = new WebGrid(source: Model.subList, canPage: true);
+    subGrid.Pager(WebGridPagerModes.All);
+    var sId = 0;
+}
+@{ 
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/promise.min.js"></script>
+<script src="~/Scripts/fetch.js"></script>
+
+<meta name="viewport" content="width=device-width" />
+<title>Submission Status</title>
+<div id="dom-info">
+    <span id="submissionID">@Model.ID</span>
+    <span id="server">@ViewBag.server</span>
+</div>
+
+@using (Html.BeginForm("SubmissionStats", "StopsSubmission", new {sid = Model.ID, startDate = Model.StartDate, endDate = Model.EndDate }, FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+
+<div class="list-section">
+    <div class="button-container">
+        <a href="@Url.Action("Index", "StopsSubmission", new { sid = 0 })" class="button-right">New Submission</a>
+    </div>
+    <h3>DOJ Submission Results</h3>
+
+    @Html.ValidationSummary(true, "", new { @class = "error-alert" })
+
+    <p class="flex">
+        <label class="flex-label">Submission ID:</label>
+        <span class="">@Html.DisplayFor(model => model.ID)</span>
+    </p>
+    <p class="flex">
+        <label class="flex-label">Date Range:</label>
+@*        <span>@Model.StartDate.ToString("MM/dd/yyy") - @Convert.ToDateTime(@Model.EndDate).ToString("MM/dd/yyy")</span>*@
+        <span>@Convert.ToDateTime(@Model.StartDate).ToString("MM/dd/yyy") - @Convert.ToDateTime(@Model.EndDate).ToString("MM/dd/yyy")</span>
+    </p>
+    <p class="flex">
+        <label class="flex-label">Start:</label>
+        <span class="">@Html.DisplayFor(model => model.DateSubmitted)</span>
+    </p>
+    <p class="flex">
+        <label class="flex-label">Total Stops:</label>
+        @*<span class="">@Html.DisplayFor(model => model.TotalProcessed)</span>*@
+        <span class="">@ViewBag.totalStops</span>
+    </p>
+    <p class="flex">
+        <label class="flex-label">Status:</label>
+        <span class="">@Html.DisplayFor(model => model.Status)</span>
+    </p>
+    <div class="stops-detail">
+        <div id="count"></div>
+    </div>
+
+    @if (Model.LogFile != null)
+    {
+        @*<a href="~/Log/@Html.DisplayFor(model => model.LogFile)" target='_blank' class="">Log File</a>*@
+        <a href="/RIPALogs/@Html.DisplayFor(model => model.LogFile)" target='_blank' class="">Log File</a>
+    }
+
+    <h4>Submission Errors</h4>
+    <div id="content" class="overflow-table">
+        @grid.GetHtml(
+        tableStyle:"webgrid-table",
+        headerStyle:"webgrid-header",
+        footerStyle:"webgrid-footer",
+        alternatingRowStyle:"webgrid-alternating-row",
+        rowStyle:"webgrid-row-style",
+        columns:grid.Columns(
+            grid.Column(header:"Stop", format:@<text>@(item.StopID)</text>, canSort: true),
+                              grid.Column(columnName: "StopStatus", header: "Status", canSort: true),
+                              grid.Column(columnName: "code", header: "Error", canSort: true),
+                              grid.Column(columnName: "msg", header: "Message"),
+                              //grid.Column(header: "", format:@<text><a href="@Url.Action("Index", "StopsEdit", new { id = @item.StopID })" class="button-right">Edit</a></text>),
+                              grid.Column(header: "", format: (item) =>
+                              {
+                                  if (sId != @item.StopID)
+                                  {
+                                      return Html.Raw(string.Format("<a href='/StopsEdit/Index?stopid={0}&submissionID={1}&submissionEndDate={2}' class='button-right'>Edit</a>", @item.StopID, Model.ID, @ViewBag.submissionEndDate));
+                                  }
+                                  else
+                                  {
+                                      return Html.Raw(string.Format("<div></div>"));
+                                  }
+                              }),
+                              grid.Column(header: "Edited", format: (item) =>
+                              {
+                                  if (sId != @item.StopID)
+                                  {
+                                      sId = item.StopID;
+                                      if (@item.edited)
+                                      {
+                                          return Html.Raw(string.Format("<text><input type='checkbox' checked disabled='disabled' /></text>"));
+                                      }
+                                      else
+                                      {
+                                          return Html.Raw(string.Format("<text><input type='checkbox' disabled='disabled' /></text>"));
+                                      }
+                                  }
+                                  else
+                                  {
+                                      return Html.Raw(string.Format("<div></div>"));
+                         //return Html.Raw(string.Format("<div>sId = {0}, @item.StopID = {1}</div>", sId, @item.StopID));
+                     }
+        })))
+    </div>
+    <div class="button-container">
+        @if (@ViewBag.fixedFlag || @ViewBag.totalStops > @Model.TotalProcessed)
+        {
+            if (@Model.Status == "In Progress")
+            {
+                <input type="submit" value="Resubmit" class="button-right disabled">
+            }
+            else
+            {
+                <input type="submit" value="Resubmit" class="button-right">
+            }
+        }
+        else
+        {
+            <input type="submit" value="Resubmit" class="button-right disabled">
+        }
+    </div>
+
+    <h4>Submission History</h4>
+    <div id="content" class="overflow-table">
+        @subGrid.GetHtml(
+               tableStyle: "webgrid-table",
+               headerStyle: "webgrid-header",
+               footerStyle: "webgrid-footer",
+               alternatingRowStyle: "webgrid-alternating-row",
+               rowStyle: "webgrid-row-style",
+               columns: subGrid.Columns(
+                subGrid.Column(header: "ID", format: @<text>@(item.ID)</text>),
+                subGrid.Column(header: "Dates", format: @<text>@(item.StartDate.ToString("MM/dd/yyyy")) @(item.EndDate.ToString("MM/dd/yyyy"))</text>),
+                subGrid.Column(header: "Start", format: @<text>@(item.DateSubmitted)</text>, canSort: true),
+                subGrid.Column(header: "Status", format: @<text>@(item.Status)</text>, canSort: true),
+                subGrid.Column(header: "Total", format: @<text>@(item.TotalProcessed)</text>),
+                subGrid.Column(header: "Success", format: @<text>@(item.TotalSuccess)</text>),
+                subGrid.Column(header: "Fatal", format: @<text>@(item.TotalRejected)</text>),
+                subGrid.Column(header: "Errors", format: @<text>@(item.TotalWithErrors)</text>),
+                subGrid.Column(header: "Service Errors", format: @<text>@(item.TotalHTTPErrors)</text>),
+                subGrid.Column(header: "Log File", format: (item) =>
+                {
+                    if (@item.LogFile != null)
+                    {
+                        return Html.Raw(string.Format("<a href='/RIPALogs/{0}' class='button-right' target='_blank'>Log</a>", @item.LogFile));
+                    }
+                    else
+                    {
+                        return "";
+                    }
+                }
+        )))
+    </div>
+
+</div>
+
+<script src="@Url.Content("~/Scripts/react/submissionCounter.jsx")"></script>
+
+}
+
