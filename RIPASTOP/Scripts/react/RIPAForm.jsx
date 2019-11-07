@@ -227,6 +227,26 @@ class Form extends React.Component {
             if (newPerson[node].reason != val) {
                 newPerson[node] = { key: itemkey, reason: val, details: [{ reason: '', key: ''}], codes: [] }
             }
+            if (val === 'Consensual Encounter resulting in a search') {
+                var noneSelected = newPerson.actionsTakenDuringStop.map(function (x) { return x.action }).indexOf("None");
+                if (noneSelected != -1) {
+                    newPerson.actionsTakenDuringStop.splice(noneSelected, 1);                    
+                }
+            }
+            else {
+                var i = newPerson.actionsTakenDuringStop.map(function (x) { return x.action }).indexOf("Search of person was conducted");
+                if (i > -1) {
+                    newPerson.actionsTakenDuringStop.splice(i, 1);
+                    newPerson.basisForSearch = [];
+                    newPerson.basisForSearchBrief = "";
+                }
+                i = newPerson.actionsTakenDuringStop.map(function (x) { return x.action }).indexOf("Search of property was conducted");
+                if (i > -1) {
+                    newPerson.actionsTakenDuringStop.splice(i, 1);
+                    newPerson.basisForSearch = [];
+                    newPerson.basisForSearchBrief = "";
+                }
+            }
         }
         else if (node === "perceivedGender") {
             if (name === "Transgender man/boy" || name === "Transgender woman/girl") {
@@ -249,6 +269,7 @@ class Form extends React.Component {
         newStop.Person_Stopped = newPerson;
         this.setState({ stop: newStop }); 
     }
+
     checkBoxSelection(e, node, node2, node2b, itemkey) {
         var val = e.target.value;
         var arr = this.state.stop.Person_Stopped[node].slice();
@@ -257,7 +278,13 @@ class Form extends React.Component {
 
         if (i === -1) {
             if (node === 'actionsTakenDuringStop') {
-                if (val == 'None') {
+                if (newPerson.reasonForStop.reason === 'Consensual Encounter resulting in a search') {
+                    var noneSelected = newPerson.actionsTakenDuringStop.map(function (x) { return x.action }).indexOf("None");
+                    if (noneSelected != -1) {
+                        newPerson.actionsTakenDuringStop = [];
+                    }
+                }
+                else if (val == 'None') {
                     arr = [];
                     newPerson.basisForSearch = [];
                     newPerson.basisForSearchBrief = '';
@@ -270,6 +297,18 @@ class Form extends React.Component {
                     //[node2b]: [],
                     key: itemkey
                 })
+            // *** Uncomment these lines to comply with DOJ's rules and prevent getting Error Code RV289 ***
+
+            //} else if (node === "basisForPropertySeizure")
+            //{
+            //    if (itemkey == 2 || itemkey == 3) {
+            //        var noneSelected = newPerson.contrabandOrEvidenceDiscovered.map(function (x) { return x.contraband }).indexOf("None");
+            //        if (noneSelected  != -1) {
+            //            newPerson.contrabandOrEvidenceDiscovered = [];
+            //        }
+            //    }
+            //    arr.push({ [node2]: val, key: itemkey });
+
             } else if (node === 'resultOfStop') { 
 
                 //this.checkBoxSelection(e, 'resultOfStop', 'result', '', 3
@@ -297,6 +336,7 @@ class Form extends React.Component {
             if (val === 'Search of property was conducted' || 
                 val === 'Search of person was conducted') {
                 newPerson.basisForSearch = [];
+                newPerson.basisForSearchBrief = "";
                 newPerson.contrabandOrEvidenceDiscovered = [];
             }
             if (val === 'Property was seized') {
@@ -397,7 +437,7 @@ class Form extends React.Component {
                 var streetNum = e.address.Street.substr(0, e.address.Street.indexOf(' '));
                 if (isNaN(streetNum)) {
                     newblockNumber = '';
-                    newStreetNamee = e.address.Street;
+                    newStreetName = e.address.Street;
                 }
                 else {
                     newblockNumber = this.floorInteger(streetNum);
@@ -500,6 +540,7 @@ class Form extends React.Component {
         newStop[name] = val;
         this.setState({ stop: newStop });
     }
+
     updateChangeAuditReason(e) {
         var val = e.target.value;
         var newchangeAuditReason = this.state.changeAuditReason;
@@ -1146,6 +1187,9 @@ class Form extends React.Component {
                 } else if (this.state.stop.officerAssignment.key == 10 && this.state.stop.officerAssignment.otherType.length < 3) {
                     msg.assignment = 'Please enter at least 3 characters for other assignment description'
                     msg.errorFlag = true;
+                } else if (this.state.stop.officerAssignment.key == 10 && this.state.stop.officerAssignment.otherType.length > 60) {
+                    msg.assignment = 'The other assignment description exceeded the limit of 60 characters'
+                    msg.errorFlag = true;
                 } else { msg.assignment = '' } 
 
                 if (this.state.useBeats > 1) {
@@ -1233,7 +1277,13 @@ class Form extends React.Component {
                     msg.reason = '*Please make a selection for Reasons for Stop'
                     msg.errorFlag = true;
                 } else {
-                    msg.reason = '';
+                    msg.action = '';
+                    if (this.state.stop.Person_Stopped.reasonForStop.reason == "Consensual Encounter resulting in a search" &&
+                        (this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf('Search of person was conducted') == -1 && this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf('Search of property was conducted') == -1)) {
+                        //stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { x.action = ""; })
+                        msg.action = "*Please indicate whether search of a person or a property was conducted."
+                        msg.errorFlag = true;
+                    }
                     if (this.state.stop.Person_Stopped.reasonForStop.reason == "Traffic Violation") {
                         if (this.state.stop.Person_Stopped.reasonForStop.details.length < 1 || !this.state.stop.Person_Stopped.reasonForStop.details[0].reason) {
                             msg.trafficViolation = '*Please make a selection for Traffic Violation'
@@ -1275,6 +1325,7 @@ class Form extends React.Component {
                     !msg.eduDiscipline &&
                     !msg.trafficViolation &&
                     !msg.reasonableSuspicion &&
+                    !msg.action &&
                     !msg.reasonBrief ? msg.errorFlag = false : null;
                 break;
             case '4':
@@ -1282,7 +1333,14 @@ class Form extends React.Component {
                     msg.action = '*Please make a selection for Actions Taken During Stop'
                     msg.errorFlag = true;
                 } else {
-                    msg.action = '';
+                    msg.search = '';
+                    if (this.state.stop.Person_Stopped.reasonForStop.reason == "Consensual Encounter resulting in a search" &&
+                        (this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf('Search of person was conducted') == -1 && this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf('Search of property was conducted') == -1)) {
+                        //stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { x.action = ""; })
+                        msg.search = "*Please indicate whether search of a person or a property was conducted."
+                        msg.errorFlag = true;
+                    }
+
                     if (this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf('Search of person was conducted') > -1 || this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf('Search of property was conducted') > -1) { 
                         if (this.state.stop.Person_Stopped.basisForSearch.length < 1) { 
                             msg.searchBasis = '*Please make a selection for Basis for search'
@@ -1318,7 +1376,8 @@ class Form extends React.Component {
                             stop.Person_Stopped.basisForSearchBrief = ''
                         }
                     } 
-                    
+
+                 
                     if (this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf('Property was seized') > -1) {
                         if (this.state.stop.Person_Stopped.basisForPropertySeizure.length < 1) {
                             msg.seizureBasis = '*Please make a selection for Basis for property seizure'
@@ -1371,8 +1430,19 @@ class Form extends React.Component {
                     msg.contraband = '*Please make a selection for Contraband or Evidence Discovered'
                     msg.errorFlag = true;
                 } else {
-                    msg.contraband = '';
-                }
+                    // *** Uncomment these lines if you want validation be done for DOJ's Error Code RV289 ***
+
+                    //if (this.state.stop.Person_Stopped.contrabandOrEvidenceDiscovered.map(function (x) { return x.contraband; }) == 'None' &&
+                    //    (this.state.stop.Person_Stopped.basisForPropertySeizure.map(function (x) { return x.basis; }).indexOf('Contraband') > -1 ||
+                    //        this.state.stop.Person_Stopped.basisForPropertySeizure.map(function (x) { return x.basis; }).indexOf('Evidence') > -1)) {
+                    //    msg.contraband = "*Contraband or Evidence Discovered can not be 'None'"
+                    //    stop.Person_Stopped.contrabandOrEvidenceDiscovered.map(function (x) { x.contraband = ""; })
+                    //    msg.errorFlag = true;
+                    //}
+                    //else {
+                        msg.contraband = '';
+                    }
+                  //}
 
                 this.state.stop.Person_Stopped.actionsTakenDuringStop.length > 0 &&
                     this.state.stop.Person_Stopped.resultOfStop.length > 0 && 
@@ -1382,7 +1452,10 @@ class Form extends React.Component {
                     !msg.seizureBasis &&
                     !msg.seizureProperty &&
                     !msg.searchBrief &&
-                    !msg.result 
+                    !msg.result &&
+                    !msg.action &&
+                    !msg.search &&
+                    !msg.contraband
                     ? msg.errorFlag = false : null;
                 break;
             case '5':
@@ -2190,7 +2263,28 @@ class Form extends React.Component {
                                 
                             </div>
                         }
-                        <RadioButtonListSection checked={this.state.stop.Person_Stopped.reasonForStop.reason} stateValue={this.state.stop.Person_Stopped.reasonForStop.reason} node="reasonForStop" node2="reason" node2b="details" itemList={reasonsForStop_3} function={this.radioSelection} />
+                    <RadioButtonListSection checked={this.state.stop.Person_Stopped.reasonForStop.reason} stateValue={this.state.stop.Person_Stopped.reasonForStop.reason} node="reasonForStop" node2="reason" node2b="details" itemList={reasonsForStop_3} function={this.radioSelection} />
+
+                    {/**/}
+                    {this.state.stop.Person_Stopped.reasonForStop.reason == "Consensual Encounter resulting in a search" &&
+                        <div>
+                        <p><strong>Search</strong></p>
+                        <div className="error-summary error-flip-margin">Your selection indicates that a search was conducted, please select from the search criteria below.</div>
+                        {this.state.validationErrorMsg.action && <div className="error-alert  error-flip-margin"> {this.state.validationErrorMsg.action}</div>}
+
+                            <CheckBox2 key="Search of person was conducted" className="list-item-nested" checked={this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Search of person was conducted") > -1} value="Search of person was conducted" name="Search of person was conducted" onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '18,na')} />
+
+                            <CheckBox2
+                                key="Search of property was conducted"
+                                className="list-item-nested"
+                                checked={this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Search of property was conducted") > -1}
+                                value="Search of property was conducted"
+                                name="Search of property was conducted"
+                                onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '20,na')} />
+                        </div>
+                    }
+                    {/**/}
+
                         <p><strong> - and - </strong></p>
                         {this.state.validationErrorMsg.reasonBrief && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.reasonBrief}</div>}
                     <TextInput type="text" stateValue={this.state.stop.Person_Stopped.reasonForStopExplanation} className="list-item" label="Brief Explanation" name="reasonForStopExplanation" onChange={this.updatePersonInput} />
@@ -2228,9 +2322,13 @@ class Form extends React.Component {
                        
                         <h3>Actions Taken During Stop </h3>
                         <span className='required'>required</span><a className="required regref" target="_blank" href="/regulation#999-226-a-12">§999.226(a)(12)</a>
-                        {this.state.validationErrorMsg.action && <div className="error-alert  error-flip-margin"> {this.state.validationErrorMsg.action}</div>}
+                    {this.state.validationErrorMsg.action && <div className="error-alert  error-flip-margin"> {this.state.validationErrorMsg.action}</div>}
+
+                        {this.state.stop.Person_Stopped.reasonForStop.reason !== "Consensual Encounter resulting in a search" &&
                             <CheckBox2 key="None" className="list-item" checked={this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("None") > -1} value="None" name="None" onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '24,na')} />
-                            {this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (y) { return y.action }).indexOf("None") == -1 &&
+                        }
+
+                        {this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (y) { return y.action }).indexOf("None") == -1 &&
                         <div>
                        
                         {this.state.stop.location.school && this.state.stop.Person_Stopped.Is_Stud &&
@@ -2242,30 +2340,53 @@ class Form extends React.Component {
                         <CheckBox2 key="Vehicle impounded" className="list-item" checked={this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Vehicle impounded") > -1} value="Vehicle impounded" name="Vehicle impounded" onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '22,na')} />
 
                         <p><strong>Search</strong></p>
+                        {this.state.validationErrorMsg.search && <div className="error-alert  error-flip-margin"> {this.state.validationErrorMsg.search}</div>}
                         <CheckBox2 key="Asked for consent to search person" className="list-item" checked={this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Asked for consent to search person") > -1} value="Asked for consent to search person" name="Asked for consent to search person" onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '17,N')} />
                         {this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Asked for consent to search person") > -1 &&
                             <CheckBox2 key="personSearchConsentGiven" checked={this.state.stop.Person_Stopped.actionsTakenDuringStop[this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Asked for consent to search person")].personSearchConsentGiven} className="list-item-nested" value="Person Search Consent Given" name="personSearchConsentGiven" onClick={(e) => this.searchConsentGiven(e)} />
                         }
-                        <CheckBox2 key="Search of person was conducted" className="list-item" checked={this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Search of person was conducted") > -1} value="Search of person was conducted" name="Search of person was conducted" onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '18,na')} />
-                     
+
+                        {this.state.stop.Person_Stopped.reasonForStop.reason === "Consensual Encounter resulting in a search" &&
+                            <CheckBoxDisabled
+                                key="Search of person was conducted"
+                                className="list-item"
+                                checked={this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Search of person was conducted") > -1}
+                                value="Search of person was conducted"
+                                name="Search of person was conducted"
+                                onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '18,na')} />
+                        }
+                        {this.state.stop.Person_Stopped.reasonForStop.reason !== "Consensual Encounter resulting in a search" &&
+                            <CheckBox2 key="Search of person was conducted" className="list-item" checked={this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Search of person was conducted") > -1} value="Search of person was conducted" name="Search of person was conducted" onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '18,na')} />
+                        }
                         <CheckBox2 key="Asked for consent to search property" className="list-item" checked={this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Asked for consent to search property") > -1} value="Asked for consent to search property" name="Asked for consent to search property" onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '19,N')} />
                         {this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Asked for consent to search property") > -1 &&
-                            <CheckBox2
-                                key="propertySearchConsentGiven"
-                                checked={this.state.stop.Person_Stopped.actionsTakenDuringStop[this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Asked for consent to search property")].propertySearchConsentGiven}
-                                className="list-item-nested"
-                                value="Property Search Consent Given"
-                                name="propertySearchConsentGiven"
-                                onClick={(e) => this.searchConsentGiven(e)} />
-                        }
                         <CheckBox2
-                            key="Search of property was conducted"
-                            className="list-item"
-                            checked={this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Search of property was conducted") > -1}
-                            value="Search of property was conducted"
-                            name="Search of property was conducted"
-                            onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '20,na')} />
+                            key="propertySearchConsentGiven"
+                            checked={this.state.stop.Person_Stopped.actionsTakenDuringStop[this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Asked for consent to search property")].propertySearchConsentGiven}
+                            className="list-item-nested"
+                            value="Property Search Consent Given"
+                            name="propertySearchConsentGiven"
+                            onClick={(e) => this.searchConsentGiven(e)} />
+                        }
 
+                        {this.state.stop.Person_Stopped.reasonForStop.reason === "Consensual Encounter resulting in a search" &&
+                            <CheckBoxDisabled
+                                key="Search of property was conducted"
+                                className="list-item"
+                                checked={this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Search of property was conducted") > -1}
+                                value="Search of property was conducted"
+                                name="Search of property was conducted"
+                                onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '20,na')} />
+                        }
+                        {this.state.stop.Person_Stopped.reasonForStop.reason !== "Consensual Encounter resulting in a search" &&
+                            <CheckBox2
+                                key="Search of property was conducted"
+                                className="list-item"
+                                checked={this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Search of property was conducted") > -1}
+                                value="Search of property was conducted"
+                                name="Search of property was conducted"
+                                onClick={(e) => this.checkBoxSelection(e, 'actionsTakenDuringStop', 'action', 'details', '20,na')} />
+                        }
                         {(this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Search of person was conducted") > -1 || this.state.stop.Person_Stopped.actionsTakenDuringStop.map(function (x) { return x.action; }).indexOf("Search of property was conducted") > -1) &&
                             <div>
 
@@ -2317,8 +2438,15 @@ class Form extends React.Component {
 
                         <h3>Contraband or Evidence Discovered</h3>
                         <span className='required'>required</span><a className="required regref" target="_blank" href="/regulation#999-226-a-12-c">§999.226(a)(12)(C)</a>
-                        {this.state.validationErrorMsg.contraband && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.contraband}</div>}
+                    {this.state.validationErrorMsg.contraband && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.contraband}</div>}
+                   
+                    {/* *** Uncomment these lines to hide 'None' optioin for "Contraband or Evidence Discovered", per DOJ's Error Code RV289 ***  
+                      
+                     {(this.state.stop.Person_Stopped.basisForPropertySeizure.map(function (x) { return x.basis; }).indexOf("Contraband") == -1 &&
+                        this.state.stop.Person_Stopped.basisForPropertySeizure.map(function (x) { return x.basis; }).indexOf("Evidence") == -1) &&
+*/}
                         <CheckBox2 key="None1" className="list-item" checked={this.state.stop.Person_Stopped.contrabandOrEvidenceDiscovered.map(function (x) { return x.contraband; }).indexOf("None") > -1} value="None" name="None" onClick={(e) => this.checkBoxSelection(e, 'contrabandOrEvidenceDiscovered', 'contraband', '', 1)} />
+{/*                    }*/}
                         {this.state.stop.Person_Stopped.contrabandOrEvidenceDiscovered.map(function (y) { return y.contraband }).indexOf("None") == -1 &&
                             <CheckBoxListSection type="CheckBox" stateValue={this.state.stop.Person_Stopped.contrabandOrEvidenceDiscovered} itemList={contrabandOrEvidence} node="contrabandOrEvidenceDiscovered" node2="contraband" function={this.checkBoxSelection} />
                         }
@@ -2640,6 +2768,18 @@ class CheckBox2 extends React.Component {
         );
     }
 }
+
+class CheckBoxDisabled extends React.Component {
+    render(props) {
+        return (
+            <div className={this.props.className}>
+                <input type="checkbox" key={this.props.key} value={this.props.value} name={this.props.value} checked={this.props.checked} onClick={this.props.onClick} disabled />
+                <label htmlFor={this.props.value}>{this.props.value}</label>
+            </div>
+        );
+    }
+}
+
 class RadioButtonListSection extends React.Component {
     render(props) {
         return (
@@ -2659,6 +2799,7 @@ class RadioButtonListSection extends React.Component {
         );
     }
 }
+
 class RadioButton extends React.Component {
     render(props) {
         return (
@@ -2811,7 +2952,9 @@ const reasonsForStop_3 = [
 const reasonsForStop_4 = [
     { key: 7, value: "Possible conduct warranting discipline under Education Code sections 48900, 48900.2, 48900.3, 48900.4 and 48900.7", className: "list-item", onClick: "" }
 ];
+
 const reasonsForStop_5 = [
+    //{ key: 5, value: "Investigation to determine whether the person was truant", className: "list-item", onClick: "" },
     { key: 8, value: "Determine whether the student violated school policy", className: "list-item", onClick: "" }
 ];
 
