@@ -1,0 +1,78 @@
+﻿@model RIPASTOP.Models.StopChangeAudits
+
+@{
+    ViewBag.Title = "Audit Page";
+}
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="dom-info">
+    <span id="stopid">@ViewBag.stopID</span>
+    <span id="officerYearsExperience">@ViewBag.officerYearsExperience</span>
+    <span id="officerAssignment">@ViewBag.officerAssignment</span>
+    <span id="officerAssignmentKey">@ViewBag.officerAssignmentKey</span>
+    <span id="officerAssignmentOther">@ViewBag.officerAssignmentOther</span>
+    <span id="ori">@ViewBag.ori</span>
+    <span id="agency">@ViewBag.agency</span>
+    <span id="officerID">@ViewBag.UserProfileID</span>
+    <span id="debug">@ViewBag.debug</span>
+    <span id="reverseGeoURI">@ViewBag.reverseGeoURI</span>
+    <span id="reverseBeatURI">@ViewBag.reverseBeatURI</span>
+    <span id="userProfileUpdate">@ViewBag.userProfileUpdate</span>
+    <span id="server">@ViewBag.server</span>
+    <span id="forceCacheUpdate">@ViewBag.forceCacheUpdate</span>
+    <span id="expireCacheDays">@ViewBag.expireCacheDays</span>
+    <span id="allowedBackDateHours">@ViewBag.allowedBackDateHours</span>
+    <span id="useBeats">@ViewBag.useBeats</span>
+    <span id="admin">@ViewBag.admin</span>
+    <span id="pid">@ViewBag.pid</span>
+    <span id="test">@ViewBag.test</span>
+    <span id="editStop">@ViewBag.editStop</span>
+    <span id="submissionEdit">@ViewBag.submissionEdit</span>
+    <span id="submissionID">@ViewBag.submissionID</span>
+    <span id="submissionEndDate">@ViewBag.submissionEndDate</span>
+    <span id="useAdditionalQuestions">@ViewBag.useAdditionalQuestions</span>
+    <span id="postSubRedact">@ViewBag.postSubRedact</span>
+</div>
+<script src="~/Scripts/react/ReactDND.min.js"></script>
+<script src="~/Scripts/moment.js"></script>
+<script src="~/Scripts/promise.min.js"></script>
+<script src="~/Scripts/fetch.js"></script>
+<script src="~/Scripts/react/ReactTags.min.js"></script>
+
+
+@Html.AntiForgeryToken()
+<div class="list-section edit-mode">
+    @if (@ViewBag.submissionEdit == 0)
+    {
+        <div className="button-container">
+            <a href="/StopsEdit/Index?stopId=0&submissionId=0" className="button-right">New Search</a>
+        </div>
+    }
+
+    <h3>Editing Stop ID #@ViewBag.StopID</h3>
+    @Html.ValidationSummary(false, "", new { @class = "error-alert" })
+    <p>Currently editing Person @ViewBag.pid. For general stop info updates, select any person.</p>
+
+
+    <div class="list-item-select">
+
+        @for (int i = 0; i < @ViewBag.personCount; i++)
+        {
+            var personNum = i + 1;
+            if (@personNum == ViewBag.pid)
+            {
+                <a href="@Url.Action("Edit", "StopsEdit", new { stopid = @ViewBag.stopID, pid = @personNum, pidCount = @ViewBag.personCount, submissionId = @ViewBag.submissionID, submissionEndDate = @ViewBag.submissionEndDate,postSubRedact = @ViewBag.postSubRedact })" class="button-left disabled">Person @personNum</a>
+            }
+            else
+            {
+                <a href="@Url.Action("Edit", "StopsEdit", new { stopid = @ViewBag.stopID, pid = @personNum, pidCount = @ViewBag.personCount, submissionId = @ViewBag.submissionID, submissionEndDate = @ViewBag.submissionEndDate, postSubRedact = @ViewBag.postSubRedact })" class="button-left">Person @personNum</a>
+            }
+        }
+    </div>
+
+    <div id="root"></div>
+    <script src="@Url.Content("~/Scripts/react/RIPAStopComponents.jsx")"></script>
+    <script src="@Url.Content("~/Scripts/react/RIPAForm.jsx")"></script>
+</div>
