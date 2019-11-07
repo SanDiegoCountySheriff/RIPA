@@ -8,7 +8,7 @@ using System.Web;
 
 namespace RIPASTOP.Models
 {
-    public class UserProfile
+    public partial class UserProfile
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
