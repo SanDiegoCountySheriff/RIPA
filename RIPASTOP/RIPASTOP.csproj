@@ -278,6 +278,7 @@
     <Compile Include="Models\StopChangeAudits.cs">
       <DependentUpon>Lookups.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\StopChangeAudits_PostSubRedact.cs" />
     <Compile Include="Models\StopOfficerIDDateTime_JSON_vw.cs">
       <DependentUpon>Lookups.tt</DependentUpon>
     </Compile>
@@ -286,6 +287,7 @@
     </Compile>
     <Compile Include="Models\Submissions_Validation.cs" />
     <Compile Include="Models\UserProfile.cs" />
+    <Compile Include="Models\UserProfile_Validation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
