@@ -227,22 +227,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201803161838178_init.cs" />
-    <Compile Include="Migrations\201803161838178_init.Designer.cs">
-      <DependentUpon>201803161838178_init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809251808150_submissionId.cs" />
-    <Compile Include="Migrations\201809251808150_submissionId.Designer.cs">
-      <DependentUpon>201809251808150_submissionId.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809252303346_foreignKey.cs" />
-    <Compile Include="Migrations\201809252303346_foreignKey.Designer.cs">
-      <DependentUpon>201809252303346_foreignKey.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201810051650538_removeForeignKey.cs" />
-    <Compile Include="Migrations\201810051650538_removeForeignKey.Designer.cs">
-      <DependentUpon>201810051650538_removeForeignKey.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Beats.cs">
       <DependentUpon>Lookups.tt</DependentUpon>
@@ -484,20 +468,6 @@
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201803161838178_init.resx">
-      <DependentUpon>201803161838178_init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809251808150_submissionId.resx">
-      <DependentUpon>201809251808150_submissionId.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809252303346_foreignKey.resx">
-      <DependentUpon>201809252303346_foreignKey.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201810051650538_removeForeignKey.resx">
-      <DependentUpon>201810051650538_removeForeignKey.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
