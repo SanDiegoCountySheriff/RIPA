@@ -14,10 +14,6 @@ namespace RIPASTOP.Models
     
     public partial class Submissions
     {
-        //public Submissions()
-        //{
-            //this.statusMsgs = new HashSet<StatusMessage_JSON_vw>();
-        //}
         public int ID { get; set; }
         public System.DateTime StartDate { get; set; }
         public string Status { get; set; }
@@ -29,7 +25,5 @@ namespace RIPASTOP.Models
         public Nullable<int> TotalHTTPErrors { get; set; }
         public Nullable<System.DateTime> DateSubmitted { get; set; }
         public Nullable<System.DateTime> EndDate { get; set; }
-        //public virtual ICollection<StatusMessage_JSON_vw> statusMsgs { get; set; } //access StatusMessage_JSON_vw entity 
-        //public virtual ICollection<Submissions> subList { get; set; }
     }
 }
