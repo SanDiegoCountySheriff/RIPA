@@ -97,8 +97,8 @@ function ListPerson(props) {
                 {p.Is_Stud &&
                     <ListValue className="" labelValue="Is Student" stateValue={JSON.stringify(p.Is_Stud, null, 2)} />
                 }
-                {p.raceKnown &&
-                     <ListValue className="" labelValue="Race was known before Stop" stateValue={p.raceKnown} />
+                {p.PerceptionKnown &&
+                    <ListValue className="" labelValue="Perception was formed before Stop" stateValue={p.PerceptionKnown} />
                 }
                 <li>
                     Perceived Race

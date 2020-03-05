@@ -98,7 +98,8 @@ namespace RIPASTOP.Controllers
             }
             else
             {
-                startDate = Convert.ToDateTime("2018-07-01");
+                string InitStrtSubDate = ConfigurationManager.AppSettings["InitStrtSubDate"];
+                startDate = Convert.ToDateTime(InitStrtSubDate);
                 //startDate = Convert.ToDateTime("2018-07-16");
             }
             //List<Stop> Stops = db.Stop
@@ -239,13 +240,19 @@ namespace RIPASTOP.Controllers
                 DOJSubmitController dOJSubmit = new DOJSubmitController();
 
                 //Make sure the connection to DOJ url is available
-                DOJSubmitController.connectionStatus connectStat = dOJSubmit.HTTP_Connection();
-                if (!connectStat.connected)
+                //DOJSubmitController.connectionStatus connectStat = dOJSubmit.HTTP_Connection();
+                //if (!connectStat.connected)
+                //{
+                //    TempData["CustomError"] = connectStat.error;
+                //    return RedirectToAction("Index", "StopsSubmission", sid);
+                //}
+
+                Boolean connected = dOJSubmit.HTTP_Connection2();
+                if (!connected)
                 {
-                    TempData["CustomError"] = connectStat.error;
+                    TempData["CustomError"] = "Can not connect to DOJ endpoint\r\n";
                     return RedirectToAction("Index", "StopsSubmission", sid);
                 }
-
                 // If submission record in this date range is In Progress do not allow another submission
                 Submissions submissionInProgress = entitiesdb.Submissions
                                 .Where(x => x.StartDate == startDate && x.EndDate == endDate && x.Status == "In Progress")

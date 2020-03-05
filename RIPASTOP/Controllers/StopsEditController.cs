@@ -61,7 +61,8 @@ namespace RIPASTOP.Controllers
             {
                 ViewBag.stopID = stopChangeAudit.StopID;
 
-                DateTime fromDate = Convert.ToDateTime("2018-07-01");
+                string InitStrtSubDate = ConfigurationManager.AppSettings["InitStrtSubDate"];
+                DateTime fromDate = Convert.ToDateTime(InitStrtSubDate);
                 Stop stop = dbr.Stop
                                     .Where(x => x.ID == stopChangeAudit.StopID && x.Time >= fromDate)
                                     .Select(x => x).FirstOrDefault();

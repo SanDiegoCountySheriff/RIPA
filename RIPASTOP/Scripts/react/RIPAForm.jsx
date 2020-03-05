@@ -47,7 +47,7 @@ class Form extends React.Component {
                         perceivedLgbt: '',
                     //}
                     reasonForStop: '',
-                    raceKnown: '',
+                    PerceptionKnown: '',
                     reasonForStopExplanation: '',
                     actionsTakenDuringStop: [],
                     contrabandOrEvidenceDiscovered: [],
@@ -101,7 +101,7 @@ class Form extends React.Component {
                             details: [{ reason: "Moving Violation", key: 1 }],
                             codes: [{ code: "54106", text: "22350 VC - UNSAFE SPEED:PREVAIL COND (I) 54106" }]
                         },
-                        raceKnown: '',
+                        PerceptionKnown: '',
                         reasonForStopExplanation: 'Speeding',
                         actionsTakenDuringStop: [{ action: "None", key: 24 }],
                         contrabandOrEvidenceDiscovered: [{ contraband: "None", key: 1 }],
@@ -137,7 +137,7 @@ class Form extends React.Component {
                             details: [{ "reason": "", "key": "" }],
                             codes: []
                         },
-                        raceKnown: '',
+                        PerceptionKnown: '',
                         reasonForStopExplanation: 'Subject/Location known to be Parole / Probation / PRCS / Mandatory Supervision',
                         actionsTakenDuringStop: [
                             { action: "Curbside detention", key: 4 },
@@ -260,7 +260,7 @@ class Form extends React.Component {
         else if (node === "perceivedLgbt") {
             newPerson[node] = val
         }
-        else if (node === "raceKnown") {
+        else if (node === "PerceptionKnown") {
             newPerson[node] = val
         }
         else {
@@ -282,6 +282,7 @@ class Form extends React.Component {
                     var noneSelected = newPerson.actionsTakenDuringStop.map(function (x) { return x.action }).indexOf("None");
                     if (noneSelected != -1) {
                         newPerson.actionsTakenDuringStop = [];
+                        arr = [];
                     }
                 }
                 else if (val == 'None') {
@@ -318,6 +319,9 @@ class Form extends React.Component {
                 //} else {
                     if (val == 'No Action') {
                         arr = []
+                    }
+                    if (val == 'Contacted U.S. Department of Homeland Security') {
+                        alert('Are you sure you want to select "Contacted U.S. Department of Homeland Security"?')
                     }
                     arr.push({ [node2]: val, codes: [], key: itemkey });
                 //}
@@ -1248,12 +1252,12 @@ class Form extends React.Component {
                 if (this.state.stop.Person_Stopped.perceivedOrKnownDisability.length < 1) {
                     msg.disability = '*Please make a selection for Perceived Or Known Disability'
                     msg.errorFlag = true;
-                }
+                } else { msg.disability = ''; }
                 if (this.state.useAdditionalQuestions === "1") {
-                    if (!this.state.stop.Person_Stopped.raceKnown) {
-                        msg.raceKnown = '*Please make a selection for Race Known?'
+                    if (!this.state.stop.Person_Stopped.PerceptionKnown) {
+                        msg.PerceptionKnown = '*Please make a selection for When the Perception was Formed.'
                         msg.errorFlag = true;
-                    } else { msg.raceKnown = ''; }
+                    } else { msg.PerceptionKnown = ''; }
                 }
                 else { msg.disability = ''; }
                 if (this.state.useAdditionalQuestions === "1") {
@@ -1261,7 +1265,7 @@ class Form extends React.Component {
                         this.state.stop.Person_Stopped.perceivedRace.length > 0 &&
                         this.state.stop.Person_Stopped.perceivedLgbt &&
                         this.validateAge(this.state.stop.Person_Stopped.perceivedAge) &&
-                        this.state.stop.Person_Stopped.raceKnown &&
+                        this.state.stop.Person_Stopped.PerceptionKnown &&
                         this.state.stop.Person_Stopped.perceivedOrKnownDisability.length > 0 ? msg.errorFlag = false : null;
                 }
                 else {
@@ -2091,11 +2095,11 @@ class Form extends React.Component {
 
                     {this.state.useAdditionalQuestions !== "0" &&
                         <div>
-                    <h3>Race of Person Was Known Before Stop</h3>
+                        <h3>Was your perception formed before or after the stop/detention?</h3>
                             <span className='required'>required</span>
-                            {this.state.validationErrorMsg.raceKnown && <div className="error-alert"> {this.state.validationErrorMsg.raceKnown}</div>}
-                    <RadioButton className="list-item" stateValue={this.state.stop.Person_Stopped.raceKnown} value="Known" name="Known" onClick={(e) => this.radioSelection(e, 'raceKnown')} />
-                    <RadioButton className="list-item" stateValue={this.state.stop.Person_Stopped.raceKnown} value="Unknown" name="Unknown" onClick={(e) => this.radioSelection(e, 'raceKnown')} />
+                        {this.state.validationErrorMsg.PerceptionKnown && <div className="error-alert"> {this.state.validationErrorMsg.PerceptionKnown}</div>}
+                        <RadioButton className="list-item" stateValue={this.state.stop.Person_Stopped.PerceptionKnown} value="After" name="After" onClick={(e) => this.radioSelection(e, 'PerceptionKnown')} />
+                        <RadioButton className="list-item" stateValue={this.state.stop.Person_Stopped.PerceptionKnown} value="Before" name="Before" onClick={(e) => this.radioSelection(e, 'PerceptionKnown')} />
                         </div>} 
                     {this.state.editStop == 1 &&
                         <div className="stops-detail">
@@ -2119,10 +2123,11 @@ class Form extends React.Component {
                             <h3>Perceived LGBT</h3>
                             <span className='required'>required</span><a className="required regref" target="_blank" href="/regulation#999-226-a-6">§999.226(a)(6)</a>
                             {this.state.validationErrorMsg.lgbt && <div className="error-alert"> {this.state.validationErrorMsg.lgbt}</div>}
-                            <RadioButton className="list-item" stateValue={this.state.stop.Person_Stopped.perceivedLgbt} value="Yes" name="Yes" onClick={(e) => this.radioSelection(e, 'perceivedLgbt')} />
                             {(this.state.stop.Person_Stopped.perceivedGender !== "Transgender man/boy" && this.state.stop.Person_Stopped.perceivedGender !== "Transgender woman/girl") &&
                                 <RadioButton className="list-item" stateValue={this.state.stop.Person_Stopped.perceivedLgbt} value="No" name="No" onClick={(e) => this.radioSelection(e, 'perceivedLgbt')} />
                             }
+                            <RadioButton className="list-item" stateValue={this.state.stop.Person_Stopped.perceivedLgbt} value="Yes" name="Yes" onClick={(e) => this.radioSelection(e, 'perceivedLgbt')} />
+
                             {/*<RadioButtonListSection stateValue={this.state.stop.perceivedLgbt} node='perceivedLgbt' itemList={lgbt} function={this.radioSelection} />*/}
 
                             <h3>Perceived Age </h3>
@@ -2445,17 +2450,17 @@ class Form extends React.Component {
                      {(this.state.stop.Person_Stopped.basisForPropertySeizure.map(function (x) { return x.basis; }).indexOf("Contraband") == -1 &&
                         this.state.stop.Person_Stopped.basisForPropertySeizure.map(function (x) { return x.basis; }).indexOf("Evidence") == -1) &&
 */}
-                        <CheckBox2 key="None1" className="list-item" checked={this.state.stop.Person_Stopped.contrabandOrEvidenceDiscovered.map(function (x) { return x.contraband; }).indexOf("None") > -1} value="None" name="None" onClick={(e) => this.checkBoxSelection(e, 'contrabandOrEvidenceDiscovered', 'contraband', '', 1)} />
 {/*                    }*/}
                         {this.state.stop.Person_Stopped.contrabandOrEvidenceDiscovered.map(function (y) { return y.contraband }).indexOf("None") == -1 &&
                             <CheckBoxListSection type="CheckBox" stateValue={this.state.stop.Person_Stopped.contrabandOrEvidenceDiscovered} itemList={contrabandOrEvidence} node="contrabandOrEvidenceDiscovered" node2="contraband" function={this.checkBoxSelection} />
                         }
+                        <CheckBox2 key="None1" className="list-item" checked={this.state.stop.Person_Stopped.contrabandOrEvidenceDiscovered.map(function (x) { return x.contraband; }).indexOf("None") > -1} value="None" name="None" onClick={(e) => this.checkBoxSelection(e, 'contrabandOrEvidenceDiscovered', 'contraband', '', 1)} />
 
                         <h3>Result of Stop </h3>
                         <span className='required'>required</span><a className="required regref" target="_blank" href="/regulation#999-226-a-13">§999.226(a)(13)</a>
                         {this.state.validationErrorMsg.result && <div className="error-alert error-flip-margin"> {this.state.validationErrorMsg.result}</div>}                        
 
-                        <CheckBox2 key="No Action" className="list-item" checked={this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("No Action") > -1} value="No Action" name="No Action" onClick={(e) => this.checkBoxSelection(e, 'resultOfStop', 'result', '', 1)} />
+                    {/*                       <CheckBox2 key="No Action" className="list-item" checked={this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("No Action") > -1} value="No Action" name="No Action" onClick={(e) => this.checkBoxSelection(e, 'resultOfStop', 'result', '', 1)} /> */}
                         {this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("No Action") == -1 &&
                             <div>
                         {this.state.stop.location.school && this.state.stop.Person_Stopped.Is_Stud &&
@@ -2511,32 +2516,32 @@ class Form extends React.Component {
                                 }
                                 <CheckBox2 key="In-field cite and release" className="list-item" checked={this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("In-field cite and release") > -1} value="In-field cite and release" name="In-field cite and release" onClick={(e) => this.checkBoxSelection(e, 'resultOfStop', 'result', '', 4)} />
                                 {this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("In-field cite and release") > -1 &&
-                            <div>
-                                {(this.state.stop.Person_Stopped.reasonForStop.codes.length > 0) &&
-                                    <div className="button-container">
-                                <a href="" className="button-right" title="Pull Code" name="2" onClick={(e) => this.pullReasonCode(e, '', 'AllCodes', 'resultOfStop', 'result', 'In-field cite and release')} ><span> Pull from Reason Code</span> </a>
-                                    </div>
+                                    <div>
+                                        {(this.state.stop.Person_Stopped.reasonForStop.codes.length > 0) &&
+                                            <div className="button-container">
+                                        <a href="" className="button-right" title="Pull Code" name="2" onClick={(e) => this.pullReasonCode(e, '', 'AllCodes', 'resultOfStop', 'result', 'In-field cite and release')} ><span> Pull from Reason Code</span> </a>
+                                            </div>
 
-                                }
-                            <Tags tags={this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (y) { return y.result }).indexOf("In-field cite and release")].codes}
-                                suggestions={this.state.codes.AllCodes}
-                                placeholder='Add Code'
-                                autofocus={false}
-                                allowDeleteFromEmptyInput={false}
-                                        handleDelete={(e) => this.handleCodeDelete(e, 'resultOfStop', '', 'result', 'In-field cite and release')}
-                                        handleAddition={(e) => this.handleCodeAdd(e, '', 'AllCodes', 'resultOfStop', 'result', 'In-field cite and release')}
-                                        handleFilterSuggestions={this.handleFilterSuggestions} />
+                                        }
+                                    <Tags tags={this.state.stop.Person_Stopped.resultOfStop[this.state.stop.Person_Stopped.resultOfStop.map(function (y) { return y.result }).indexOf("In-field cite and release")].codes}
+                                        suggestions={this.state.codes.AllCodes}
+                                        placeholder='Add Code'
+                                        autofocus={false}
+                                        allowDeleteFromEmptyInput={false}
+                                                handleDelete={(e) => this.handleCodeDelete(e, 'resultOfStop', '', 'result', 'In-field cite and release')}
+                                                handleAddition={(e) => this.handleCodeAdd(e, '', 'AllCodes', 'resultOfStop', 'result', 'In-field cite and release')}
+                                                handleFilterSuggestions={this.handleFilterSuggestions} />
                             
-                            <label className="list-item-nested"> Select Code (up to 5)</label>
-                            </div>
+                                    <label className="list-item-nested"> Select Code (up to 5)</label>
+                                    </div>
                                 }
                                 <CheckBox2 key="Custodial Arrest pursuant to outstanding warrant" className="list-item" checked={this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("Custodial Arrest pursuant to outstanding warrant") > -1} value="Custodial Arrest pursuant to outstanding warrant" name="Custodial Arrest pursuant to outstanding warrant" onClick={(e) => this.checkBoxSelection(e, 'resultOfStop', 'result', '', 5)} />
                                 <CheckBox2 key="Custodial Arrest without warrant" className="list-item" checked={this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("Custodial Arrest without warrant") > -1} value="Custodial Arrest without warrant" name="Custodial Arrest without warrant" onClick={(e) => this.checkBoxSelection(e, 'resultOfStop', 'result', '', 6)} />
                                 {this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("Custodial Arrest without warrant") > -1 &&
-                            <div>
-                                {(this.state.stop.Person_Stopped.reasonForStop.codes.length > 0) &&
-                                    <div className="button-container">
-                                <a href="" className="button-right" title="Pull Code" name="2" onClick={(e) => this.pullReasonCode(e, '', 'AllCodes', 'resultOfStop', 'result', 'Custodial Arrest without warrant')} ><span> Pull from Reason Code</span> </a>
+                                    <div>
+                                        {(this.state.stop.Person_Stopped.reasonForStop.codes.length > 0) &&
+                                            <div className="button-container">
+                                        <a href="" className="button-right" title="Pull Code" name="2" onClick={(e) => this.pullReasonCode(e, '', 'AllCodes', 'resultOfStop', 'result', 'Custodial Arrest without warrant')} ><span> Pull from Reason Code</span> </a>
                                     </div>
 
                                 }
@@ -2552,7 +2557,14 @@ class Form extends React.Component {
                             <label className="list-item-nested">Select Code (up to 5)</label>
                             </div>
                                 }
-                                <CheckBoxListSection type="CheckBox" stateValue={this.state.stop.Person_Stopped.resultOfStop} node="resultOfStop" node2="result" node2b="details" itemList={resultOfStop} function={this.checkBoxSelection} />
+                        <CheckBoxListSection type="CheckBox" stateValue={this.state.stop.Person_Stopped.resultOfStop} node="resultOfStop" node2="result" node2b="details" itemList={resultOfStop} function={this.checkBoxSelection} />
+                            </div>
+                        }
+                        <br/>
+                        <CheckBox2 key="No Action" className="list-item" checked={this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("No Action") > -1} value="No Action" name="No Action" onClick={(e) => this.checkBoxSelection(e, 'resultOfStop', 'result', '', 1)} />
+                        {this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("No Action") == -1 &&
+                            <div>
+                                <CheckBox2 key="Contacted U.S. Department of Homeland Security" className="list-item" checked={this.state.stop.Person_Stopped.resultOfStop.map(function (x) { return x.result; }).indexOf("Contacted U.S. Department of Homeland Security") > -1} value="Contacted U.S. Department of Homeland Security" name="Contacted U.S. Department of Homeland Security" onClick={(e) => this.checkBoxSelection(e, 'resultOfStop', 'result', '', 5)} />
                             </div>
                         }
                         <div className="text-field-view">
@@ -3049,10 +3061,9 @@ const typeOfPropertySeized = [
 ];
 const resultOfStop = [
     { key: 7, value: "Field interview card completed", className: "list-item", onClick: "" },
+    { key: 10, value: "Psychiatric hold", className: "list-item", onClick: "" },
     { key: 8, value: "Noncriminal transport or caretaking transport", className: "list-item", onClick: "" },
     { key: 9, value: "Contacted parent/legal guardian or other person responsible for the minor", className: "list-item", onClick: "" },
-    { key: 10, value: "Psychiatric hold", className: "list-item", onClick: "" },
-    { key: 11, value: "Contacted U.S. Department of Homeland Security", className: "list-item", onClick: "" }
 ];
 const officerAssignment = [
     { key: 1, value: "Patrol, traffic enforcement, field operations", className: "list-item", onClick: "" },

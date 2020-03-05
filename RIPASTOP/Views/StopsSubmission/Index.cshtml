@@ -49,7 +49,8 @@
                     subGrid.Column(header: "ID", format: (item) =>
                     {
                         idNum = @item.ID;
-                        if (@item.Status == "Resubmit" || @item.Status == "Finished")
+                        //if (@item.Status == "Resubmit" || @item.Status == "Finished")
+                        if (@item.Status == "Finished")
                         {
                             //return Html.Raw(string.Format("<a href='/StopsSubmission/SubmissionStatusGet?sid={0}' class='button-right disabled'>{0}</a>", @item.ID));
                             return Html.Raw(@item.ID);
