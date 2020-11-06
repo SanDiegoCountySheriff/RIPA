@@ -14,6 +14,9 @@ namespace RIPASTOP.Models
         public UserProfile()
         {
         }
+        //public virtual ICollection<Cities> cityList { get; set; }
+        public virtual IEnumerable<SelectListItem> citiesList { get; set; }
+
 
     }
     public class UserProfile_Validation
