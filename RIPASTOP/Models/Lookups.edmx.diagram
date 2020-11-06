@@ -13,6 +13,7 @@
         <EntityTypeShape EntityType="JSON_SIA_TESTModel.StopChangeAudits" Width="2" PointX="7.5" PointY="3.625" />
         <EntityTypeShape EntityType="JSON_SIA_TESTModel.Submissions" Width="1.5" PointX="4.875" PointY="3.5" />
         <EntityTypeShape EntityType="JSON_SIA_TESTModel.StatusMessage_JSON_vw" Width="1.5" PointX="7.5" PointY="0.625" />
+        <EntityTypeShape EntityType="JSON_SIA_TESTModel.ContractCities" Width="1.5" PointX="10.5" PointY="3.625" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

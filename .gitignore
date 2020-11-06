@@ -4,7 +4,9 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 # SD debug.config
-Web.*.config
+RIPASTOP/Web.Production.config
+RIPASTOP/Web.Test.config
+RIPASTOP/Web.Debug.config
 
 # User-specific files
 *.rsuser

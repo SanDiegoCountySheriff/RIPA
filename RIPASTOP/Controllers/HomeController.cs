@@ -17,10 +17,10 @@ namespace RIPASTOP.Controllers
         bool proceed;
 
         public partial class UserAuth
-        {            
+        {
             public bool authorized { get; set; }
             public bool authorizedAdmin { get; set; }
-        }      
+        }
 
         public static bool UserBelongsToGroup(string group, string username)
         {
@@ -40,7 +40,7 @@ namespace RIPASTOP.Controllers
         public static UserAuth AuthorizeUser(string username)
         {
             UserAuth user = new UserAuth();
-            string domain = string.Format(@"{0}\" ,ConfigurationManager.AppSettings["domain"]);
+            string domain = string.Format(@"{0}\", ConfigurationManager.AppSettings["domain"]);
             if (username.ToUpper().IndexOf(domain) > -1)
             {
                 username = username.ToUpper().Replace(domain, "");
@@ -50,7 +50,7 @@ namespace RIPASTOP.Controllers
 
             return user;
         }
-        
+
         public ActionResult Index()
         {
 
@@ -77,13 +77,14 @@ namespace RIPASTOP.Controllers
                 // Gotta grab the conf table because that is where the NTUserName can be matched.
                 UserProfile_Conf = db.UserProfile_Conf.SingleOrDefault(x => x.NTUserName == User.Identity.Name.ToString());
             }
-            else{
+            else
+            {
                 // Anonymous user without Authentication can still run this app
                 proceed = true;
                 UserProfile_Conf = db.UserProfile_Conf.SingleOrDefault(x => x.NTUserName == "AnonymousUser");
             }
 
-            
+
             if (proceed && UserProfile_Conf != null)
             {
                 UserProfile UserProfile = db.UserProfiles.SingleOrDefault(x => x.ID == UserProfile_Conf.UserProfileID);
@@ -93,6 +94,12 @@ namespace RIPASTOP.Controllers
                 ViewBag.officerAssignment = UserProfile.Assignment;
                 ViewBag.officerAssignmentKey = UserProfile.AssignmentKey;
                 ViewBag.officerAssignmentOther = UserProfile.AssignmentOther;
+                // New Contract city info
+                ViewBag.officerContractFundedPosition = UserProfile.ContractFundedPosition;
+                ViewBag.officerContractCity = UserProfile.ContractCity;
+                ViewBag.officerContractFundedEvent = UserProfile.ContractFundedEvent;
+                ViewBag.officerContractEvent = UserProfile.ContractEvent;
+
                 ViewBag.ori = UserProfile.ORI;
                 ViewBag.agency = UserProfile.Agency;
                 ViewBag.UserProfileID = UserProfile.ID;
@@ -118,6 +125,9 @@ namespace RIPASTOP.Controllers
                 ViewBag.allowedBackDateHours = ConfigurationManager.AppSettings["allowedBackDateHours"];
                 ViewBag.useBeats = ConfigurationManager.AppSettings["useBeats"];
                 ViewBag.useAdditionalQuestions = ConfigurationManager.AppSettings["useAdditionalQuestions"];
+                //ViewBag.useContractCity = Convert.ToBoolean(ConfigurationManager.AppSettings["useContractCity"] == "1" ? true : false);
+                ViewBag.useContractCity = ConfigurationManager.AppSettings["useContractCity"];
+                ViewBag.useContractEvent = ConfigurationManager.AppSettings["useContractEvent"];
                 ViewBag.editStop = 0;
                 ViewBag.submissionEdit = 0;
 
@@ -127,12 +137,12 @@ namespace RIPASTOP.Controllers
             {
                 return RedirectToAction("Create", "UserProfiles");
             }
-            
+
         }
         public ActionResult Unauthorized()
         {
             return View();
         }
-        
+
     }
 }

@@ -33,5 +33,6 @@ namespace RIPASTOP.Models
         public virtual DbSet<StopChangeAudits> StopChangeAudits { get; set; }
         public virtual DbSet<Submissions> Submissions { get; set; }
         public virtual DbSet<StatusMessage_JSON_vw> StatusMessage_JSON_vw { get; set; }
+        public virtual DbSet<ContractCities> ContractCities { get; set; }
     }
 }

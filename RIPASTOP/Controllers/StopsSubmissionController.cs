@@ -58,7 +58,7 @@ namespace RIPASTOP.Controllers
         // GET: Admin
         public ActionResult Index(int? sid)
         {
-            
+
             UserAuth user = new UserAuth();
             ViewBag.server = System.Environment.MachineName;
 
@@ -88,7 +88,7 @@ namespace RIPASTOP.Controllers
                     return RedirectToAction("SubmissionStatusGet", "StopsSubmission", new { sid = submitedRec.ID, endDate = submitedRec.EndDate });
                 }
             }
-           
+
             Submissions dateRec = entitiesdb.Submissions
                             .OrderByDescending(x => x.EndDate)
                             .Select(x => x).FirstOrDefault();
@@ -175,15 +175,15 @@ namespace RIPASTOP.Controllers
             }
             else
             {
-                    submission.statusMsgs = entitiesdb.StatusMessage_JSON_vw
-                            .Where(x => x.submissionID == sid && x.StopStatus != "success" && x.StopStatus != "postSubRedact")
-                            .ToList();
-                    submission.subList = entitiesdb.Submissions
-                                    .Where(x => x.StartDate == submission.StartDate &&
-                                                x.EndDate == submission.EndDate).ToList();
+                submission.statusMsgs = entitiesdb.StatusMessage_JSON_vw
+                        .Where(x => x.submissionID == sid && x.StopStatus != "success" && x.StopStatus != "postSubRedact")
+                        .ToList();
+                submission.subList = entitiesdb.Submissions
+                                .Where(x => x.StartDate == submission.StartDate &&
+                                            x.EndDate == submission.EndDate).ToList();
             }
             bool fixedFlag = false;
-            List<Stop> Stops = db.Stop.Where(x => x.SubmissionsID == submission.ID).ToList();
+            List<Stop> Stops = db.Stop.Where(x => x.SubmissionsID == submission.ID && x.Status != "success").ToList();
             foreach (Stop st in Stops)
             {
                 JObject submissionO = JObject.Parse(st.JsonSubmissions);
@@ -331,7 +331,9 @@ namespace RIPASTOP.Controllers
                         submission.subList = entitiesdb.Submissions.ToList();
 
                     }
-
+                    //If ModelState.IsValid is not True this might 
+                    //cause submission to stay in 'In Progress' status
+                    // 
                     if (ModelState.IsValid)
                     {
                         state = entitiesdb.Entry(submission).State;

@@ -147,6 +147,8 @@ namespace RIPASTOP.Controllers
             ViewBag.useBeats = ConfigurationManager.AppSettings["useBeats"];
             ViewBag.test = ConfigurationManager.AppSettings["test"];
             ViewBag.useAdditionalQuestions = ConfigurationManager.AppSettings["useAdditionalQuestions"];
+            ViewBag.useContractCity = ConfigurationManager.AppSettings["useContractCity"];
+            ViewBag.useContractEvent = ConfigurationManager.AppSettings["useContractEvent"];
             ViewBag.editStop = 1;
             ViewBag.postSubRedact = postSubRedact;
 

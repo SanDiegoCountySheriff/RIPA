@@ -214,6 +214,7 @@
     <Compile Include="Controllers\CitiesController.cs" />
     <Compile Include="Controllers\CJISOffenseCodesController.cs" />
     <Compile Include="Controllers\CommonRoutines.cs" />
+    <Compile Include="Controllers\ContractCitiesController.cs" />
     <Compile Include="Controllers\DOJSubmitController.cs" />
     <Compile Include="Controllers\ExtractJNode.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -243,6 +244,22 @@
     <Compile Include="Migrations\201810051650538_removeForeignKey.Designer.cs">
       <DependentUpon>201810051650538_removeForeignKey.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005281706167_newfieldforcontractcities.cs" />
+    <Compile Include="Migrations\202005281706167_newfieldforcontractcities.Designer.cs">
+      <DependentUpon>202005281706167_newfieldforcontractcities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005281710205_setcontractcityfieldnamelength.cs" />
+    <Compile Include="Migrations\202005281710205_setcontractcityfieldnamelength.Designer.cs">
+      <DependentUpon>202005281710205_setcontractcityfieldnamelength.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005282135543_newContractEventCols.cs" />
+    <Compile Include="Migrations\202005282135543_newContractEventCols.Designer.cs">
+      <DependentUpon>202005282135543_newContractEventCols.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006041713101_cityKeyAdded.cs" />
+    <Compile Include="Migrations\202006041713101_cityKeyAdded.Designer.cs">
+      <DependentUpon>202006041713101_cityKeyAdded.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Beats.cs">
       <DependentUpon>Lookups.tt</DependentUpon>
@@ -251,6 +268,9 @@
       <DependentUpon>Lookups.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CJISOffenseCodes.cs">
+      <DependentUpon>Lookups.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ContractCities.cs">
       <DependentUpon>Lookups.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Lookups.Context.cs">
@@ -395,6 +415,7 @@
       <DependentUpon>Lookups.edmx</DependentUpon>
       <LastGenOutput>Lookups.Context.cs</LastGenOutput>
     </Content>
+    <Content Include="Models\Lookups.edmx.sql" />
     <Content Include="Models\Lookups.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Lookups.edmx</DependentUpon>
@@ -497,6 +518,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201810051650538_removeForeignKey.resx">
       <DependentUpon>201810051650538_removeForeignKey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005281706167_newfieldforcontractcities.resx">
+      <DependentUpon>202005281706167_newfieldforcontractcities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005281710205_setcontractcityfieldnamelength.resx">
+      <DependentUpon>202005281710205_setcontractcityfieldnamelength.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005282135543_newContractEventCols.resx">
+      <DependentUpon>202005282135543_newContractEventCols.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006041713101_cityKeyAdded.resx">
+      <DependentUpon>202006041713101_cityKeyAdded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

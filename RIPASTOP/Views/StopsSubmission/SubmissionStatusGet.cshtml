@@ -125,7 +125,14 @@
         }
         else
         {
-            <input type="submit" value="Resubmit" class="button-right disabled">
+            if (@Model.TotalProcessed != null)
+            {
+                <input type="submit" value="Resubmit" class="button-right disabled">
+            }
+            else
+            {
+                <input type="submit" value="Resubmit" class="button-right">
+            }
         }
     </div>
 
