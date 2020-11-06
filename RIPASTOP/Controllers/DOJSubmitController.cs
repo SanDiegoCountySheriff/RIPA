@@ -33,6 +33,8 @@ namespace RIPASTOP.Controllers
         //public string path = HostingEnvironment.MapPath("~/") + @"Log\";
         public string logFile1;
         public string logFile2 = "";
+        public string server1 = "";
+        public string server2 = "";
 
         public class JsonResultModel
         {
@@ -316,28 +318,39 @@ namespace RIPASTOP.Controllers
 
                 // Writing logs on both servers
                 LogFilePath1 = ConfigurationManager.AppSettings["LogFilePath1"];
-                LogFilePath2 = ConfigurationManager.AppSettings["LogFilePath2"];
-                if (LogFilePath2 == "")
+                server2 = ConfigurationManager.AppSettings["Server2"];
+                server1 = ConfigurationManager.AppSettings["Server1"];
+                if (server2 == "")
                 {
                     logFile1 = LogFilePath1 + logFilename;
                 }
                 else
                 {
                     logFile1 = LogFilePath1 + logFilename;
-                    logFile2 = LogFilePath2 + logFilename;
+                    if (server1.IndexOf(Environment.MachineName) == -1)
+                    {
+                        LogFilePath2 = server1 + "RIPALogs\\";
+                        logFile2 = LogFilePath2 + logFilename;
+                    }
+                    if (server2.IndexOf(Environment.MachineName) == -1)
+                    {
+                        LogFilePath2 = server2 + "RIPALogs\\";
+                        logFile2 = LogFilePath2 + logFilename;
+                    }
+
                 }
 
                 if (!File.Exists(logFile1))
                 {
                     // Create log file to write to.
-                    File.WriteAllText(logFile1,"");
+                    File.WriteAllText(logFile1, "");
                 }
 
                 if (!Directory.Exists(LogFilePath1))
                 {
                     Directory.CreateDirectory(LogFilePath1);
                 }
-                if (LogFilePath2 != "")
+                if (server2 != "")
                 {
                     if (!Directory.Exists(LogFilePath2))
                     {
@@ -463,7 +476,7 @@ namespace RIPASTOP.Controllers
                                                         "HTTP error count = " + jsonResult.httpErrCount + Environment.NewLine;
 
                 File.AppendAllText(logFile1, jsonResult.Log);
-                if (LogFilePath2 != "")
+                if (server2 != "")
                 {
                     File.Copy(logFile1, logFile2, true);
                 }
