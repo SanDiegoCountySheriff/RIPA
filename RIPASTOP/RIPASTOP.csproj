@@ -312,7 +312,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Antlr3.Runtime.dll" />
-    <Content Include="bin\Antlr3.Runtime.pdb" />
     <Content Include="bin\ClearScript.dll" />
     <Content Include="bin\EntityFramework.dll" />
     <Content Include="bin\EntityFramework.SqlServer.dll" />
@@ -373,10 +372,6 @@
     <Content Include="bin\roslyn\System.Reflection.Metadata.dll" />
     <Content Include="bin\roslyn\vbc.exe" />
     <Content Include="bin\roslyn\VBCSCompiler.exe" />
-    <Content Include="bin\ru-ru\JavaScriptEngineSwitcher.ChakraCore.resources.dll" />
-    <Content Include="bin\ru-ru\JavaScriptEngineSwitcher.Core.resources.dll" />
-    <Content Include="bin\ru-ru\JavaScriptEngineSwitcher.V8.resources.dll" />
-    <Content Include="bin\ru-ru\MsieJavaScriptEngine.resources.dll" />
     <Content Include="bin\System.Net.Http.Formatting.dll" />
     <!--    <Content Include="bin\System.Net.Http.Formatting.xml" />-->
     <Content Include="bin\System.Web.Helpers.dll" />
@@ -498,6 +493,7 @@
     <Content Include="Views\StopsEdit\Index.cshtml" />
     <Content Include="Views\Stops\Details.cshtml" />
     <Content Include="Views\StopsSubmission\SubmissionStatusGet.cshtml" />
+    <None Include="Properties\PublishProfiles\Tet.pubxml" />
     <None Include="Web.Production.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

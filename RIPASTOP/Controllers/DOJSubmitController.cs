@@ -237,6 +237,7 @@ namespace RIPASTOP.Controllers
 
                 Log = DateTime.Now + " :: Sent Request :: " + Data + Environment.NewLine;
 
+
                 using (Stream sendStream = req.GetRequestStream())
                 {
                     sendStream.Write(sentData, 0, sentData.Length);
@@ -315,6 +316,8 @@ namespace RIPASTOP.Controllers
                 int submissionID = submission.ID;
                 logFilename = submissionID + "-" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".txt";
                 submission.LogFile = logFilename;
+                submission.TotalHTTPErrors = jsonResult.httpErrCount;
+
 
                 // Writing logs on both servers
                 LogFilePath1 = ConfigurationManager.AppSettings["LogFilePath1"];
@@ -480,13 +483,21 @@ namespace RIPASTOP.Controllers
                 {
                     File.Copy(logFile1, logFile2, true);
                 }
-                submission.LogFile = logFilename;
+                //submission.LogFile = logFilename;
                 var state = entitiesdb.Entry(submission).State;
                 return state;
             }
             catch (Exception error)
             {
+                submission.Status = "Resubmit";
+                submission.TotalHTTPErrors = jsonResult.httpErrCount;
+                entitiesdb.Entry(submission).State = EntityState.Modified;
+                entitiesdb.SaveChanges();
                 string err = error.Message;
+                if (error.InnerException != null)
+                {
+                    err += Environment.NewLine + error.InnerException.Message;
+                }
                 jsonResult.Log += err + Environment.NewLine;
                 jsonResult.Log += "Records processed = " + jsonResult.processedCount + Environment.NewLine +
                                                         "Records successfully submitted = " + jsonResult.succeededCount + Environment.NewLine +
@@ -522,11 +533,15 @@ namespace RIPASTOP.Controllers
             {
                 Submissions submission = entitiesdb.Submissions.Find(ID);
                 allAggregates.submissionID = ID;
-                allAggregates.processedCount = Convert.ToInt32(submission.TotalProcessed);
-                allAggregates.succeededCount = Convert.ToInt32(submission.TotalSuccess);
-                allAggregates.fatalCount = Convert.ToInt32(submission.TotalRejected);
-                allAggregates.failedCount = Convert.ToInt32(submission.TotalWithErrors);
-                allAggregates.httpErrCount = Convert.ToInt32(submission.TotalHTTPErrors);
+                if (submission != null)
+                {
+                    allAggregates.processedCount = Convert.ToInt32(submission.TotalProcessed);
+                    allAggregates.succeededCount = Convert.ToInt32(submission.TotalSuccess);
+                    allAggregates.fatalCount = Convert.ToInt32(submission.TotalRejected);
+                    allAggregates.failedCount = Convert.ToInt32(submission.TotalWithErrors);
+                    allAggregates.httpErrCount = Convert.ToInt32(submission.TotalHTTPErrors);
+                }
+
             }
 
             return allAggregates;
@@ -547,5 +562,15 @@ namespace RIPASTOP.Controllers
         //    //return string.Format("<h4>You are about to submit {0} stops.</h4>", stopsCount);
         //    return stopsCount;
         //}
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+                entitiesdb.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
     }
 }
