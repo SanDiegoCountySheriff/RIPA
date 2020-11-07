@@ -186,7 +186,7 @@ a, a:visited{
     margin-top: 15px;
     /*margin-left: 25px;*/
     /*width: auto;*/
-    display: flex;
+/*    display: flex;*/
 }
 
 
@@ -330,7 +330,7 @@ label {
     /*background-color: #eee;*/
     border: 2px solid #03a9f4;
     border-radius: 3px;
-    display: flex;
+    display: inline-flex;
     text-align: center;
     color: #fff !important;
     cursor: pointer;

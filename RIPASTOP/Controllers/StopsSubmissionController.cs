@@ -183,19 +183,26 @@ namespace RIPASTOP.Controllers
                                             x.EndDate == submission.EndDate).ToList();
             }
             bool fixedFlag = false;
-            List<Stop> Stops = db.Stop.Where(x => x.SubmissionsID == submission.ID && x.Status != "success").ToList();
-            foreach (Stop st in Stops)
+            List<Stop> Stops = db.Stop.Where(x => x.SubmissionsID == submission.ID && x.Status != "success" && x.JsonSubmissions != null && x.JsonSubmissions.Substring(x.JsonSubmissions.Length - 15).IndexOf("true") != -1).ToList();
+
+            if (Stops.Count != 0) 
             {
-                JObject submissionO = JObject.Parse(st.JsonSubmissions);
-                JObject lastSubmission = (JObject)submissionO["SubmissionInfo"].Last();
-                int submissionID = (int)lastSubmission["submissionID"];
-                bool edited = (bool)lastSubmission["edited"];
-                if (submissionID == submission.ID && edited == true)
-                {
-                    fixedFlag = true;
-                    break;
-                }
+                fixedFlag = true;
             }
+
+            //foreach (Stop st in Stops)
+            //{
+            //    JObject submissionO = JObject.Parse(st.JsonSubmissions);
+            //    JObject lastSubmission = (JObject)submissionO["SubmissionInfo"].Last();
+            //    int submissionID = (int)lastSubmission["submissionID"];
+            //    bool edited = (bool)lastSubmission["edited"];
+            //    if (submissionID == submission.ID && edited == true)
+            //    {
+            //        fixedFlag = true;
+            //        break;
+            //    }
+            //}
+
             //int stopsCount = entitiesdb.StopOfficerIDDateTime_JSON_vw.ToList()
             //    .Where(x => submission.StartDate <= Convert.ToDateTime(x.stopDate) && Convert.ToDateTime(x.stopDate) <= endDate).Count();
 
@@ -267,7 +274,10 @@ namespace RIPASTOP.Controllers
                 if (sid != 0)
                 {
                     Submissions submissionOld = entitiesdb.Submissions.Find(sid);
-                    submission = submissionOld;
+                    if (submissionOld.TotalHTTPErrors != 1)
+                    {
+                        submission = submissionOld;
+                    }
                 }
                 submission.StartDate = startDate;
                 if (endDate < submission.StartDate || endDate > DateTime.Now)
@@ -281,20 +291,26 @@ namespace RIPASTOP.Controllers
                     //        .Where(x => submission.StartDate <= Convert.ToDateTime(x.stopDate) && Convert.ToDateTime(x.stopDate) < submission.EndDate).Count();
                     //ViewBag.totalToBeSubmitted = stopsCount;
                     bool fixedFlag = false;
-                    List<Stop> Stops = db.Stop.Where(x => x.SubmissionsID == submission.ID).ToList();
-                    // Check if any records have been edited
-                    foreach (Stop st in Stops)
+                    List<Stop> Stops = db.Stop.Where(x => x.SubmissionsID == submission.ID && x.JsonSubmissions != null && x.JsonSubmissions.Substring(x.JsonSubmissions.Length - 15).IndexOf("true") != -1).ToList();
+
+                    if (Stops.Count != 0)
                     {
-                        JObject submissionO = JObject.Parse(st.JsonSubmissions);
-                        JObject lastSubmission = (JObject)submissionO["SubmissionInfo"].Last();
-                        int submissionID = (int)lastSubmission["submissionID"];
-                        bool edited = (bool)lastSubmission["edited"];
-                        if (submissionID == submission.ID && edited == true)
-                        {
-                            fixedFlag = true;
-                            break;
-                        }
+                        fixedFlag = true;
                     }
+
+                    // Check if any records have been edited
+                    //foreach (Stop st in Stops)
+                    //{
+                    //    JObject submissionO = JObject.Parse(st.JsonSubmissions);
+                    //    JObject lastSubmission = (JObject)submissionO["SubmissionInfo"].Last();
+                    //    int submissionID = (int)lastSubmission["submissionID"];
+                    //    bool edited = (bool)lastSubmission["edited"];
+                    //    if (submissionID == submission.ID && edited == true)
+                    //    {
+                    //        fixedFlag = true;
+                    //        break;
+                    //    }
+                    //}
                     ViewBag.fixedFlag = fixedFlag;
 
                     // Change the status of the current submission record, with edited Stops, to "resumbit", 
@@ -336,10 +352,11 @@ namespace RIPASTOP.Controllers
                     // 
                     if (ModelState.IsValid)
                     {
-                        state = entitiesdb.Entry(submission).State;
-                        await entitiesdb.SaveChangesAsync();
-
+                        //state = entitiesdb.Entry(submission).State;
+                        //entitiesdb.Entry(submission).State = EntityState.Modified;
+                        entitiesdb.SaveChanges();
                         ViewBag.submissionID = submission.ID;
+
                     }
 
                 }
@@ -358,6 +375,7 @@ namespace RIPASTOP.Controllers
             if (disposing)
             {
                 db.Dispose();
+                entitiesdb.Dispose();
             }
             base.Dispose(disposing);
         }
