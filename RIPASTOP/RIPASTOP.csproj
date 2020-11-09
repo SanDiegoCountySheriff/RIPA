@@ -436,12 +436,6 @@
     <Content Include="Scripts\react\Theme.jsx" />
     <Content Include="Scripts\store.everything.min.js" />
     <Content Include="Views\StopsSubmission\Index.cshtml" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
@@ -494,13 +488,6 @@
     <Content Include="Views\Stops\Details.cshtml" />
     <Content Include="Views\StopsSubmission\SubmissionStatusGet.cshtml" />
     <None Include="Properties\PublishProfiles\Tet.pubxml" />
-    <None Include="Web.Production.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.Test.config">
-      <DependentUpon>Web.config</DependentUpon>
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201803161838178_init.resx">
