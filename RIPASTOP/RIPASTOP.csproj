@@ -488,6 +488,16 @@
     <Content Include="Views\Stops\Details.cshtml" />
     <Content Include="Views\StopsSubmission\SubmissionStatusGet.cshtml" />
     <None Include="Properties\PublishProfiles\Tet.pubxml" />
+    <Content Include="Web.config" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Production.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Test.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201803161838178_init.resx">
