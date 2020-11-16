@@ -100,7 +100,6 @@ namespace RIPASTOP.Controllers
             {
                 string InitStrtSubDate = ConfigurationManager.AppSettings["InitStrtSubDate"];
                 startDate = Convert.ToDateTime(InitStrtSubDate);
-                //startDate = Convert.ToDateTime("2018-07-16");
             }
             //List<Stop> Stops = db.Stop
             //        .Where(x => x.Status.Trim() != "success").ToList();
@@ -190,22 +189,7 @@ namespace RIPASTOP.Controllers
                 fixedFlag = true;
             }
 
-            //foreach (Stop st in Stops)
-            //{
-            //    JObject submissionO = JObject.Parse(st.JsonSubmissions);
-            //    JObject lastSubmission = (JObject)submissionO["SubmissionInfo"].Last();
-            //    int submissionID = (int)lastSubmission["submissionID"];
-            //    bool edited = (bool)lastSubmission["edited"];
-            //    if (submissionID == submission.ID && edited == true)
-            //    {
-            //        fixedFlag = true;
-            //        break;
-            //    }
-            //}
-
-            //int stopsCount = entitiesdb.StopOfficerIDDateTime_JSON_vw.ToList()
-            //    .Where(x => submission.StartDate <= Convert.ToDateTime(x.stopDate) && Convert.ToDateTime(x.stopDate) <= endDate).Count();
-
+ 
             int stopsCount = entitiesdb.StopOfficerIDDateTime_JSON_vw.ToList()
                 .Join(db.Stop,
                 j => j.ID,
@@ -254,7 +238,7 @@ namespace RIPASTOP.Controllers
                 //    return RedirectToAction("Index", "StopsSubmission", sid);
                 //}
 
-                Boolean connected = dOJSubmit.HTTP_Connection2();
+                bool connected = dOJSubmit.HTTP_Connection2();
                 if (!connected)
                 {
                     TempData["CustomError"] = "Can not connect to DOJ endpoint\r\n";
@@ -287,9 +271,7 @@ namespace RIPASTOP.Controllers
                 }
                 else
                 {
-                    //int stopsCount = entitiesdb.StopOfficerIDDateTime_JSON_vw.ToList()
-                    //        .Where(x => submission.StartDate <= Convert.ToDateTime(x.stopDate) && Convert.ToDateTime(x.stopDate) < submission.EndDate).Count();
-                    //ViewBag.totalToBeSubmitted = stopsCount;
+
                     bool fixedFlag = false;
                     List<Stop> Stops = db.Stop.Where(x => x.SubmissionsID == submission.ID && x.JsonSubmissions != null && x.JsonSubmissions.Substring(x.JsonSubmissions.Length - 15).IndexOf("true") != -1).ToList();
 
@@ -298,19 +280,6 @@ namespace RIPASTOP.Controllers
                         fixedFlag = true;
                     }
 
-                    // Check if any records have been edited
-                    //foreach (Stop st in Stops)
-                    //{
-                    //    JObject submissionO = JObject.Parse(st.JsonSubmissions);
-                    //    JObject lastSubmission = (JObject)submissionO["SubmissionInfo"].Last();
-                    //    int submissionID = (int)lastSubmission["submissionID"];
-                    //    bool edited = (bool)lastSubmission["edited"];
-                    //    if (submissionID == submission.ID && edited == true)
-                    //    {
-                    //        fixedFlag = true;
-                    //        break;
-                    //    }
-                    //}
                     ViewBag.fixedFlag = fixedFlag;
 
                     // Change the status of the current submission record, with edited Stops, to "resumbit", 
