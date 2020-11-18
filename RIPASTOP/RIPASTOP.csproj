@@ -481,13 +481,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\Production.pubxml" />
+    <None Include="Properties\PublishProfiles\Release.pubxml" />
     <None Include="Properties\PublishProfiles\Test.pubxml" />
     <Content Include="Views\Home\Unauthorized.cshtml" />
     <Content Include="Views\StopsEdit\Edit.cshtml" />
     <Content Include="Views\StopsEdit\Index.cshtml" />
     <Content Include="Views\Stops\Details.cshtml" />
     <Content Include="Views\StopsSubmission\SubmissionStatusGet.cshtml" />
-    <None Include="Properties\PublishProfiles\Tet.pubxml" />
     <Content Include="Web.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
