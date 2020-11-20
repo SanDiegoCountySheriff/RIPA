@@ -52,15 +52,18 @@ RIPALogs Directory setup for logging DOJ Submissions
 3. In Web.config:
   ``` xml
   <appSettings>
-    <add key="LogFilePath1" value="\\server01\RIPALogs />
-    <add key="LogFilePath2" value="\\server02\RIPALogs />
+    <add key="LogFilePath1" value="C:\RIPALogs" />
+    <add key="Server1" value="\\server01\" />
+    <add key="Server2" value="\\server02\" />
+
   </appSettings>
   ```
-  Or if you don't have a second server just leave the value for LogFilePath2 empty:
+  Or if you don't have a second server, for load balancing, just leave the value for Server1 and Server2 empty:
   ``` xml
   <appSettings>
-    <add key="LogFilePath1" value="\\server01\RIPALogs />
-    <add key="LogFilePath2" value="" />
+    <add key="LogFilePath1" value="C:\RIPALogs" />
+    <add key="Server1" value="" />
+    <add key="Server2" value="" />
   </appSettings>
   ```
 
@@ -80,9 +83,15 @@ RIPALogs Directory setup for logging DOJ Submissions
 <add key="authorizedAdmin" value="Admin AD Group" />
 <add key="useBeats" value="0" /> <!-- 0 = Don't use beats, 1 = Show beats, 2 = Make beats mandatory -->
 <add key="useAdditionalQuestions" value="0" /><!--  0 = Don't use, 1 = Use -->
-<add key="DOJWebApiUrl" value="https://dojTestSubmissionURL" />
+<add key="useContractCity" value="0" /><!-- 0 = Don't use, 1 = Use-->
+<add key="useContractEvent" value="0" /><!-- 0 = Don't use, 1 = Use-->
+<add key="county" value="Your County" /><add key="DOJWebApiUrl" value="https://dojTestSubmissionURL" />
+<add key="DOJWebApiUrl" value="https://dojSubmissionURL" />
+<add key="DOJUrlConnectTest" value="https://dojTestSubmissionURL" />
 <add key="LogFilePath1" value="" />
-<add key="LogFilePath2" value="" />
+<add key="Server1" value="" />
+<add key="Server2" value="" />
+<add key="InitStrtSubDate" value="Start date of RIPA Collection YYYY-MM-DD" />
 ```
 
 
