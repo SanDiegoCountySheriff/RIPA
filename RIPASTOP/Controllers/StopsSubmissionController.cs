@@ -258,7 +258,7 @@ namespace RIPASTOP.Controllers
                 if (sid != 0)
                 {
                     Submissions submissionOld = entitiesdb.Submissions.Find(sid);
-                    if (submissionOld.TotalHTTPErrors != 1)
+                    if (submissionOld.TotalHTTPErrors == 0 || submissionOld.TotalHTTPErrors == null )
                     {
                         submission = submissionOld;
                     }

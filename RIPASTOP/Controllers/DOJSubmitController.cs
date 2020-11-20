@@ -281,19 +281,16 @@ namespace RIPASTOP.Controllers
             catch (ArgumentException ex)
             {
                 Error = string.Format("ArgumentException raiesed trying to stream data to DOJ :: {0}", ex.Message);
-                model.httpErrCount++;
                 throw ex;
             }
             catch (WebException ex)
             {
                 Error = string.Format("WebException raised! :: {0}", ex.Message);
-                model.httpErrCount++;
                 throw ex;
             }
             catch (Exception ex)
             {
                 Error = string.Format("Exception raised! :: {0}", ex.Message);
-                model.httpErrCount++;
                 throw ex;
             }
         }
@@ -462,7 +459,7 @@ namespace RIPASTOP.Controllers
                             }
                             else
                             {
-                                submission.TotalHTTPErrors = jsonResult.httpErrCount;
+                                submission.TotalHTTPErrors = jsonResult.httpErrCount + 1;
                             }
                             await db.SaveChangesAsync();
                             entitiesdb.Entry(submission).State = EntityState.Modified;
@@ -490,7 +487,7 @@ namespace RIPASTOP.Controllers
             catch (Exception error)
             {
                 submission.Status = "Resubmit";
-                submission.TotalHTTPErrors = jsonResult.httpErrCount;
+                submission.TotalHTTPErrors = jsonResult.httpErrCount + 1;
                 entitiesdb.Entry(submission).State = EntityState.Modified;
                 entitiesdb.SaveChanges();
                 string err = error.Message;
