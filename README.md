@@ -55,7 +55,6 @@ RIPALogs Directory setup for logging DOJ Submissions
     <add key="LogFilePath1" value="C:\RIPALogs" />
     <add key="Server1" value="\\server01\" />
     <add key="Server2" value="\\server02\" />
-
   </appSettings>
   ```
   Or if you don't have a second server, for load balancing, just leave the value for Server1 and Server2 empty:
