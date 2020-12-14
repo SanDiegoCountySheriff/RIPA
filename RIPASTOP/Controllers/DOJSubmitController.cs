@@ -295,6 +295,7 @@ namespace RIPASTOP.Controllers
             }
         }
 
+
         // GET: api/DOJSubmit
         public async Task<EntityState> GetStops(Submissions submission)
         {
