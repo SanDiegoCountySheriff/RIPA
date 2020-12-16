@@ -14,7 +14,7 @@ namespace RIPASTOP.Models
     
     public partial class StatusMessage_JSON_vw
     {
-        public long nid { get; set; }
+        public Nullable<long> nid { get; set; }
         public int StopID { get; set; }
         public string StopStatus { get; set; }
         public string code { get; set; }

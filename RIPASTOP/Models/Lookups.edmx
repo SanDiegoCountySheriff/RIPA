@@ -4,140 +4,163 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="JSON_SIA_TESTModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-  <EntityContainer Name="JSON_SIA_TESTModelStoreContainer">
-    <EntitySet Name="Beats" EntityType="JSON_SIA_TESTModel.Store.Beats" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="Cities" EntityType="JSON_SIA_TESTModel.Store.Cities" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="CJISOffenseCodes" EntityType="JSON_SIA_TESTModel.Store.CJISOffenseCodes" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="schools" EntityType="JSON_SIA_TESTModel.Store.schools" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="StopOfficerIDDateTime_JSON_vw" EntityType="JSON_SIA_TESTModel.Store.StopOfficerIDDateTime_JSON_vw" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="StopChangeAudits" EntityType="JSON_SIA_TESTModel.Store.StopChangeAudits" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="Submissions" EntityType="JSON_SIA_TESTModel.Store.Submissions" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="StatusMessage_JSON_vw" EntityType="JSON_SIA_TESTModel.Store.StatusMessage_JSON_vw" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="ContractCities" EntityType="JSON_SIA_TESTModel.Store.ContractCities" store:Type="Tables" Schema="dbo" />
-  </EntityContainer>
-  <EntityType Name="Beats">
-    <Key>
-      <PropertyRef Name="Beat" />
-      <PropertyRef Name="Community" />
-      <PropertyRef Name="Command" />
-    </Key>
-    <Property Name="Beat" Type="varchar" Nullable="false" MaxLength="3" />
-    <Property Name="Community" Type="varchar" Nullable="false" MaxLength="128" />
-    <Property Name="Command" Type="varchar" Nullable="false" MaxLength="128" />
-  </EntityType>
-  <EntityType Name="Cities">
-    <Key>
-      <PropertyRef Name="City" />
-    </Key>
-    <Property Name="State" Type="varchar" Nullable="true" MaxLength="2" />
-    <Property Name="City" Type="varchar" Nullable="false" MaxLength="50" />
-    <Property Name="County" Type="varchar" Nullable="true" MaxLength="50" />
-  </EntityType>
-  <EntityType Name="CJISOffenseCodes">
-    <Key>
-      <PropertyRef Name="Offense_Code" />
-    </Key>
-    <Property Name="Offense_Validation_CD" Type="varchar" Nullable="true" MaxLength="1" />
-    <Property Name="Offense_Code" Type="int" Nullable="false" />
-    <Property Name="Offense_Txn_Type_CD" Type="varchar" Nullable="true" MaxLength="1" />
-    <Property Name="Offense_Statute" Type="varchar" Nullable="true" MaxLength="15" />
-    <Property Name="Offense_Type_of_Statute_CD" Type="varchar" Nullable="true" MaxLength="2" />
-    <Property Name="Statute_Literal_25" Type="varchar" Nullable="true" MaxLength="50" />
-    <Property Name="Offense_Default_Type_of_Charge" Type="varchar" Nullable="true" MaxLength="1" />
-    <Property Name="Offense_Type_of_Charge" Type="varchar" Nullable="true" MaxLength="1" />
-    <Property Name="Offense_Literal_Identifier_CD" Type="varchar" Nullable="true" MaxLength="5" />
-    <Property Name="Offense_Degree" Type="varchar" Nullable="true" MaxLength="1" />
-    <Property Name="BCS_Hierarchy_CD" Type="varchar" Nullable="true" MaxLength="10" />
-    <Property Name="Offense_Enacted" Type="varchar" Nullable="true" MaxLength="10" />
-    <Property Name="Offense_Repealed" Type="varchar" Nullable="true" MaxLength="10" />
-    <Property Name="ALPS_Cognizant_CD" Type="varchar" Nullable="true" MaxLength="1" />
-    <Property Name="Add_Date_Time" Type="varchar" Nullable="true" MaxLength="10" />
-  </EntityType>
-  <EntityType Name="schools">
-    <Key>
-      <PropertyRef Name="CDS_Code" />
-    </Key>
-    <Property Name="CDS_Code" Type="varchar" Nullable="false" MaxLength="50" />
-    <Property Name="Status" Type="varchar" Nullable="true" MaxLength="50" />
-    <Property Name="County" Type="varchar" Nullable="true" MaxLength="50" />
-    <Property Name="District" Type="varchar" Nullable="true" MaxLength="50" />
-    <Property Name="schoolname" Type="varchar" Nullable="true" MaxLength="50" />
-    <Property Name="sc_MailCity" Type="varchar" Nullable="true" MaxLength="50" />
-    <Property Name="sc_DOCType" Type="varchar" Nullable="true" MaxLength="50" />
-    <Property Name="Schooltype" Type="varchar" Nullable="true" MaxLength="50" />
-    <Property Name="sc_Latitude" Type="varchar" Nullable="true" MaxLength="50" />
-    <Property Name="sc_Longitude" Type="varchar" Nullable="true" MaxLength="50" />
-  </EntityType>
-  <EntityType Name="StopOfficerIDDateTime_JSON_vw">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="officerID" Type="nvarchar" Nullable="true" MaxLength="4000" />
-    <Property Name="stopDate" Type="nvarchar" Nullable="true" MaxLength="4000" />
-    <Property Name="StopTime" Type="nvarchar" Nullable="true" MaxLength="4000" />
-    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-  </EntityType>
-  <EntityType Name="StopChangeAudits">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="OrigJsonStop" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="ModJsonStop" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="Reason" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="NTUserName" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="Time" Type="datetime" Nullable="true" />
-    <Property Name="StopID" Type="int" Nullable="false" />
-  </EntityType>
-  <EntityType Name="Submissions">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="StartDate" Type="datetime" Nullable="false" />
-    <Property Name="Status" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="LogFile" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="TotalProcessed" Type="int" Nullable="true" />
-    <Property Name="TotalSuccess" Type="int" Nullable="true" />
-    <Property Name="TotalRejected" Type="int" Nullable="true" />
-    <Property Name="TotalWithErrors" Type="int" Nullable="true" />
-    <Property Name="TotalHTTPErrors" Type="int" Nullable="true" />
-    <Property Name="DateSubmitted" Type="datetime" Nullable="true" />
-    <Property Name="EndDate" Type="datetime" Nullable="true" />
-  </EntityType>
-  <EntityType Name="StatusMessage_JSON_vw">
-    <Key>
-      <PropertyRef Name="nid" />
-    </Key>
-    <Property Name="nid" Type="bigint" Nullable="false" />
-    <Property Name="StopID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="StopStatus" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="code" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="msg" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="submissionID" Type="int" Nullable="true" />
-    <Property Name="edited" Type="bit" Nullable="true" />
-  </EntityType>
-  <EntityType Name="ContractCities">
-    <Key>
-      <PropertyRef Name="ContractCity" />
-    </Key>
-    <Property Name="ContractCity" Type="varchar" Nullable="false" MaxLength="50" />
-  </EntityType>
-</Schema></edmx:StorageModels>
+    <Schema Namespace="JSON_SIA_TESTModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Beats">
+          <Key>
+            <PropertyRef Name="Beat" />
+            <PropertyRef Name="Community" />
+            <PropertyRef Name="Command" />
+          </Key>
+          <Property Name="Beat" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="Community" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="Command" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="CommandAuditGroup" Type="nvarchar" MaxLength="50" />
+          <Property Name="CommandAuditSize" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="Cities">
+          <Key>
+            <PropertyRef Name="City" />
+          </Key>
+          <Property Name="State" Type="varchar" MaxLength="2" />
+          <Property Name="City" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="County" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CJISOffenseCodes">
+          <Key>
+            <PropertyRef Name="Offense Code" />
+          </Key>
+          <Property Name="Offense Validation CD" Type="varchar" MaxLength="1" />
+          <Property Name="Offense Code" Type="int" Nullable="false" />
+          <Property Name="Offense Txn Type CD" Type="varchar" MaxLength="1" />
+          <Property Name="Offense Statute" Type="varchar" MaxLength="15" />
+          <Property Name="Offense Type of Statute CD" Type="varchar" MaxLength="2" />
+          <Property Name="Statute Literal 25" Type="varchar" MaxLength="50" />
+          <Property Name="Offense Default Type of Charge" Type="varchar" MaxLength="1" />
+          <Property Name="Offense Type of Charge" Type="varchar" MaxLength="1" />
+          <Property Name="Offense Literal Identifier CD" Type="varchar" MaxLength="5" />
+          <Property Name="Offense Degree" Type="varchar" MaxLength="1" />
+          <Property Name="BCS Hierarchy CD" Type="varchar" MaxLength="10" />
+          <Property Name="Offense Enacted" Type="varchar" MaxLength="10" />
+          <Property Name="Offense Repealed" Type="varchar" MaxLength="10" />
+          <Property Name="ALPS Cognizant CD" Type="varchar" MaxLength="1" />
+          <Property Name="Add_Date Time" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="ContractCities">
+          <Key>
+            <PropertyRef Name="ContractCity" />
+          </Key>
+          <Property Name="ContractCity" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="schools">
+          <Key>
+            <PropertyRef Name="CDS_Code" />
+          </Key>
+          <Property Name="CDS_Code" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="50" />
+          <Property Name="County" Type="varchar" MaxLength="50" />
+          <Property Name="District" Type="varchar" MaxLength="50" />
+          <Property Name="schoolname" Type="varchar" MaxLength="50" />
+          <Property Name="sc_MailCity" Type="varchar" MaxLength="50" />
+          <Property Name="sc_DOCType" Type="varchar" MaxLength="50" />
+          <Property Name="Schooltype" Type="varchar" MaxLength="50" />
+          <Property Name="sc_Latitude" Type="varchar" MaxLength="50" />
+          <Property Name="sc_Longitude" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="StopChangeAudits">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrigJsonStop" Type="nvarchar(max)" />
+          <Property Name="ModJsonStop" Type="nvarchar(max)" />
+          <Property Name="Reason" Type="nvarchar(max)" />
+          <Property Name="NTUserName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Time" Type="datetime" />
+          <Property Name="StopID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Submissions">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" Nullable="false" />
+          <Property Name="EndDate" Type="datetime" />
+          <Property Name="Status" Type="nvarchar" MaxLength="20" />
+          <Property Name="LogFile" Type="nvarchar" MaxLength="55" />
+          <Property Name="TotalProcessed" Type="int" />
+          <Property Name="TotalSuccess" Type="int" />
+          <Property Name="TotalRejected" Type="int" />
+          <Property Name="TotalWithErrors" Type="int" />
+          <Property Name="TotalHTTPErrors" Type="int" />
+          <Property Name="DateSubmitted" Type="datetime" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'JSON_SIA_TEST.dbo.StatusMessage_JSON_vw' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="StatusMessage_JSON_vw">
+          <Key>
+            <PropertyRef Name="StopID" />
+          </Key>
+          <Property Name="nid" Type="bigint" />
+          <Property Name="StopID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StopStatus" Type="nvarchar(max)" />
+          <Property Name="code" Type="nvarchar(max)" />
+          <Property Name="msg" Type="nvarchar(max)" />
+          <Property Name="submissionID" Type="int" />
+          <Property Name="edited" Type="bit" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'JSON_SIA_TEST.dbo.StopOfficerIDDateTime_JSON_vw' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="StopOfficerIDDateTime_JSON_vw">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="officerID" Type="nvarchar" MaxLength="4000" />
+          <Property Name="stopDate" Type="nvarchar" MaxLength="4000" />
+          <Property Name="StopTime" Type="nvarchar" MaxLength="4000" />
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityContainer Name="JSON_SIA_TESTModelStoreContainer">
+          <EntitySet Name="Beats" EntityType="Self.Beats" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CJISOffenseCodes" EntityType="Self.CJISOffenseCodes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ContractCities" EntityType="Self.ContractCities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="schools" EntityType="Self.schools" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StopChangeAudits" EntityType="Self.StopChangeAudits" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Submissions" EntityType="Self.Submissions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StatusMessage_JSON_vw" EntityType="Self.StatusMessage_JSON_vw" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [StatusMessage_JSON_vw].[nid] AS [nid], 
+    [StatusMessage_JSON_vw].[StopID] AS [StopID], 
+    [StatusMessage_JSON_vw].[StopStatus] AS [StopStatus], 
+    [StatusMessage_JSON_vw].[code] AS [code], 
+    [StatusMessage_JSON_vw].[msg] AS [msg], 
+    [StatusMessage_JSON_vw].[submissionID] AS [submissionID], 
+    [StatusMessage_JSON_vw].[edited] AS [edited]
+    FROM [dbo].[StatusMessage_JSON_vw] AS [StatusMessage_JSON_vw]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="StopOfficerIDDateTime_JSON_vw" EntityType="Self.StopOfficerIDDateTime_JSON_vw" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [StopOfficerIDDateTime_JSON_vw].[officerID] AS [officerID], 
+    [StopOfficerIDDateTime_JSON_vw].[stopDate] AS [stopDate], 
+    [StopOfficerIDDateTime_JSON_vw].[StopTime] AS [StopTime], 
+    [StopOfficerIDDateTime_JSON_vw].[ID] AS [ID]
+    FROM [dbo].[StopOfficerIDDateTime_JSON_vw] AS [StopOfficerIDDateTime_JSON_vw]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="JSON_SIA_TESTModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true" >
           <EntitySet Name="Beats" EntityType="JSON_SIA_TESTModel.Beats" />
           <EntitySet Name="Cities" EntityType="JSON_SIA_TESTModel.Cities" />
-          <EntitySet Name="CJISOffenseCodes" EntityType="JSON_SIA_TESTModel.CJISOffenseCodes" />
           <EntitySet Name="schools" EntityType="JSON_SIA_TESTModel.schools" />
-          <EntitySet Name="StopOfficerIDDateTime_JSON_vw" EntityType="JSON_SIA_TESTModel.StopOfficerIDDateTime_JSON_vw" />
           <EntitySet Name="StopChangeAudits" EntityType="JSON_SIA_TESTModel.StopChangeAudits" />
           <EntitySet Name="Submissions" EntityType="JSON_SIA_TESTModel.Submissions" />
-          <EntitySet Name="StatusMessage_JSON_vw" EntityType="JSON_SIA_TESTModel.StatusMessage_JSON_vw" />
           <EntitySet Name="ContractCities" EntityType="JSON_SIA_TESTModel.ContractCities" />
+          <EntitySet Name="StatusMessage_JSON_vw" EntityType="JSON_SIA_TESTModel.StatusMessage_JSON_vw" />
+          <EntitySet Name="StopOfficerIDDateTime_JSON_vw" EntityType="JSON_SIA_TESTModel.StopOfficerIDDateTime_JSON_vw" />
+          <EntitySet Name="CJISOffenseCodes" EntityType="JSON_SIA_TESTModel.CJISOffenseCodes" />
         </EntityContainer>
         <EntityType Name="Beats">
           <Key>
@@ -156,6 +179,76 @@
           <Property Name="State" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
           <Property Name="City" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="County" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="schools">
+          <Key>
+            <PropertyRef Name="CDS_Code" />
+          </Key>
+          <Property Name="CDS_Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="County" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="District" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="schoolname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sc_MailCity" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sc_DOCType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Schooltype" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sc_Latitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sc_Longitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="StopChangeAudits">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrigJsonStop" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ModJsonStop" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Reason" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NTUserName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Time" Type="DateTime" Precision="3" />
+          <Property Name="StopID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Submissions">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="LogFile" Type="String" MaxLength="55" FixedLength="false" Unicode="true" />
+          <Property Name="TotalProcessed" Type="Int32" />
+          <Property Name="TotalSuccess" Type="Int32" />
+          <Property Name="TotalRejected" Type="Int32" />
+          <Property Name="TotalWithErrors" Type="Int32" />
+          <Property Name="TotalHTTPErrors" Type="Int32" />
+          <Property Name="DateSubmitted" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="ContractCities">
+          <Key>
+            <PropertyRef Name="ContractCity" />
+          </Key>
+          <Property Name="ContractCity" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="StatusMessage_JSON_vw">
+          <Key>
+            <PropertyRef Name="StopID" />
+          </Key>
+          <Property Name="nid" Type="Int64" />
+          <Property Name="StopID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StopStatus" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="code" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="msg" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="submissionID" Type="Int32" />
+          <Property Name="edited" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="StopOfficerIDDateTime_JSON_vw">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="officerID" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="stopDate" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="StopTime" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="CJISOffenseCodes">
           <Key>
@@ -177,76 +270,6 @@
           <Property Name="ALPS_Cognizant_CD" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="Add_Date_Time" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="schools">
-          <Key>
-            <PropertyRef Name="CDS_Code" />
-          </Key>
-          <Property Name="CDS_Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="County" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="District" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="schoolname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="sc_MailCity" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="sc_DOCType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Schooltype" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="sc_Latitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="sc_Longitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="StopOfficerIDDateTime_JSON_vw">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="officerID" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="stopDate" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="StopTime" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-        </EntityType>
-        <EntityType Name="StopChangeAudits">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="OrigJsonStop" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ModJsonStop" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Reason" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="NTUserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Time" Type="DateTime" Precision="3" />
-          <Property Name="StopID" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Submissions">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="LogFile" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="TotalProcessed" Type="Int32" />
-          <Property Name="TotalSuccess" Type="Int32" />
-          <Property Name="TotalRejected" Type="Int32" />
-          <Property Name="TotalWithErrors" Type="Int32" />
-          <Property Name="TotalHTTPErrors" Type="Int32" />
-          <Property Name="DateSubmitted" Type="DateTime" Precision="3" />
-          <Property Name="EndDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="StatusMessage_JSON_vw">
-          <Key>
-            <PropertyRef Name="nid" />
-          </Key>
-          <Property Name="nid" Type="Int64" Nullable="false" />
-          <Property Name="StopID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="StopStatus" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="code" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="msg" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="submissionID" Type="Int32" />
-          <Property Name="edited" Type="Boolean" />
-        </EntityType>
-        <EntityType Name="ContractCities">
-          <Key>
-            <PropertyRef Name="ContractCity" />
-          </Key>
-          <Property Name="ContractCity" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -256,7 +279,7 @@
     <EntitySetMapping Name="Beats">
       <EntityTypeMapping TypeName="IsTypeOf(JSON_SIA_TESTModel.Beats)">
         <MappingFragment StoreEntitySet="Beats">
-          <ScalarProperty Name="Beat" ColumnName="Beat" />
+                <ScalarProperty Name="Beat" ColumnName="Beat" />
           <ScalarProperty Name="Community" ColumnName="Community" />
           <ScalarProperty Name="Command" ColumnName="Command" />
         </MappingFragment>
@@ -268,27 +291,6 @@
           <ScalarProperty Name="City" ColumnName="City" />
           <ScalarProperty Name="State" ColumnName="State" />
           <ScalarProperty Name="County" ColumnName="County" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="CJISOffenseCodes">
-      <EntityTypeMapping TypeName="IsTypeOf(JSON_SIA_TESTModel.CJISOffenseCodes)">
-        <MappingFragment StoreEntitySet="CJISOffenseCodes">
-          <ScalarProperty Name="Offense_Code" ColumnName="Offense_Code" />
-          <ScalarProperty Name="Offense_Validation_CD" ColumnName="Offense_Validation_CD" />
-          <ScalarProperty Name="Offense_Txn_Type_CD" ColumnName="Offense_Txn_Type_CD" />
-          <ScalarProperty Name="Offense_Statute" ColumnName="Offense_Statute" />
-          <ScalarProperty Name="Offense_Type_of_Statute_CD" ColumnName="Offense_Type_of_Statute_CD" />
-          <ScalarProperty Name="Statute_Literal_25" ColumnName="Statute_Literal_25" />
-          <ScalarProperty Name="Offense_Default_Type_of_Charge" ColumnName="Offense_Default_Type_of_Charge" />
-          <ScalarProperty Name="Offense_Type_of_Charge" ColumnName="Offense_Type_of_Charge" />
-          <ScalarProperty Name="Offense_Literal_Identifier_CD" ColumnName="Offense_Literal_Identifier_CD" />
-          <ScalarProperty Name="Offense_Degree" ColumnName="Offense_Degree" />
-          <ScalarProperty Name="BCS_Hierarchy_CD" ColumnName="BCS_Hierarchy_CD" />
-          <ScalarProperty Name="Offense_Enacted" ColumnName="Offense_Enacted" />
-          <ScalarProperty Name="Offense_Repealed" ColumnName="Offense_Repealed" />
-          <ScalarProperty Name="ALPS_Cognizant_CD" ColumnName="ALPS_Cognizant_CD" />
-          <ScalarProperty Name="Add_Date_Time" ColumnName="Add_Date_Time" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -305,16 +307,6 @@
           <ScalarProperty Name="Schooltype" ColumnName="Schooltype" />
           <ScalarProperty Name="sc_Latitude" ColumnName="sc_Latitude" />
           <ScalarProperty Name="sc_Longitude" ColumnName="sc_Longitude" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="StopOfficerIDDateTime_JSON_vw">
-      <EntityTypeMapping TypeName="IsTypeOf(JSON_SIA_TESTModel.StopOfficerIDDateTime_JSON_vw)">
-        <MappingFragment StoreEntitySet="StopOfficerIDDateTime_JSON_vw">
-          <ScalarProperty Name="ID" ColumnName="ID" />
-          <ScalarProperty Name="officerID" ColumnName="officerID" />
-          <ScalarProperty Name="stopDate" ColumnName="stopDate" />
-          <ScalarProperty Name="StopTime" ColumnName="StopTime" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -348,19 +340,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="StatusMessage_JSON_vw">
-      <EntityTypeMapping TypeName="IsTypeOf(JSON_SIA_TESTModel.StatusMessage_JSON_vw)">
-        <MappingFragment StoreEntitySet="StatusMessage_JSON_vw">
-          <ScalarProperty Name="nid" ColumnName="nid" />
-          <ScalarProperty Name="StopID" ColumnName="StopID" />
-          <ScalarProperty Name="StopStatus" ColumnName="StopStatus" />
-          <ScalarProperty Name="code" ColumnName="code" />
-          <ScalarProperty Name="msg" ColumnName="msg" />
-          <ScalarProperty Name="submissionID" ColumnName="submissionID" />
-          <ScalarProperty Name="edited" ColumnName="edited" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="ContractCities">
       <EntityTypeMapping TypeName="IsTypeOf(JSON_SIA_TESTModel.ContractCities)">
         <MappingFragment StoreEntitySet="ContractCities">
@@ -368,6 +347,50 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+          <EntitySetMapping Name="StatusMessage_JSON_vw">
+            <EntityTypeMapping TypeName="JSON_SIA_TESTModel.StatusMessage_JSON_vw">
+              <MappingFragment StoreEntitySet="StatusMessage_JSON_vw">
+                <ScalarProperty Name="edited" ColumnName="edited" />
+                <ScalarProperty Name="submissionID" ColumnName="submissionID" />
+                <ScalarProperty Name="msg" ColumnName="msg" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="StopStatus" ColumnName="StopStatus" />
+                <ScalarProperty Name="StopID" ColumnName="StopID" />
+                <ScalarProperty Name="nid" ColumnName="nid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StopOfficerIDDateTime_JSON_vw">
+            <EntityTypeMapping TypeName="JSON_SIA_TESTModel.StopOfficerIDDateTime_JSON_vw">
+              <MappingFragment StoreEntitySet="StopOfficerIDDateTime_JSON_vw">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="StopTime" ColumnName="StopTime" />
+                <ScalarProperty Name="stopDate" ColumnName="stopDate" />
+                <ScalarProperty Name="officerID" ColumnName="officerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CJISOffenseCodes">
+            <EntityTypeMapping TypeName="JSON_SIA_TESTModel.CJISOffenseCodes">
+              <MappingFragment StoreEntitySet="CJISOffenseCodes">
+                <ScalarProperty Name="Add_Date_Time" ColumnName="Add_Date Time" />
+                <ScalarProperty Name="ALPS_Cognizant_CD" ColumnName="ALPS Cognizant CD" />
+                <ScalarProperty Name="Offense_Repealed" ColumnName="Offense Repealed" />
+                <ScalarProperty Name="Offense_Enacted" ColumnName="Offense Enacted" />
+                <ScalarProperty Name="BCS_Hierarchy_CD" ColumnName="BCS Hierarchy CD" />
+                <ScalarProperty Name="Offense_Degree" ColumnName="Offense Degree" />
+                <ScalarProperty Name="Offense_Literal_Identifier_CD" ColumnName="Offense Literal Identifier CD" />
+                <ScalarProperty Name="Offense_Type_of_Charge" ColumnName="Offense Type of Charge" />
+                <ScalarProperty Name="Offense_Default_Type_of_Charge" ColumnName="Offense Default Type of Charge" />
+                <ScalarProperty Name="Statute_Literal_25" ColumnName="Statute Literal 25" />
+                <ScalarProperty Name="Offense_Type_of_Statute_CD" ColumnName="Offense Type of Statute CD" />
+                <ScalarProperty Name="Offense_Statute" ColumnName="Offense Statute" />
+                <ScalarProperty Name="Offense_Txn_Type_CD" ColumnName="Offense Txn Type CD" />
+                <ScalarProperty Name="Offense_Code" ColumnName="Offense Code" />
+                <ScalarProperty Name="Offense_Validation_CD" ColumnName="Offense Validation CD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

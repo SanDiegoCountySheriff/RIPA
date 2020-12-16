@@ -480,6 +480,7 @@
     <Content Include="bin\roslyn\VBCSCompiler.exe.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\PublishProfiles\Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Production.pubxml" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
     <None Include="Properties\PublishProfiles\Test.pubxml" />

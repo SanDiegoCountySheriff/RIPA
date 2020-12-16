@@ -4,16 +4,16 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="15d5dc90e5234d8db46514945158f622" Name="Diagram1" >
+      <Diagram DiagramId="15d5dc90e5234d8db46514945158f622" Name="Diagram1" ZoomLevel="99" >
         <EntityTypeShape EntityType="JSON_SIA_TESTModel.Beats" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="JSON_SIA_TESTModel.Cities" Width="1.5" PointX="2.75" PointY="0.75" />
-        <EntityTypeShape EntityType="JSON_SIA_TESTModel.CJISOffenseCodes" Width="1.5" PointX="0.75" PointY="3.75" />
-        <EntityTypeShape EntityType="JSON_SIA_TESTModel.schools" Width="1.5" PointX="2.75" PointY="3.75" />
-        <EntityTypeShape EntityType="JSON_SIA_TESTModel.StopOfficerIDDateTime_JSON_vw" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="JSON_SIA_TESTModel.schools" Width="1.5" PointX="3.125" PointY="3.75" />
         <EntityTypeShape EntityType="JSON_SIA_TESTModel.StopChangeAudits" Width="2" PointX="7.5" PointY="3.625" />
         <EntityTypeShape EntityType="JSON_SIA_TESTModel.Submissions" Width="1.5" PointX="4.875" PointY="3.5" />
-        <EntityTypeShape EntityType="JSON_SIA_TESTModel.StatusMessage_JSON_vw" Width="1.5" PointX="7.5" PointY="0.625" />
         <EntityTypeShape EntityType="JSON_SIA_TESTModel.ContractCities" Width="1.5" PointX="10.5" PointY="3.625" />
+        <EntityTypeShape EntityType="JSON_SIA_TESTModel.StatusMessage_JSON_vw" Width="1.5" PointX="9.5" PointY="0.5" />
+        <EntityTypeShape EntityType="JSON_SIA_TESTModel.StopOfficerIDDateTime_JSON_vw" Width="1.5" PointX="6.5" PointY="0.5" />
+        <EntityTypeShape EntityType="JSON_SIA_TESTModel.CJISOffenseCodes" Width="2.125" PointX="0.75" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
