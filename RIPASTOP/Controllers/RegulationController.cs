@@ -1,10 +1,7 @@
 ﻿using RIPASTOP.Models;
-using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace RIPASTOP.Controllers
@@ -79,7 +76,7 @@ namespace RIPASTOP.Controllers
                 ViewBag.admin = user.authorizedAdmin;
             }
 
-                //UserProfile_Conf uid = db.UserProfile_Conf.SingleOrDefault(x => x.NTUserName == User.Identity.Name.ToString());
+            //UserProfile_Conf uid = db.UserProfile_Conf.SingleOrDefault(x => x.NTUserName == User.Identity.Name.ToString());
             ViewBag.UserProfileID = UserProfile_Conf.UserProfileID;
             // web.config debug setting
             ViewBag.debug = HttpContext.IsDebuggingEnabled;

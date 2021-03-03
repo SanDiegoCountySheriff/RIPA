@@ -1,22 +1,16 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using RIPASTOP.Models;
+using System;
+using System.Configuration;
 using System.Data;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
+using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Description;
-using RIPASTOP.Models;
-using System.Text;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using System.Web.Http.ModelBinding;
-using System.Configuration;
-using System.Web.Hosting;
 
 namespace RIPASTOP.Controllers
 {
@@ -218,7 +212,7 @@ namespace RIPASTOP.Controllers
 
         }
 
-        private void HTTP_PUT(string Url, string Data, JsonResultModel model)
+        private void HTTP_PUT(string Url, string Data, JsonResultModel model, StreamWriter sw)
         {
             string Out = String.Empty;
             string Error = String.Empty;
@@ -267,7 +261,8 @@ namespace RIPASTOP.Controllers
                 Log += DateTime.Now + " :: ERRORS :: " + model.ErrorMessage + Environment.NewLine;
                 model.Log = Log;
 
-                File.AppendAllText(logFile1, model.Log);
+                //File.AppendAllText(logFile1, model.Log);
+                sw.WriteLine(model.Log);
 
                 if (!string.IsNullOrWhiteSpace(Out))
                 {
@@ -341,11 +336,6 @@ namespace RIPASTOP.Controllers
 
                 }
 
-                if (!File.Exists(logFile1))
-                {
-                    // Create log file to write to.
-                    File.WriteAllText(logFile1, "");
-                }
 
                 if (!Directory.Exists(LogFilePath1))
                 {
@@ -359,129 +349,140 @@ namespace RIPASTOP.Controllers
                     }
                 }
 
-                var stopsIDs = entitiesdb.StopOfficerIDDateTime_JSON_vw.ToList()
-                                        .Where(x => submission.StartDate <= Convert.ToDateTime(x.stopDate) && Convert.ToDateTime(x.stopDate) <= submission.EndDate)
-                                        //.Where(x => submission.StartDate <= Convert.ToDateTime(x.stopDate) && Convert.ToDateTime(x.stopDate) <= submission.EndDate && x.ID >= 15187  )
-                                        .Select(x => x.ID);
-
-                string DOJjson = "";
-                foreach (int stopId in stopsIDs)
+                if (!File.Exists(logFile1))
                 {
-                    Stop st = db.Stop
-                        .Where(x => x.ID == stopId && x.Status != "success" && x.Status != "postSubRedact")
-                        .Select(x => x).FirstOrDefault();
-
-                    JObject submissionO;
-                    JArray subInfoArry;
-                    bool edited = false;
-
-
-                    if (st != null)
+                    using (FileStream fs = File.Create(logFile1))
                     {
 
-                        // If JsonSubmissions is not null, check the last SubmissionInfo to see if this Stop has been edited
-                        if (st.JsonSubmissions != null)
+                        using (StreamWriter sw = new StreamWriter(fs))
                         {
-                            submissionO = JObject.Parse(st.JsonSubmissions);
-                            JObject lastSubmission = (JObject)submissionO["SubmissionInfo"].Last();
-                            edited = (bool)lastSubmission["edited"];
-                        }
-                        if (st.JsonSubmissions == null || edited)
-                        {
-                            jsonResult.processedCount++;
-                            submission.TotalProcessed = jsonResult.processedCount;
-                            DOJjson = st.JsonDojStop;
-                            HTTP_PUT(Url: DOJWebApiUrl, Data: DOJjson, model: jsonResult);
-                            // the next lines are for testing
-                            //jsonResult.Results = "{    \"MandatoryValidationFlag\": false,    \"Status\": \"failed\",    \"BatchID\": \"\",    \"LEARecordID\": \"63\",    \"ORI\": \"CA0370000\",    \"OfficerUID\": \"11\",    \"Proxy\": \"\",    \"StopDate\": \"06 / 05 / 2018\",    \"StopTime\": \"14:25:51\",    \"Messages\": [      {        \"Code\": \"DV007\",        \"Field\": \"UID\",        \"Message\": \"Officer Unique ID is invalid or missing, it must be 9 alphanumerical characters.\",        \"PersonNumber\": null      }    ]}";
-                            //jsonResult.Results = "{\"MandatoryValidationFlag\":false,\"Status\":\"failed\",\"BatchID\":\"\",\"LEARecordID\":\"14140\",\"ORI\":\"CA0370000\",\"OfficerUID\":\"111106405\",\"Proxy\":\"\",\"StopDate\":\"06 / 05 / 2018\",\"StopTime\":\"23:58:56\",\"Messages\":[{\"Code\":\"DV236\",\"Field\":\"Tx_type\",\"Message\":\"Duplicate record exists with the same ORI,  LEA record ID combination.\",\"PersonNumber\":null},{\"Code\":\"DV004\",\"Field\":\"sTime\",\"Message\":\"Duplicate record; a stop exists for this ORI, Officer UID, Date & Time.\",\"PersonNumber\":null}]}";
-                            //jsonResult.IsSuccess = true;
-                            if (jsonResult.IsSuccess)
+                            var stopsIDs = entitiesdb.StopOfficerIDDateTime_JSON_vw.ToList()
+                                                    .Where(x => submission.StartDate <= Convert.ToDateTime(x.stopDate) && Convert.ToDateTime(x.stopDate) <= submission.EndDate)
+                                                    //.Where(x => submission.StartDate <= Convert.ToDateTime(x.stopDate) && Convert.ToDateTime(x.stopDate) <= submission.EndDate && x.ID >= 15187  )
+                                                    .Select(x => x.ID);
+
+                            string DOJjson = "";
+                            foreach (int stopId in stopsIDs)
                             {
-                                dojRes.ReturnPayload = jsonResult.Results;
+                                Stop st = db.Stop
+                                    .Where(x => x.ID == stopId && x.Status != "success" && x.Status != "postSubRedact")
+                                    .Select(x => x).FirstOrDefault();
 
-                                st.SubmissionsID = submissionID;
-                                if (st.JsonSubmissions == null)
+                                JObject submissionO;
+                                JArray subInfoArry;
+                                bool edited = false;
+
+
+                                if (st != null)
                                 {
-                                    submissionO = JObject.FromObject(new { SubmissionInfo = new JArray() });
-                                }
-                                else
-                                {
-                                    submissionO = JObject.Parse(st.JsonSubmissions);
-                                }
-                                subInfoArry = (JArray)submissionO["SubmissionInfo"];
-                                subInfoArry.Add(new JObject(new JProperty("submissionID", submissionID), new JProperty("edited", false)));
-                                st.JsonSubmissions = JsonConvert.SerializeObject(submissionO);
 
-                                JObject o = JObject.Parse(dojRes.ReturnPayload);
-                                o.Add("CustomProperty_DOJReceiptTime", DateTime.Now.ToString());
-                                eJson = new ExtractJNode("MandatoryValidationFlag", o);
-                                dojRes.VFlag = eJson.traverseNode();
-
-                                eJson = new ExtractJNode("Status", o);
-                                dojRes.Status = eJson.traverseNode();
-
-                                if (dojRes.VFlag == "True")
-                                {
-                                    if (dojRes.Status == "failed")
+                                    // If JsonSubmissions is not null, check the last SubmissionInfo to see if this Stop has been edited
+                                    if (st.JsonSubmissions != null)
                                     {
-                                        st.Status = "fail";
-                                        jsonResult.failedCount++;
-                                        submission.TotalWithErrors = jsonResult.failedCount;
+                                        submissionO = JObject.Parse(st.JsonSubmissions);
+                                        JObject lastSubmission = (JObject)submissionO["SubmissionInfo"].Last();
+                                        edited = (bool)lastSubmission["edited"];
                                     }
-                                    else
+                                    if (st.JsonSubmissions == null || edited)
                                     {
-                                        st.Status = "success";
-                                        jsonResult.succeededCount++;
-                                        submission.TotalSuccess = jsonResult.succeededCount;
-                                    }
-                                }
-                                else
-                                {
-                                    if (dojRes.Status == "failed")
-                                    {
-                                        st.Status = "fatal";
-                                        jsonResult.fatalCount++;
-                                        submission.TotalRejected = jsonResult.fatalCount;
-                                    }
-                                }
+                                        jsonResult.processedCount++;
+                                        submission.TotalProcessed = jsonResult.processedCount;
+                                        DOJjson = st.JsonDojStop;
+                                        HTTP_PUT(Url: DOJWebApiUrl, Data: DOJjson, model: jsonResult, sw: sw);
+                                        // the next lines are for testing
+                                        //jsonResult.Results = "{    \"MandatoryValidationFlag\": false,    \"Status\": \"failed\",    \"BatchID\": \"\",    \"LEARecordID\": \"63\",    \"ORI\": \"CA0370000\",    \"OfficerUID\": \"11\",    \"Proxy\": \"\",    \"StopDate\": \"06 / 05 / 2018\",    \"StopTime\": \"14:25:51\",    \"Messages\": [      {        \"Code\": \"DV007\",        \"Field\": \"UID\",        \"Message\": \"Officer Unique ID is invalid or missing, it must be 9 alphanumerical characters.\",        \"PersonNumber\": null      }    ]}";
+                                        //jsonResult.Results = "{\"MandatoryValidationFlag\":false,\"Status\":\"failed\",\"BatchID\":\"\",\"LEARecordID\":\"14140\",\"ORI\":\"CA0370000\",\"OfficerUID\":\"111106405\",\"Proxy\":\"\",\"StopDate\":\"06 / 05 / 2018\",\"StopTime\":\"23:58:56\",\"Messages\":[{\"Code\":\"DV236\",\"Field\":\"Tx_type\",\"Message\":\"Duplicate record exists with the same ORI,  LEA record ID combination.\",\"PersonNumber\":null},{\"Code\":\"DV004\",\"Field\":\"sTime\",\"Message\":\"Duplicate record; a stop exists for this ORI, Officer UID, Date & Time.\",\"PersonNumber\":null}]}";
+                                        //jsonResult.IsSuccess = true;
+                                        if (jsonResult.IsSuccess)
+                                        {
+                                            dojRes.ReturnPayload = jsonResult.Results;
 
-                                st.StatusMessage = o.ToString();
+                                            st.SubmissionsID = submissionID;
+                                            if (st.JsonSubmissions == null)
+                                            {
+                                                submissionO = JObject.FromObject(new { SubmissionInfo = new JArray() });
+                                            }
+                                            else
+                                            {
+                                                submissionO = JObject.Parse(st.JsonSubmissions);
+                                            }
+                                            subInfoArry = (JArray)submissionO["SubmissionInfo"];
+                                            subInfoArry.Add(new JObject(new JProperty("submissionID", submissionID), new JProperty("edited", false)));
+                                            st.JsonSubmissions = JsonConvert.SerializeObject(submissionO);
 
-                                // The following section of code, saving messages in dojRes is not used at this point
-                                if (st.Status != "success")
-                                {
-                                    eJson = new ExtractJNode("Messages.Message", o);
-                                    string messages = eJson.traverseNode();
-                                    messages = messages.Replace(".,", "~");
-                                    dojRes.SetMessages(messages.Split('~'));
+                                            JObject o = JObject.Parse(dojRes.ReturnPayload);
+                                            o.Add("CustomProperty_DOJReceiptTime", DateTime.Now.ToString());
+                                            eJson = new ExtractJNode("MandatoryValidationFlag", o);
+                                            dojRes.VFlag = eJson.traverseNode();
+
+                                            eJson = new ExtractJNode("Status", o);
+                                            dojRes.Status = eJson.traverseNode();
+
+                                            if (dojRes.VFlag == "True")
+                                            {
+                                                if (dojRes.Status == "failed")
+                                                {
+                                                    st.Status = "fail";
+                                                    jsonResult.failedCount++;
+                                                    submission.TotalWithErrors = jsonResult.failedCount;
+                                                }
+                                                else
+                                                {
+                                                    st.Status = "success";
+                                                    jsonResult.succeededCount++;
+                                                    submission.TotalSuccess = jsonResult.succeededCount;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (dojRes.Status == "failed")
+                                                {
+                                                    st.Status = "fatal";
+                                                    jsonResult.fatalCount++;
+                                                    submission.TotalRejected = jsonResult.fatalCount;
+                                                }
+                                            }
+
+                                            st.StatusMessage = o.ToString();
+
+                                            // The following section of code, saving messages in dojRes is not used at this point
+                                            if (st.Status != "success")
+                                            {
+                                                eJson = new ExtractJNode("Messages.Message", o);
+                                                string messages = eJson.traverseNode();
+                                                messages = messages.Replace(".,", "~");
+                                                dojRes.SetMessages(messages.Split('~'));
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            submission.TotalHTTPErrors = jsonResult.httpErrCount + 1;
+                                        }
+                                        await db.SaveChangesAsync();
+                                        entitiesdb.Entry(submission).State = EntityState.Modified;
+                                        await entitiesdb.SaveChangesAsync();
+
+                                    }
                                 }
 
                             }
-                            else
-                            {
-                                submission.TotalHTTPErrors = jsonResult.httpErrCount + 1;
-                            }
-                            await db.SaveChangesAsync();
-                            entitiesdb.Entry(submission).State = EntityState.Modified;
-                            await entitiesdb.SaveChangesAsync();
+                            jsonResult.Log += "Records processed = " + jsonResult.processedCount + Environment.NewLine +
+                                                                    "Records successfully submitted = " + jsonResult.succeededCount + Environment.NewLine +
+                                                                    "Records with errors = " + jsonResult.failedCount + Environment.NewLine +
+                                                                    "Rejected records = " + jsonResult.fatalCount + Environment.NewLine +
+                                                                    "HTTP error count = " + jsonResult.httpErrCount + Environment.NewLine;
 
+                            //File.AppendAllText(logFile1, jsonResult.Log);
+                            sw.WriteLine(jsonResult.Log);
                         }
                     }
-
                 }
-                jsonResult.Log += "Records processed = " + jsonResult.processedCount + Environment.NewLine +
-                                                        "Records successfully submitted = " + jsonResult.succeededCount + Environment.NewLine +
-                                                        "Records with errors = " + jsonResult.failedCount + Environment.NewLine +
-                                                        "Rejected records = " + jsonResult.fatalCount + Environment.NewLine +
-                                                        "HTTP error count = " + jsonResult.httpErrCount + Environment.NewLine;
 
-                File.AppendAllText(logFile1, jsonResult.Log);
                 if (server2 != "")
                 {
                     File.Copy(logFile1, logFile2, true);
                 }
-                //submission.LogFile = logFilename;
                 var state = entitiesdb.Entry(submission).State;
                 return state;
             }

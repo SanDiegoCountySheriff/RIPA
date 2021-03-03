@@ -1,18 +1,13 @@
-﻿using System;
+﻿using RIPASTOP.Models;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Entity;
+using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using RIPASTOP.Models;
-using System.Configuration;
-using System.DirectoryServices.AccountManagement;
-using System.Dynamic;
-using Newtonsoft.Json.Linq;
-using System.Globalization;
 
 namespace RIPASTOP.Controllers
 {
@@ -184,12 +179,12 @@ namespace RIPASTOP.Controllers
             bool fixedFlag = false;
             List<Stop> Stops = db.Stop.Where(x => x.SubmissionsID == submission.ID && x.Status != "success" && x.JsonSubmissions != null && x.JsonSubmissions.Substring(x.JsonSubmissions.Length - 15).IndexOf("true") != -1).ToList();
 
-            if (Stops.Count != 0) 
+            if (Stops.Count != 0)
             {
                 fixedFlag = true;
             }
 
- 
+
             int stopsCount = entitiesdb.StopOfficerIDDateTime_JSON_vw.ToList()
                 .Join(db.Stop,
                 j => j.ID,
@@ -258,7 +253,7 @@ namespace RIPASTOP.Controllers
                 if (sid != 0)
                 {
                     Submissions submissionOld = entitiesdb.Submissions.Find(sid);
-                    if (submissionOld.TotalHTTPErrors == 0 || submissionOld.TotalHTTPErrors == null )
+                    if (submissionOld.TotalHTTPErrors == 0 || submissionOld.TotalHTTPErrors == null)
                     {
                         submission = submissionOld;
                     }
@@ -319,14 +314,14 @@ namespace RIPASTOP.Controllers
                     //If ModelState.IsValid is not True this might 
                     //cause submission to stay in 'In Progress' status
                     // 
-                    if (ModelState.IsValid)
-                    {
-                        //state = entitiesdb.Entry(submission).State;
-                        //entitiesdb.Entry(submission).State = EntityState.Modified;
-                        entitiesdb.SaveChanges();
-                        ViewBag.submissionID = submission.ID;
+                    //if (ModelState.IsValid)
+                    //{
+                    //state = entitiesdb.Entry(submission).State;
+                    //entitiesdb.Entry(submission).State = EntityState.Modified;
+                    entitiesdb.SaveChanges();
+                    ViewBag.submissionID = submission.ID;
 
-                    }
+                    //}
 
                 }
             }

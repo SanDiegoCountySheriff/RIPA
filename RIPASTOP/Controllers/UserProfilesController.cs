@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using RIPASTOP.Models;
+using System;
 using System.Configuration;
 //using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using RIPASTOP.Models;
 
 namespace RIPASTOP.Controllers
 {

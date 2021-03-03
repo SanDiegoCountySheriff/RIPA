@@ -1,19 +1,17 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using RIPASTOP.Models;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using RIPASTOP.Models;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using System.Web.Script.Serialization;
 using System.Globalization;
-using System.Configuration;
+using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace RIPASTOP.Controllers
 {

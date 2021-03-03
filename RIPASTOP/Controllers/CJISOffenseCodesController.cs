@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using RIPASTOP.Models;
+using System;
 using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Description;
-using RIPASTOP.Models;
 //using System.Web.Http.Cors;
 
 namespace RIPASTOP.Controllers
@@ -32,8 +25,8 @@ namespace RIPASTOP.Controllers
             if (String.IsNullOrEmpty(fragment))
             {
                 return db.CJISOffenseCodes
-                    //.Where(x => x.Offense_Repealed > DateTime.Now.ToString("yyyy-MM-dd")) //2011-12-31
-                                                                                //.Where(x => x.Offense_Type_of_Statute_CD.Contains(type) || x.Offense_Type_of_Statute_CD.Contains(sectype))
+               //.Where(x => x.Offense_Repealed > DateTime.Now.ToString("yyyy-MM-dd")) //2011-12-31
+               //.Where(x => x.Offense_Type_of_Statute_CD.Contains(type) || x.Offense_Type_of_Statute_CD.Contains(sectype))
                .Select(x => new DTOCJISOffenseCodes()
                {
                    Code = x.Offense_Code,
@@ -50,12 +43,12 @@ namespace RIPASTOP.Controllers
                 .Select(x => new DTOCJISOffenseCodes()
                 {
                     Code = x.Offense_Code,
-                    Description = x.Offense_Statute + " " + x.Offense_Type_of_Statute_CD + " - " + x.Statute_Literal_25 + " (" + x.Offense_Type_of_Charge +")",
+                    Description = x.Offense_Statute + " " + x.Offense_Type_of_Statute_CD + " - " + x.Statute_Literal_25 + " (" + x.Offense_Type_of_Charge + ")",
                     Repealed = x.Offense_Repealed
                 })
                 .Where(x => x.Repealed.Trim().Length < 2)
                 .Where(x => x.Description.Contains(fragment))
-                .OrderBy(x => x.Description); 
+                .OrderBy(x => x.Description);
             }
         }
 

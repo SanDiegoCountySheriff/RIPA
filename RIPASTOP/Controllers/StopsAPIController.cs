@@ -1,20 +1,17 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using RIPASTOP.Models;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using RIPASTOP.Models;
-using Newtonsoft.Json.Linq;
-using System.Configuration;
-using System.Text.RegularExpressions;
-using System.DirectoryServices.AccountManagement;
-using Newtonsoft.Json;
 
 
 namespace RIPASTOP.Controllers
@@ -75,7 +72,7 @@ namespace RIPASTOP.Controllers
             string jsonStopStr = eJson.traverseNode();
             Stop stop = db.Stop.Find(stopId);
 
-            if(postSubRedact && stop.Status == "success")
+            if (postSubRedact && stop.Status == "success")
             {
                 stop.Status = "postSubRedact";
             }
@@ -85,45 +82,45 @@ namespace RIPASTOP.Controllers
             CommonRoutines cr = new CommonRoutines();
 
             try
+            {
+
+                StopChangeAudits newAuditRec = new StopChangeAudits();
+                newAuditRec.StopID = stopId;
+                newAuditRec.OrigJsonStop = originalJson;
+                newAuditRec.Time = DateTime.Now;
+                newAuditRec.NTUserName = User.Identity.Name.ToString();
+                newAuditRec.ModJsonStop = jsonStopStr;
+                newAuditRec.Reason = changeAuditReason;
+                if (ModelState.IsValid)
                 {
- 
-                    StopChangeAudits newAuditRec = new StopChangeAudits();
-                    newAuditRec.StopID = stopId;
-                    newAuditRec.OrigJsonStop = originalJson;
-                    newAuditRec.Time = DateTime.Now;
-                    newAuditRec.NTUserName = User.Identity.Name.ToString();
-                    newAuditRec.ModJsonStop = jsonStopStr;
-                    newAuditRec.Reason = changeAuditReason;
-                    if (ModelState.IsValid)
-                    {
-                        dbe.StopChangeAudits.Add(newAuditRec);
-                        dbe.SaveChanges();
-                    }
-
-                    if (stop.SubmissionsID != null)
-                    {
-                        JObject submissionO = JObject.Parse(stop.JsonSubmissions);
-                        JObject lastSubmission = (JObject)submissionO["SubmissionInfo"].Last();
-                        lastSubmission["edited"] = true;
-                        stop.JsonSubmissions = JsonConvert.SerializeObject(submissionO);
-                    }
-                    string dojJson = "";
-
-                    if (stop.Status == "fail")
-                        dojJson = cr.dojTransform(stop, "U");
-
-                    if (stop.Status == "fatal" || stop.Status == null || postSubRedact || stop.Status == "postSubRedact")
-                        dojJson = cr.dojTransform(stop, "I");
-
-                    stop.JsonDojStop = dojJson;
-                    db.Entry(stop).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return Ok();
+                    dbe.StopChangeAudits.Add(newAuditRec);
+                    dbe.SaveChanges();
                 }
-                catch (Exception ex)
+
+                if (stop.SubmissionsID != null)
                 {
-                    throw new HttpResponseException(HttpStatusCode.InternalServerError);
+                    JObject submissionO = JObject.Parse(stop.JsonSubmissions);
+                    JObject lastSubmission = (JObject)submissionO["SubmissionInfo"].Last();
+                    lastSubmission["edited"] = true;
+                    stop.JsonSubmissions = JsonConvert.SerializeObject(submissionO);
                 }
+                string dojJson = "";
+
+                if (stop.Status == "fail")
+                    dojJson = cr.dojTransform(stop, "U");
+
+                if (stop.Status == "fatal" || stop.Status == null || postSubRedact || stop.Status == "postSubRedact")
+                    dojJson = cr.dojTransform(stop, "I");
+
+                stop.JsonDojStop = dojJson;
+                db.Entry(stop).State = EntityState.Modified;
+                db.SaveChanges();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(HttpStatusCode.InternalServerError);
+            }
 
 
         }

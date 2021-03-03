@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using RIPASTOP.Models;
+using System;
 using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using RIPASTOP.Models;
 
 namespace RIPASTOP.Controllers
 {
@@ -19,14 +14,14 @@ namespace RIPASTOP.Controllers
 
         public partial class DTOschools
         {
-                public string Code { get; set; }
-                public string Description { get; set; }
+            public string Code { get; set; }
+            public string Description { get; set; }
         }
 
         // GET: api/Schools
         public IQueryable<DTOschools> Getschools(string type, string fragment)
         {
-           
+
             if (String.IsNullOrEmpty(fragment))
             {
                 return db.schools

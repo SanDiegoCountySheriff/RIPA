@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using RIPASTOP.Models;
+using System;
 using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Description;
-using RIPASTOP.Models;
 
 namespace RIPASTOP.Controllers
 {
@@ -26,14 +19,14 @@ namespace RIPASTOP.Controllers
         // GET: api/Cities
         public IQueryable<DTOCities> GetCities(string fragment, string county, bool ooc)
         {
-            IQueryable<Cities> cities = db.Cities;          
+            IQueryable<Cities> cities = db.Cities;
 
             // filter by city name fragment
             if (!String.IsNullOrEmpty(fragment))
             {
-                cities = cities.Where(x => x.City.Contains(fragment));  
-            }  
-            
+                cities = cities.Where(x => x.City.Contains(fragment));
+            }
+
             //get everything that is not within county
             if (ooc)
             {
