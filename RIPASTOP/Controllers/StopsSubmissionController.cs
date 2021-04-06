@@ -294,6 +294,7 @@ namespace RIPASTOP.Controllers
                     dsStop = sql.mds_ExecuteQuery(sqlStr, "StopsTbl");
                     int rowsCount = dsStop.Tables["StopsTbl"].Rows.Count;
 
+
                     if (rowsCount != 0)
                     {
                             fixedFlag = true;
