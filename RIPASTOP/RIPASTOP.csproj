@@ -225,6 +225,7 @@
     <Compile Include="Controllers\StopsController.cs" />
     <Compile Include="Controllers\StopsSubmissionController.cs" />
     <Compile Include="Controllers\UserProfilesController.cs" />
+    <Compile Include="DBAccess.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -489,7 +490,9 @@
     <Content Include="Views\StopsEdit\Index.cshtml" />
     <Content Include="Views\Stops\Details.cshtml" />
     <Content Include="Views\StopsSubmission\SubmissionStatusGet.cshtml" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -498,6 +501,7 @@
     </None>
     <None Include="Web.Test.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>

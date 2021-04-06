@@ -140,6 +140,7 @@ namespace RIPASTOP.Controllers
         {
             UserAuth user = new UserAuth();
             ViewBag.server = System.Environment.MachineName;
+            DataSet dsStop = new DataSet();
 
             user = AuthorizeUser(User.Identity.Name.ToString());
 
@@ -177,20 +178,34 @@ namespace RIPASTOP.Controllers
                                             x.EndDate == submission.EndDate).ToList();
             }
             bool fixedFlag = false;
-            List<Stop> Stops = db.Stop.Where(x => x.SubmissionsID == submission.ID && x.Status != "success" && x.JsonSubmissions != null && x.JsonSubmissions.Substring(x.JsonSubmissions.Length - 15).IndexOf("true") != -1).ToList();
 
-            if (Stops.Count != 0)
+
+
+            SQLDBDataAccessorClass sql = new SQLDBDataAccessorClass();
+            string sqlStr = "";
+            sqlStr = "Select * from Stops" +
+                     " Where SubmissionsID = " + submission.ID +
+                     " and Status != '" + "success' " +
+                     " and JsonSubmissions is not null " +
+                     " and Right(JsonSubmissions, 15) like '%true%'";
+            dsStop = sql.mds_ExecuteQuery(sqlStr, "StopsTbl");
+            int rowsCount = dsStop.Tables["StopsTbl"].Rows.Count;
+
+            if (rowsCount != 0)
             {
                 fixedFlag = true;
             }
 
 
-            int stopsCount = entitiesdb.StopOfficerIDDateTime_JSON_vw.ToList()
-                .Join(db.Stop,
-                j => j.ID,
-                s => s.ID,
-                (j, s) => new { StopOfficerIDDateTime_JSON_vw = j, Stop = s })
-                .Where(x => submission.StartDate <= Convert.ToDateTime(x.StopOfficerIDDateTime_JSON_vw.stopDate) && Convert.ToDateTime(x.StopOfficerIDDateTime_JSON_vw.stopDate) <= endDate).Count();
+           sql = new SQLDBDataAccessorClass();
+
+            sqlStr = "";
+            sqlStr = "SELECT * FROM Stops as S " +
+                     "INNER JOIN StopOfficerIDDateTime_JSON_vw as J ON J.ID = S.ID " +
+                     " Where CONVERT(datetime, '" + submission.StartDate + "') <= J.stopDate and J.stopDate <= CONVERT(datetime, '" + endDate + "')";
+
+            dsStop = sql.mds_ExecuteQuery(sqlStr, "StopOfficeVWTbl");
+            int stopsCount = dsStop.Tables["StopOfficeVWTbl"].Rows.Count;
 
             ViewBag.fixedFlag = fixedFlag;
             ViewBag.totalStops = stopsCount;
@@ -206,6 +221,7 @@ namespace RIPASTOP.Controllers
         public async Task<ActionResult> SubmissionStats(Submissions submission, int? sid, DateTime startDate, DateTime? endDate)
         {
             UserAuth user = new UserAuth();
+            DataSet dsStop = new DataSet();
 
             user = AuthorizeUser(User.Identity.Name.ToString());
 
@@ -268,18 +284,26 @@ namespace RIPASTOP.Controllers
                 {
 
                     bool fixedFlag = false;
-                    List<Stop> Stops = db.Stop.Where(x => x.SubmissionsID == submission.ID && x.JsonSubmissions != null && x.JsonSubmissions.Substring(x.JsonSubmissions.Length - 15).IndexOf("true") != -1).ToList();
 
-                    if (Stops.Count != 0)
+                    SQLDBDataAccessorClass sql = new SQLDBDataAccessorClass();
+                    string sqlStr = "";
+                    sqlStr = "Select * from Stops" +
+                             " Where SubmissionsID = " + submission.ID +
+                             " and JsonSubmissions is not null " +
+                             " and Right(JsonSubmissions, 15) like '%true%'";
+                    dsStop = sql.mds_ExecuteQuery(sqlStr, "StopsTbl");
+                    int rowsCount = dsStop.Tables["StopsTbl"].Rows.Count;
+
+                    if (rowsCount != 0)
                     {
-                        fixedFlag = true;
+                            fixedFlag = true;
                     }
 
                     ViewBag.fixedFlag = fixedFlag;
 
                     // Change the status of the current submission record, with edited Stops, to "resumbit", 
                     // and create a new submission record to Resubmit all the fixed records again
-                    if (Stops.Count != 0)
+                    if (rowsCount != 0)
                     {
                         submission.Status = "Resubmit";
                         if (ModelState.IsValid)
