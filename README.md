@@ -92,5 +92,6 @@ RIPALogs Directory setup for logging DOJ Submissions
 <add key="Server2" value="" />
 <add key="InitStrtSubDate" value="Start date of RIPA Collection YYYY-MM-DD" />
 ```
+**Release Build** - PublishOutput.zip is a release build with a generic web.config. Make sure to update it with your agency's specific information.
 
 
