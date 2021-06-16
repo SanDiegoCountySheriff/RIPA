@@ -70,13 +70,13 @@ RIPALogs Directory setup for logging DOJ Submissions
 ``` xml
 <add key="reverseGeoURI" value="https://www.mysite.us/arcgis/rest/....."/>
 <add key="reverseBeatURI" value="https://myReverseBeatGeocodingService" />
-<add key="agency" value="AG"/>
+<add key="agency" value="AG"/><!-- Must be 2 characters in length-->
 <add key="ori" value="CA0000000"/>
 <add key="test" value="false" />
 <add key="forceCacheUpdate" value="false" />
 <add key="allowedBackDateHours" value="24" />
 <add key="expireCacheDays" value="14" />
-<add key="domain" value="myDomain" />
+<add key="domain" value="myDomain" /> <!-- NetBIOS -->
 <add key="requireGroupMembership" value="true" />
 <add key="authorized" value="User AD Group" />
 <add key="authorizedAdmin" value="Admin AD Group" />
