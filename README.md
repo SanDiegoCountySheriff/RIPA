@@ -35,9 +35,12 @@ The application is built using MSFT ASP.NET MVC/WEBAPI with Entity Foundation an
 
 ## How To Get Started
 
-**Database Setup** - On the package manager console in VS, add a new migration `add-migration myMigration` and update the database `update-database`, which you will need to point to in the web.config file. Alternatively, if you don't want to mess with migrations, you can implement the SQL script in the SQL folder.
+**Database Setup** - On the package manager console in VS, add a new migration `add-migration myMigration` and update the database `update-database`, which you will need to point to in the web.config file. Alternatively, if you don't want to mess with migrations, you can implement the SQL script in the SQL folder (database_fromscratch.sql).
 
 The SQL folder also has a script for the lookup tables, along with sample data. It is recommended that you set up a repeatable process to update the lookup tables from California DoJ directly.
+
+**Releases** - PublishOutput.zip is a release build with a generic web.config. This will allow you to use the latest code without compiling in Visual Studio. Make sure to update it with your agency's specific information.
+
 
 **IIS Setup** - Set up a new web application, turn on Windows Authentication and set up your port 443/https bindings, a dev cert will suffice, unless you are setting up production. Make sure the application pool identity has read/write access to the database you set up in the previous step.
 
@@ -68,7 +71,7 @@ RIPALogs Directory setup for logging DOJ Submissions
 
 **Update Web.config** - Make sure you update the app settings in Web.config with your agency specific information.
 ``` xml
-<add key="reverseGeoURI" value="https://www.mysite.us/arcgis/rest/....."/>
+<add key="reverseGeoURI" value="https://www.mysite.us/arcgis/rest/....."/><!-- See section for instructions about using the ESRI world geocoder -->
 <add key="reverseBeatURI" value="https://myReverseBeatGeocodingService" />
 <add key="agency" value="AG"/><!-- Must be 2 characters in length-->
 <add key="ori" value="CA0000000"/>
@@ -92,6 +95,32 @@ RIPALogs Directory setup for logging DOJ Submissions
 <add key="Server2" value="" />
 <add key="InitStrtSubDate" value="Start date of RIPA Collection YYYY-MM-DD" />
 ```
-**Release Build** - PublishOutput.zip is a release build with a generic web.config. Make sure to update it with your agency's specific information.
 
 
+## Using the ESRI World Geocoder
+
+If you don't have a local ESRI locator available for your agency you can use this public ESRI endpoint to implement reverse geocoding which uses your device's geolocation information if available after user consent.
+
+**Update Web.config** - Set the reverseGeoURI key as follows.
+``` xml
+<add key="reverseGeoURI" value="https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&featureTypes=&location="/>
+```
+
+In the file RIPASTOP/Scripts/react/RIPAForm.jsx replace the code starting on line 449-463 with this:
+
+``` C#
+var streetNum = e.address.Address.substr(0, e.address.Address.indexOf(' '));
+if (isNaN(streetNum)) {
+    newblockNumber = '';
+    newStreetName = e.address.Address;
+}
+else {
+    newblockNumber = this.floorInteger(streetNum);
+    newStreetName = e.address.Address.substr(e.address.Address.indexOf(' ') + 1);
+}
+// check if e.address.City is in this.state.codes.cities 
+var city = "";
+if (this.state.codes.CountyCities.includes(e.address.City.toUpperCase()) || this.state.codes.OutOfCountyCities.includes(e.address.City.toUpperCase())) {
+    city = e.address.City
+}           
+``` 
