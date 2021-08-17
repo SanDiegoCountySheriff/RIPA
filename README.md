@@ -124,3 +124,14 @@ if (this.state.codes.CountyCities.includes(e.address.City.toUpperCase()) || this
     city = e.address.City
 }           
 ``` 
+
+
+## Using the PIIFinder Utility
+
+The most effective way to discover PII data in the Basis for Search and Reason for Search narrative fields is to use the PIIFinder Utility that we have published on GitHub. This utility uses a pre-trained natural language processing model (ML) that can quickly identify named entities.
+
+Follow the instructions to set up the application here: https://github.com/SanDiegoCountySheriff/PIIFinder
+
+To Extract data from RIPA for input in PIIFinder, use the script this script: https://github.com/SanDiegoCountySheriff/RIPA/blob/903cd827f9bde2a99137abbde3631697cd7b4c90/PII%20Script/basisforsearch_reasonforstop_query.sql
+
+You can use the Stops Edit feature in the RIPA App admin menu to correct the PII that you find. You will need to enter a reason before you can save any changes, and everything is captured in the audit table.
