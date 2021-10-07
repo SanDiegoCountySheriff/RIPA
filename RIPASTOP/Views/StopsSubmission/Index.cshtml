@@ -29,9 +29,10 @@
     @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "list-item date-picker", @type = "date" } })
     @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "error-alert" })
 
-    <div class="button-container">
-        <input type="submit" value="Submit" class="button-right" />
-    </div>
+<div class="button-container">
+    @*<input type="submit" value="Submit" formaction="anotherMethod" class="button-right" />*@
+    <input type="submit" value="Submit" class="button-right" />
+</div>
 
     <div class="stops-detail">
         <div id="count"></div>

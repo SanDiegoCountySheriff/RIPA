@@ -977,11 +977,20 @@ class Form extends React.Component {
             }
             if (val == 4 && dir == '<< Back') { //step back from review
                 var newStop = this.state.stop;
-                var ix = this.state.stop.ListPerson_Stopped.length - 1;
-                var person = this.state.stop.ListPerson_Stopped[ix];
+                if (editStop == 1) {
+                    const pid = document.getElementById('pid').innerHTML - 1;
+                    var person = this.state.stop.ListPerson_Stopped[pid];
 
-                newStop.ListPerson_Stopped.pop();
-                newStop.Person_Stopped = person;
+                    newStop.Person_Stopped = person;
+                }
+                else {
+                    var ix = this.state.stop.ListPerson_Stopped.length - 1;
+                    var person = this.state.stop.ListPerson_Stopped[ix];
+
+                    newStop.ListPerson_Stopped.pop();
+                    newStop.Person_Stopped = person;
+                }
+
                 this.setState({ stop: newStop });
             }
 
