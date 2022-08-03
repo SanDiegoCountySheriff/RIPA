@@ -1,4 +1,8 @@
+## ⚠
+As of 2022 this repository is considered legacy and may not be updated to reflect regulation data changes that will go into effect in 2024. Please visit our [Cal-RIPA](https://github.com/SanDiegoCountySheriff/Cal-RIPA) project for the most current code.
+
 # RIPA
+
 California Racial and Identity Profiling Act [(RIPA - AB953)](https://oag.ca.gov/ab953/regulations)
 
 The San Diego County Sheriff's Department is developing this application to share and collaborate with the California L.E. community at large.
